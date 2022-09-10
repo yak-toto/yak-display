@@ -49,10 +49,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login' && to.name !== 'signup' && !store.getters.isAuthenticated) {
-    store.commit('eraseJwtToken');
-    next({ name: 'login' });
-  } else next();
+  if (to.name !== 'login' && to.name !== 'signup') {
+    if (!store.getters.isAuthenticated) {
+      store.commit('eraseJwtToken');
+      next({ name: 'login' });
+    } else {
+      next();
+    }
+  } else if (store.getters.isAuthenticated) {
+    next({ name: 'groups', params: { groupName: 'A' } });
+  } else {
+    next();
+  }
 });
 
 export default router;

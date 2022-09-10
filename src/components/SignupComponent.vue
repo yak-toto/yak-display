@@ -10,21 +10,24 @@
         <div class="field control">
           <label class="label" for="pseudo">
             Pseudo
-            <input type="text" class="input is-large" id="pseudo" placeholder="pseudo" v-model="name">
+            <input type="text" class="input is-large" id="pseudo"
+              placeholder="pseudo" v-model="name">
           </label>
         </div>
 
         <div class="field control">
           <label class="label" for="firstName">
             Prénom
-            <input type="text" class="input is-large" id="firstName" placeholder="prénom" v-model="firstName">
+            <input type="text" class="input is-large" id="firstName"
+              placeholder="prénom" v-model="firstName">
           </label>
         </div>
 
         <div class="field control">
           <label class="label" for="lastName">
             Nom de famille
-            <input type="text" class="input is-large" id="lastName" placeholder="nom de famille" v-model="lastName">
+            <input type="text" class="input is-large" id="lastName"
+              placeholder="nom de famille" v-model="lastName">
           </label>
         </div>
 
@@ -57,7 +60,10 @@ export default {
   methods: {
     signup() {
       this.$store.dispatch('signup', {
-        name: this.name, first_name: this.firstName, last_name: this.lastName, password: this.password,
+        name: this.name,
+        first_name: this.firstName,
+        last_name: this.lastName,
+        password: this.password,
       })
         .then(() => {
           this.$router.push('/login');
