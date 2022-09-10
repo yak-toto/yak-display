@@ -21,8 +21,8 @@ const actions = {
   getScoreBoard(context) {
     return getScoreBoard(context.state.jwt);
   },
-  getGroupNames(context) {
-    return getGroupNames(context.state.jwt);
+  getGroupNames(context, { phaseName }) {
+    return getGroupNames(phaseName, context.state.jwt);
   },
   login(context, userData) {
     return postLogin(userData);

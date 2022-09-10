@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     getGroupList() {
-      this.$store.dispatch('getGroupNames')
+      this.$store.dispatch('getGroupNames', { phaseName: 'GROUP' })
         .then((res) => {
           this.groupsNames = res.data.result;
         });

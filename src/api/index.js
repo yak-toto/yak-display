@@ -22,8 +22,8 @@ export function postLogin(userData) {
 // Group interface
 // ------------------------------
 
-export function getGroupNames(jwt) {
-  return axios.get(`${URL}/${GLOBAL_ENDPOINT}/${VERSION}/groups/names`, { headers: { Authorization: `Bearer: ${jwt}` } });
+export function getGroupNames(phaseName, jwt) {
+  return axios.get(`${URL}/${GLOBAL_ENDPOINT}/${VERSION}/groups/${phaseName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
 
 export function getGroup(groupName, jwt) {
