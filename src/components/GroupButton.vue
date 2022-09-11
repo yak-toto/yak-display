@@ -6,7 +6,6 @@
 export default {
   name: 'GroupButton',
   props: {
-
     groupName: String,
     groupDescription: String,
   },

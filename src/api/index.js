@@ -5,17 +5,18 @@ import axios from 'axios';
 const URL = process.env.NODE_ENV === 'production' ? 'https://yak-toto.com' : 'http://127.0.0.1:5000';
 const GLOBAL_ENDPOINT = 'api';
 const VERSION = 'v1';
+const BASE_URL = `${URL}/${GLOBAL_ENDPOINT}/${VERSION}`;
 
 // ------------------------------
 // Auth interface
 // ------------------------------
 
 export function postSignup(userData) {
-  return axios.post(`${URL}/${GLOBAL_ENDPOINT}/${VERSION}/signup`, userData);
+  return axios.post(`${BASE_URL}/signup`, userData);
 }
 
 export function postLogin(userData) {
-  return axios.post(`${URL}/${GLOBAL_ENDPOINT}/${VERSION}/login`, userData);
+  return axios.post(`${BASE_URL}/login`, userData);
 }
 
 // ------------------------------
@@ -23,15 +24,19 @@ export function postLogin(userData) {
 // ------------------------------
 
 export function getGroupNames(phaseName, jwt) {
-  return axios.get(`${URL}/${GLOBAL_ENDPOINT}/${VERSION}/groups/${phaseName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.get(`${BASE_URL}/groups/${phaseName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
 
 export function getGroup(groupName, jwt) {
-  return axios.get(`${URL}/${GLOBAL_ENDPOINT}/${VERSION}/bets/groups/${groupName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.get(`${BASE_URL}/bets/groups/${groupName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
 
 export function patchScores(matchId, matchResource, type, jwt) {
-  return axios.patch(`${URL}/${GLOBAL_ENDPOINT}/${VERSION}/bets/scores/${matchId}`, matchResource, { params: { type }, headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.patch(
+    `${BASE_URL}/bets/scores/${matchId}`,
+    matchResource,
+    { params: { type }, headers: { Authorization: `Bearer: ${jwt}` } },
+  );
 }
 
 // ------------------------------
@@ -39,7 +44,7 @@ export function patchScores(matchId, matchResource, type, jwt) {
 // ------------------------------
 
 export function getScoreBoard(jwt) {
-  return axios.get(`${URL}/${GLOBAL_ENDPOINT}/${VERSION}/score_board`, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.get(`${BASE_URL}/score_board`, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
 
 // ------------------------------
@@ -47,5 +52,5 @@ export function getScoreBoard(jwt) {
 // ------------------------------
 
 export function postComputePoints(jwt) {
-  return axios.post(`${URL}/${GLOBAL_ENDPOINT}/${VERSION}/compute_points`, null, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.post(`${BASE_URL}/compute_points`, null, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
