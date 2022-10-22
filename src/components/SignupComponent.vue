@@ -65,8 +65,10 @@ export default {
         last_name: this.lastName,
         password: this.password,
       })
-        .then(() => {
-          this.$router.push('/login');
+        .then((response) => {
+          this.$store.commit({ type: 'setJwtToken', jwt: response.data.result.token });
+          this.$store.commit({ type: 'setUserName', userName: response.data.result.name });
+          this.$router.push('/groups/A');
         })
         .catch(() => {
           this.invalidSignup = true;
