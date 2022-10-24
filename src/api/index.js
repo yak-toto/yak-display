@@ -24,7 +24,7 @@ export function postLogin(userData) {
 // ------------------------------
 
 export function getGroupNames(phaseName, jwt) {
-  return axios.get(`${BASE_URL}/groups/${phaseName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.get(`${BASE_URL}/groups/phases/${phaseName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
 
 export function getGroup(groupName, jwt) {

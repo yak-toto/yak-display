@@ -72,7 +72,7 @@ export default {
       this.groupResourceCopy = _.cloneDeep(this.groupResource);
     },
   },
-  beforeRouteUpdate(to, from, next) {
+  beforeRouteUpdate(to, _, next) {
     this.getGroup(to.params.groupName);
     next();
   },
