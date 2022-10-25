@@ -57,6 +57,8 @@ export default {
         });
     },
     postGroup() {
+      let modifyBets = []
+
       for (const [group, groupCopy] of _.zip(this.groupResource, this.groupResourceCopy)) {
         if (!_.isEqual(group, groupCopy)) {
           if (group.team1.score === '') {
@@ -65,10 +67,13 @@ export default {
           if (group.team2.score === '') {
             group.team2.score = null;
           }
-          this.$store.dispatch('patchOneBet', { matchId: group.id, matchResource: group, type: 'score' });
+          modifyBets.push(group);
         }
       }
 
+      if (modifyBets.length !== 0) {
+        this.$store.dispatch('patchBets', { bets: modifyBets });
+      }
       this.groupResourceCopy = _.cloneDeep(this.groupResource);
     },
   },

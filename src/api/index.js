@@ -31,11 +31,11 @@ export function getGroup(groupName, jwt) {
   return axios.get(`${BASE_URL}/bets/groups/${groupName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
 
-export function patchOneBet(matchId, matchResource, type, jwt) {
+export function patchBets(bets, jwt) {
   return axios.patch(
-    `${BASE_URL}/bets/${matchId}`,
-    matchResource,
-    { params: { type }, headers: { Authorization: `Bearer: ${jwt}` } },
+    `${BASE_URL}/bets`,
+    bets,
+    { headers: { Authorization: `Bearer: ${jwt}` } },
   );
 }
 
