@@ -31,9 +31,9 @@ export function getGroup(groupName, jwt) {
   return axios.get(`${BASE_URL}/bets/groups/${groupName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
 
-export function patchScores(matchId, matchResource, type, jwt) {
+export function patchOneBet(matchId, matchResource, type, jwt) {
   return axios.patch(
-    `${BASE_URL}/bets/scores/${matchId}`,
+    `${BASE_URL}/bets/${matchId}`,
     matchResource,
     { params: { type }, headers: { Authorization: `Bearer: ${jwt}` } },
   );

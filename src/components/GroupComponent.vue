@@ -65,7 +65,7 @@ export default {
           if (group.team2.score === '') {
             group.team2.score = null;
           }
-          this.$store.dispatch('patchScores', { matchId: group.id, matchResource: group, type: 'score' });
+          this.$store.dispatch('patchOneBet', { matchId: group.id, matchResource: group, type: 'score' });
         }
       }
 
