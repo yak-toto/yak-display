@@ -2,7 +2,7 @@ import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
 
 import {
-  postSignup, postLogin, getGroupNames, getGroup, patchBets, getScoreBoard, postComputePoints,
+  postSignup, postLogin, getGroupNames, getGroup, getGroupResult, patchBets, getScoreBoard, postComputePoints,
 } from '@/api';
 import isValidJwt from '@/utils';
 
@@ -14,6 +14,9 @@ const stateObject = {
 const actions = {
   getGroup(context, { groupName }) {
     return getGroup(groupName, context.state.jwt);
+  },
+  getGroupResult(context, { groupName }) {
+    return getGroupResult(groupName, context.state.jwt);
   },
   patchBets(context, { bets }) {
     return patchBets(bets, context.state.jwt);

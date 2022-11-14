@@ -93,6 +93,7 @@ export default {
 .table-custom {
   width: 100%;
   text-align: left;
+  border-collapse: collapse;
 }
 
 .table-custom thead {

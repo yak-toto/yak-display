@@ -5,6 +5,53 @@
     </div>
     <div class="table-group">
       <h3 class="title">Groupe {{ $route.params.groupName }}</h3>
+      <table class="result-group">
+        <thead>
+          <tr>
+            <th />
+            <th>Équipe</th>
+            <th>
+              <abbr title="Points">Pts</abbr>
+            </th>
+            <th>
+              <abbr title="Joué">J</abbr>
+            </th>
+            <th>
+              <abbr title="Gagné">G</abbr>
+            </th>
+            <th>
+              <abbr title="Nul">N</abbr>
+            </th>
+            <th>
+              <abbr title="Perdu">P</abbr>
+            </th>
+            <th>
+              <abbr title="Buts pour">BP</abbr>
+            </th>
+            <th>
+              <abbr title="Buts contre">BC</abbr>
+            </th>
+            <th>
+              <abbr title="Différence de buts">Diff</abbr>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="[index, result] in groupResult.entries()">
+            <td>{{ index + 1 }}</td>
+            <td>{{ result["description"] }}</td>
+            <td>{{ result["points"] }}</td>
+            <td>{{ result["played"] }}</td>
+            <td>{{ result["won"] }}</td>
+            <td>{{ result["drawn"] }}</td>
+            <td>{{ result["lost"] }}</td>
+            <td>{{ result["goals_for"] }}</td>
+            <td>{{ result["goals_against"] }}</td>
+            <td>{{ result["goals_difference"] }}</td>
+          </tr>
+        </tbody>
+      </table>
+
       <div class="box-group">
         <form v-on:submit.prevent="postGroup">
           <div class="grid-bet" v-for="match in groupResource" :key="match['id']">
@@ -51,6 +98,7 @@ export default {
       groupResource: [],
       // keep copy of group resource to send only PATCH /match of the updated matches
       groupResourceCopy: [],
+      groupResult: [],
       displayStatus: false,
       updateProperly: [],
     };
@@ -61,6 +109,12 @@ export default {
         .then((res) => {
           this.groupResource = res.data.result;
           this.groupResourceCopy = _.cloneDeep(this.groupResource);
+        });
+    },
+    getGroupResult(groupName) {
+      this.$store.dispatch('getGroupResult', { groupName })
+        .then((res) => {
+          this.groupResult = res.data.result;
         });
     },
     postGroup() {
@@ -86,6 +140,8 @@ export default {
             this.groupResourceCopy = _.cloneDeep(this.groupResource);
             this.updateProperly.push(true);
             this.displayStatus = true;
+
+            this.getGroupResult(this.$route.params.groupName);
 
             setTimeout(
               () => {
@@ -121,11 +177,13 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     this.getGroup(to.params.groupName);
+    this.getGroupResult(to.params.groupName);
     this.displayStatus = false;
     next();
   },
   created() {
     this.getGroup(this.$route.params.groupName);
+    this.getGroupResult(this.$route.params.groupName);
   },
 };
 
@@ -166,6 +224,24 @@ export default {
   display: block;
   padding: 1.25rem;
   width: 100%;
+}
+
+.result-group {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+.result-group th, .result-group td {
+  border: 1px solid;
+  border-width: 0 0 1px;
+  border-color: #53535321;
+  text-align: left;
+  padding: 0.5em 0.75em;
+}
+
+.result-group abbr {
+  cursor: help;
 }
 
 input {
