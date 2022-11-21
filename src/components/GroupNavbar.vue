@@ -8,9 +8,11 @@
     >
       {{ group['description'] }}
     </router-link>
+    <h1>Phase finale</h1>
+    <router-link to="/finale_phase">Phase finale</router-link>
     <h1>Classement</h1>
     <router-link to="/score_board">Classement</router-link>
-  </div>
+</div>
 </template>
 
 <script>

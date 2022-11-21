@@ -3,6 +3,7 @@ import LoginComponent from '@/components/LoginComponent.vue';
 import GroupComponent from '@/components/GroupComponent.vue';
 import SignupComponent from '@/components/SignupComponent.vue';
 import ScoreBoardComponent from '@/components/ScoreBoardComponent.vue';
+import FinalePhaseComponent from '@/components/FinalePhaseComponent.vue';
 import store from '@/store';
 
 const routes = [
@@ -41,6 +42,11 @@ const routes = [
     path: '/score_board',
     name: 'score_board',
     component: ScoreBoardComponent,
+  },
+  {
+    path: '/finale_phase',
+    name: 'finale_phase',
+    component: FinalePhaseComponent,
   },
 ];
 
