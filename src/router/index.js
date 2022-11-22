@@ -35,6 +35,7 @@ const routes = [
     path: '/groups/:groupName',
     name: 'groups',
     component: GroupComponent,
+    props: true,
   },
   {
     path: '/score_board',

@@ -1,12 +1,12 @@
 <template>
   <div class="vertical-menu">
-    <h1>Groupes</h1>
+    <h1>{{ phase["description"] }}</h1>
     <router-link
-      v-for="groupName in groupsNames"
-      :key="groupName['id']"
-      :to="`/groups/${groupName['code']}`"
+      v-for="group in groups"
+      :key="group['id']"
+      :to="`/groups/${group['code']}`"
     >
-      {{ groupName['description'] }}
+      {{ group['description'] }}
     </router-link>
     <h1>Classement</h1>
     <router-link to="/score_board">Classement</router-link>
@@ -18,14 +18,16 @@ export default {
   name: 'GroupNavbar',
   data() {
     return {
-      groupsNames: [],
+      phase: {},
+      groups: [],
     };
   },
   methods: {
     getGroupList() {
       this.$store.dispatch('getGroupNames', { phaseName: 'GROUP' })
         .then((res) => {
-          this.groupsNames = res.data.result;
+          this.phase = res.data.result.phase;
+          this.groups = res.data.result.groups;
         });
     },
   },

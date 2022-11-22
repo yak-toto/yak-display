@@ -4,7 +4,7 @@
       <GroupNavbar />
     </div>
     <div class="table-group">
-      <h3 class="title">Groupe {{ $route.params.groupName }}</h3>
+      <h3 class="title">{{ group.description }}</h3>
       <table class="result-group">
         <thead>
           <tr>
@@ -54,7 +54,7 @@
 
       <div class="box-group">
         <form v-on:submit.prevent="postGroup">
-          <div class="grid-bet" v-for="match in groupResource" :key="match['id']">
+          <div class="grid-bet" v-for="match in scoreBets" :key="match['id']">
             <div class="team-bet-1">{{ match["team1"]["description"] }}</div>
             <div class="input-bet-1">
               <input min="0" type="number"
@@ -93,11 +93,15 @@ export default {
   components: {
     GroupNavbar,
   },
+  props: {
+    groupName: String,
+  },
   data() {
     return {
-      groupResource: [],
+      group: {},
+      scoreBets: [],
       // keep copy of group resource to send only PATCH /match of the updated matches
-      groupResourceCopy: [],
+      scoreBetsCopy: [],
       groupResult: [],
       displayStatus: false,
       updateProperly: [],
@@ -107,14 +111,15 @@ export default {
     getGroup(groupName) {
       this.$store.dispatch('getGroup', { groupName })
         .then((res) => {
-          this.groupResource = res.data.result;
-          this.groupResourceCopy = _.cloneDeep(this.groupResource);
+          this.group = res.data.result.group;
+          this.scoreBets = res.data.result.score_bets;
+          this.scoreBetsCopy = _.cloneDeep(this.scoreBets);
         });
     },
     getGroupResult(groupName) {
       this.$store.dispatch('getGroupResult', { groupName })
         .then((res) => {
-          this.groupResult = res.data.result;
+          this.groupResult = res.data.result.results;
         });
     },
     postGroup() {
@@ -122,7 +127,7 @@ export default {
 
       const modifyBets = [];
 
-      for (const [group, groupCopy] of _.zip(this.groupResource, this.groupResourceCopy)) {
+      for (const [group, groupCopy] of _.zip(this.scoreBets, this.scoreBetsCopy)) {
         if (!_.isEqual(group, groupCopy)) {
           if (group.team1.score === '') {
             group.team1.score = null;
@@ -137,11 +142,11 @@ export default {
       if (modifyBets.length !== 0) {
         this.$store.dispatch('patchBets', { bets: modifyBets })
           .then(() => {
-            this.groupResourceCopy = _.cloneDeep(this.groupResource);
+            this.scoreBetsCopy = _.cloneDeep(this.scoreBets);
             this.updateProperly.push(true);
             this.displayStatus = true;
 
-            this.getGroupResult(this.$route.params.groupName);
+            this.getGroupResult(this.group.code);
 
             setTimeout(
               () => {
@@ -152,7 +157,7 @@ export default {
             );
           })
           .catch(() => {
-            this.groupResource = _.cloneDeep(this.groupResourceCopy);
+            this.scoreBets = _.cloneDeep(this.scoreBetsCopy);
             this.updateProperly.push(false);
             this.displayStatus = true;
 
@@ -175,15 +180,15 @@ export default {
       }
     },
   },
-  beforeRouteUpdate(to, from, next) {
+  beforeRouteUpdate(to, _, next) {
     this.getGroup(to.params.groupName);
     this.getGroupResult(to.params.groupName);
     this.displayStatus = false;
     next();
   },
   created() {
-    this.getGroup(this.$route.params.groupName);
-    this.getGroupResult(this.$route.params.groupName);
+    this.getGroup(this.groupName);
+    this.getGroupResult(this.groupName);
   },
 };
 
