@@ -67,7 +67,7 @@
             <div class="team-bet-2">{{ match["team2"]["description"] }}</div>
           </div>
           <div class="div-button-group">
-            <button type="submit" class="button-group">Valider</button>
+            <button type="submit" class="button-group" :disabled="scoreBets.map(bet => bet.locked).some(x => x === true)">Valider</button>
             <div class="updated-properly" v-if="displayStatus && updateProperly.length !== 0 && updateProperly.every(v => v === true)">
               Résultats soumis &#10003;
             </div>
@@ -258,6 +258,12 @@ input {
   border-style: solid;
 }
 
+input:read-only {
+  cursor: not-allowed;
+  border: 0;
+  outline: 0;
+}
+
 .grid-bet {
   display: grid;
   grid-template-columns: repeat(14, 1fr);
@@ -318,6 +324,10 @@ input {
   border-color: #363636;
   background-color: white;
   color: #363636;
+}
+
+.button-group:disabled {
+  display: none;
 }
 
 .updated-properly {
