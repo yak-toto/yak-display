@@ -35,8 +35,8 @@ export function getGroupResult(groupName, jwt) {
   return axios.get(`${BASE_URL}/bets/groups/results/${groupName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
 
-export function getBetByPhase(phaseName, jwt) {
-  return axios.get(`${BASE_URL}/bets/phases/${phaseName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
+export function postBetsFinalePhase(jwt) {
+  return axios.post(`${BASE_URL}/bets/finale_phase`, null, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
 
 export function patchBets(bets, jwt) {

@@ -56,7 +56,7 @@
 
 <script>
 export default {
-  name: 'GroupComponent',
+  name: 'App',
   data() {
     return {
       displayStatus: false,

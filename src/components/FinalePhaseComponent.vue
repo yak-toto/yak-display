@@ -1,9 +1,9 @@
 <template>
-    <div class="grid-group">
-      <div class="navbar-group">
+    <div class="grid-finale-phase">
+      <div class="navbar-finale-phase">
         <GroupNavbar />
       </div>
-      <div class="table-group">
+      <div class="table-finale-phase">
         <h3 class="title">{{ phase.description }}</h3>
 
         <div class="box-group">
@@ -11,138 +11,46 @@
             <table class="table-final-phase">
               <thead>
                 <tr>
-                  <template v-for="group in Object.values(groups)" :key="group.id">
-                    <th v-if="group.code !== '3'">{{ group.description }}</th>
-                  </template>
+                  <th v-for="group of groups" :key="group.id">{{ group.description }}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][0]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="2" v-if="'4' in finalePhaseBet && finalePhaseBet['4'].length > 0">
-                    <a>{{ finalePhaseBet['4'][0]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="4" v-if="'2' in finalePhaseBet && finalePhaseBet['2'].length > 0">
-                    <a>{{ finalePhaseBet['2'][0]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="8" v-if="'1' in finalePhaseBet && finalePhaseBet['1'].length > 0">
-                    <a>{{ finalePhaseBet['1'][0]['team1']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][0]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][1]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="2" v-if="'4' in finalePhaseBet && finalePhaseBet['4'].length > 0">
-                    <a>{{ finalePhaseBet['4'][0]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][1]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][2]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="2" v-if="'4' in finalePhaseBet && finalePhaseBet['4'].length > 1">
-                    <a>{{ finalePhaseBet['4'][1]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="4" v-if="'2' in finalePhaseBet && finalePhaseBet['2'].length > 0">
-                    <a>{{ finalePhaseBet['2'][0]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][2]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][3]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="2" v-if="'4' in finalePhaseBet && finalePhaseBet['4'].length > 1">
-                    <a>{{ finalePhaseBet['4'][1]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][3]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][4]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="2" v-if="'4' in finalePhaseBet && finalePhaseBet['4'].length > 2">
-                    <a>{{ finalePhaseBet['4'][2]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="4" v-if="'2' in finalePhaseBet && finalePhaseBet['2'].length > 1">
-                    <a>{{ finalePhaseBet['2'][1]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="8" v-if="'1' in finalePhaseBet && finalePhaseBet['1'].length > 0">
-                    <a>{{ finalePhaseBet['1'][0]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][4]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][5]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="2" v-if="'4' in finalePhaseBet && finalePhaseBet['4'].length > 2">
-                    <a>{{ finalePhaseBet['4'][2]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][5]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][6]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="2" v-if="'4' in finalePhaseBet && finalePhaseBet['4'].length > 3">
-                    <a>{{ finalePhaseBet['4'][3]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="4" v-if="'2' in finalePhaseBet && finalePhaseBet['2'].length > 1">
-                    <a>{{ finalePhaseBet['2'][1]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][6]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][7]['team1']['description'] }}</a>
-                  </td>
-                  <td rowspan="2" v-if="'4' in finalePhaseBet && finalePhaseBet['4'].length > 3">
-                    <a>{{ finalePhaseBet['8'][3]['team2']['description'] }}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a>{{ finalePhaseBet['8'][7]['team2']['description'] }}</a>
-                  </td>
+                <tr v-for="index in Array(finalePhaseBet[groups[0].id].length).keys()">
+                  <template v-for="[groupIndex, group] in groups.entries()" class="box-match" :key="group.id">
+                    <td
+                      :rowspan="Math.pow(2, groupIndex)" v-if="index % Math.pow(2, groupIndex) === 0"
+                    >
+                      <div class="box-match">
+                        <template v-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description === ''
+                          || finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description === ''"
+                        >
+                          <div>
+                            &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description }}
+                          </div>
+                          <div>
+                            &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description }}
+                          </div>
+                        </template>
+                        <template v-else>
+                          <a
+                            @click="pushBet(groupIndex, index/Math.pow(2, groupIndex), finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1, true)"
+                          >
+                            &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description }}
+                          </a>
+                          <a
+                            @click="pushBet(groupIndex, index/Math.pow(2, groupIndex), finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2, false)"
+                          >
+                            &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description }}
+                          </a>
+                        </template>
+                      </div>
+                    </td>
+                  </template>
                 </tr>
               </tbody>
             </table>
-            <div class="div-button-group">
-              <button type="submit" class="button-group">Valider</button>
+            <div class="div-button-finale-phase">
+              <button type="submit" class="button-finale-phase">Valider</button>
               <div class="updated-properly" v-if="displayStatus && updateProperly.length !== 0 && updateProperly.every(v => v === true)">
                 Résultats soumis &#10003;
               </div>
@@ -164,169 +72,120 @@ import _ from 'lodash';
 import GroupNavbar from './GroupNavbar.vue';
 
 export default {
-  name: 'GroupComponent',
+  name: 'FinalPhaseComponent',
   components: {
     GroupNavbar,
   },
   data() {
     return {
       finalePhaseBet: {},
-      groups: {},
+      groups: [],
       phase: {},
-      // keep copy of group resource to send only PATCH /match of the updated matches
-      groupResourceCopy: [],
-      groupResult: [],
       displayStatus: false,
       updateProperly: [],
-      groupsNames: [],
     };
   },
   methods: {
-    getGroupList() {
-      this.$store.dispatch('getBetByPhase', { phaseName: 'FINAL' })
+    getFinalePhase() {
+      this.$store.dispatch('postBetsFinalePhase')
         .then((res) => {
-          this.phase = res.data.result['phase'];
-          for (const group of res.data.result['groups']) {
-            this.groups[group.id] = group
+          this.phase = res.data.result.phase;
+          this.groups = res.data.result.groups.filter(group => group.code !== '3');
+
+          this.groups.sort((group1, group2) => parseInt(group2.code) - parseInt(group1.code));
+
+          for (const group of this.groups) {
+            this.finalePhaseBet[group.id] = Array
+              .from(
+                { length: parseInt(group.code) },
+                () => ({
+                  is_one_won: null,
+                  group: {
+                    id: group.id,
+                  },
+                  team1: {
+                    description: '',
+                  },
+                  team2: {
+                    description: '',
+                  },
+                }),
+              );
           }
 
-          for (const binary_bets of res.data.result['binary_bets']) {
-            if (!(this.groups[binary_bets.group.id].code in this.finalePhaseBet)) {
-              this.finalePhaseBet[this.groups[binary_bets.group.id].code] = [];
-            }
-            this.finalePhaseBet[this.groups[binary_bets.group.id].code].push(binary_bets);
+          for (const binary_bets of res.data.result.binary_bets) {
+            this.finalePhaseBet[binary_bets.group.id][binary_bets.index - 1] = binary_bets;
           }
-
-          console.log(this.finalePhaseBet);
-          console.log(this.groups);
         });
     },
-    getGroupResult(groupName) {
-      this.$store.dispatch('getGroupResult', { groupName })
-        .then((res) => {
-          this.groupResult = res.data.result;
-        });
-    },
-    postGroup() {
-      this.displayStatus = false;
+    pushBet(groupIndex, betIndex, team, isOneWon) {
+      this.finalePhaseBet[this.groups[groupIndex].id][betIndex].is_one_won = isOneWon;
 
-      const modifyBets = [];
+      var teamIndex = betIndex % 2 === 0 ? 1 : 2;
+      var newBetIndex = betIndex % 2 === 0 ? betIndex/2 : (betIndex - 1)/2
+      var originalTeamDescription = this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`].description;
 
-      for (const [group, groupCopy] of _.zip(this.groupResource, this.groupResourceCopy)) {
-        if (!_.isEqual(group, groupCopy)) {
-          if (group.team1.score === '') {
-            group.team1.score = null;
+      this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`] = _.clone(team);
+
+      for (const group of this.groups.slice(groupIndex + 2)) {
+        for ( const bet of this.finalePhaseBet[group.id]) {
+          if (bet.team1.description === originalTeamDescription) {
+            bet.team1.description = ""
           }
-          if (group.team2.score === '') {
-            group.team2.score = null;
+          if (bet.team2.description === originalTeamDescription) {
+            bet.team2.description = ""
           }
-          modifyBets.push(group);
         }
       }
-
-      if (modifyBets.length !== 0) {
-        this.$store.dispatch('patchBets', { bets: modifyBets })
-          .then(() => {
-            this.groupResourceCopy = _.cloneDeep(this.groupResource);
-            this.updateProperly.push(true);
-            this.displayStatus = true;
-
-            this.getGroupResult(this.$route.params.groupName);
-
-            setTimeout(
-              () => {
-                this.displayStatus = false;
-                this.updateProperly.length = 0;
-              },
-              2000,
-            );
-          })
-          .catch(() => {
-            this.groupResource = _.cloneDeep(this.groupResourceCopy);
-            this.updateProperly.push(false);
-            this.displayStatus = true;
-
-            setTimeout(
-              () => {
-                this.displayStatus = false;
-                this.updateProperly.length = 0;
-              },
-              2000,
-            );
-          });
-      } else {
-        this.displayStatus = true;
-        setTimeout(
-          () => {
-            this.displayStatus = false;
-          },
-          2000,
-        );
-      }
     },
   },
-  beforeRouteUpdate(to, from, next) {
-    //   this.getGroup(to.params.groupName);
-    //   this.getGroupResult(to.params.groupName);
-    //   this.displayStatus = false;
-    next();
-  },
   created() {
-    this.getGroupList();
-    //   this.getGroup(this.$route.params.groupName);
-    //   this.getGroupResult(this.$route.params.groupName);
+    this.getFinalePhase();
   },
 };
 
 </script>
 
 <style lang="css">
-.float-container {
-  border: 3px solid #fff;
-  padding: 2px;
+.grid-finale-phase {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 10px;
 }
 
-.float-child {
-  width: 25%;
-  float: left;
-  padding: 5px;
+@media screen and (max-width: 600px) {
+  .grid-finale-phase {display: block;}
 }
 
-.blabla {
-  padding: 20px;
-  height: 100%;
+.navbar-finale-phase {
+  grid-column: 1;
 }
 
-  .grid-group {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-gap: 10px;
-  }
+.table-finale-phase {
+  grid-column: 2 / 7;
+}
 
-  @media screen and (max-width: 600px) {
-    .grid-group {display: block;}
-  }
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.125;
+  text-align: center;
+}
 
-  .navbar-group {
-    grid-column: 1;
-  }
-
-  .table-group {
-    grid-column: 2 / 7;
-  }
-
-  .title {
-    font-size: 2rem;
-    font-weight: 600;
-    line-height: 1.125;
-    text-align: center;
-  }
+.box-match {
+  border: solid;
+  border-width: 1px;
+  border-color: #53535321;
+  border-radius: 6px;
+  color: #535353;
+  display: block;
+  padding: 0.3rem;
+}
 
 .table-final-phase a {
   cursor: pointer;
   color: black;
   display: block;
-  padding: 0.35rem;
   text-decoration: none;
 }
 
@@ -334,8 +193,9 @@ export default {
   background-color: #fafafa;
 }
 
-  .table-final-phase {
+.table-final-phase {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   margin-bottom: 2rem;
 }
@@ -351,123 +211,57 @@ export default {
   cursor: help;
 }
 
-  .box-group {
-    border: solid;
-    border-width: 1px;
-    border-color: #53535321;
-    border-radius: 6px;
-    color: #535353;
-    display: block;
-    padding: 1.25rem;
-    width: 100%;
-  }
+.box-group {
+  border: solid;
+  border-width: 1px;
+  border-color: #53535321;
+  border-radius: 6px;
+  color: #535353;
+  display: block;
+  padding: 1.25rem;
+  width: 100%;
+}
 
-  .result-group {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 2rem;
-  }
+.div-button-finale-phase {
+  padding-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+}
 
-  .result-group th, .result-group td {
-    border: 1px solid;
-    border-width: 0 0 1px;
-    border-color: #53535321;
-    text-align: left;
-    padding: 0.5em 0.75em;
-  }
+.button-finale-phase {
+  grid-column: 5;
+  cursor: pointer;
+  padding: 0.35rem;
+  background-color: #363636;
+  border-color: transparent;
+  color: whitesmoke;
+  border-radius: 4px;
+  font-size: 1rem;
+}
 
-  .result-group abbr {
-    cursor: help;
-  }
+.button-finale-phase:active {
+  border-color: #363636;
+  background-color: white;
+  color: #363636;
+}
 
-  input {
-    width: 100%;
-    padding: 0.5rem;
-    border-radius: 6px;
-    border-width: 1px;
-    border-color: rgb(10 10 10 / 10%);
-    border-style: solid;
-  }
+.updated-properly {
+  text-align: right;
+  padding: 0.35rem;
+  grid-column: 6 / 10;
+  color: green;
+  font-weight: bold;
+  border-color: green;
+  font-size: 1rem;
+}
 
-  .grid-bet {
-    display: grid;
-    grid-template-columns: repeat(14, 1fr);
-    grid-gap: 10px;
-    padding: 0.25rem;
-  }
-
-  .team-bet-1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    grid-column: 1 / 3;
-  }
-
-  .input-bet-1 {
-    grid-column: 3 / 8;
-  }
-
-  @media screen and (max-width: 900px) {
-    .team-bet-1 {grid-column: 1 / 5;}
-    .input-bet-1 {grid-column: 5 / 8;}
-  }
-
-  .input-bet-2 {
-    grid-column: 8 / 13;
-  }
-
-  .team-bet-2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    grid-column: 13 / 15;
-  }
-
-  @media screen and (max-width: 900px) {
-    .input-bet-2 {grid-column: 8 / 11;}
-    .team-bet-2 {grid-column: 11 / 15;}
-  }
-
-  .div-button-group {
-    padding-top: 1rem;
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
-  }
-
-  .button-group {
-    grid-column: 5;
-    cursor: pointer;
-    padding: 0.35rem;
-    background-color: #363636;
-    border-color: transparent;
-    color: whitesmoke;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-
-  .button-group:active {
-    border-color: #363636;
-    background-color: white;
-    color: #363636;
-  }
-
-  .updated-properly {
-    text-align: right;
-    padding: 0.35rem;
-    grid-column: 6 / 10;
-    color: green;
-    font-weight: bold;
-    border-color: green;
-    font-size: 1rem;
-  }
-
-  .not-updated-properly {
-    text-align: right;
-    padding: 0.35rem;
-    grid-column: 6 / 10;
-    color: red;
-    font-weight: bold;
-    border-color: red;
-    font-size: 1rem;
-  }
-  </style>
+.not-updated-properly {
+  text-align: right;
+  padding: 0.35rem;
+  grid-column: 6 / 10;
+  color: red;
+  font-weight: bold;
+  border-color: red;
+  font-size: 1rem;
+}
+</style>
