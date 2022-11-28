@@ -12,13 +12,17 @@
               <th>Joueur</th>
               <th>Nombre de matchs trouvés</th>
               <th>Nombre de scores trouvés</th>
+              <th>Nombre de qualifiés trouvés</th>
+              <th>Nombre de premier trouvés</th>
               <th>Points</th>
             </tr>
           </thead>
-          <tr v-for="res in scoreBoardResource" :key="res['name']">
+          <tr v-for="res in scoreBoardResource" :key="res.id">
             <td>{{ `${res["first_name"]} ${res["last_name"]}` }}</td>
             <td>{{ res["number_match_guess"] }}</td>
             <td>{{ res["number_score_guess"] }}</td>
+            <td>{{ res["number_qualified_teams_guess"] }}</td>
+            <td>{{ res["number_first_qualified_guess"] }}</td>
             <td>{{ res["points"] }}</td>
           </tr>
         </table>
