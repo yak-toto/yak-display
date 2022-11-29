@@ -12,11 +12,11 @@ const BASE_URL = `${URL}/${GLOBAL_ENDPOINT}/${VERSION}`;
 // ------------------------------
 
 export function postSignup(userData) {
-  return axios.post(`${BASE_URL}/signup`, userData);
+  return axios.post(`${BASE_URL}/users/signup`, userData);
 }
 
 export function postLogin(userData) {
-  return axios.post(`${BASE_URL}/login`, userData);
+  return axios.post(`${BASE_URL}/users/login`, userData);
 }
 
 // ------------------------------
