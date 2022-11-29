@@ -27,6 +27,7 @@
                           <div>
                             &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description }}
                           </div>
+                          <hr/>
                           <div>
                             &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description }}
                           </div>
@@ -37,6 +38,7 @@
                           >
                             &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description }}
                           </a>
+                          <hr/>
                           <a
                             @click="pushBet(groupIndex, index/Math.pow(2, groupIndex), finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2, false)"
                           >
@@ -180,6 +182,11 @@ export default {
   color: #535353;
   display: block;
   padding: 0.3rem;
+}
+
+.box-match hr {
+  margin: 0px;
+  border-color: #53535321;
 }
 
 .table-final-phase a {
