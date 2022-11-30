@@ -2,7 +2,7 @@ import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
 
 import {
-  postSignup, postLogin, getGroupNames, getGroup, getGroupResult, postBetsFinalePhase, patchBets, getScoreBoard, postComputePoints,
+  postSignup, postLogin, getGroupNames, getGroup, getGroupResult, postBetsFinalePhase, patchBets, getScoreBoard, postComputePoints, putBetsByPhase,
 } from '@/api';
 import isValidJwt from '@/utils';
 
@@ -29,6 +29,9 @@ const actions = {
   },
   getGroupNames(context, { phaseName }) {
     return getGroupNames(phaseName, context.state.jwt);
+  },
+  putBetsByPhase(context, { phaseCode, bets }) {
+    return putBetsByPhase(phaseCode, bets, context.state.jwt);
   },
   login(context, userData) {
     return postLogin(userData);

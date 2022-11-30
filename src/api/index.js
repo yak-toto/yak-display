@@ -39,6 +39,10 @@ export function postBetsFinalePhase(jwt) {
   return axios.post(`${BASE_URL}/bets/finale_phase`, null, { headers: { Authorization: `Bearer: ${jwt}` } });
 }
 
+export function putBetsByPhase(phaseCode, bets, jwt) {
+  return axios.put(`${BASE_URL}/bets/phases/${phaseCode}`, bets, { headers: { Authorization: `Bearer: ${jwt}` } });
+}
+
 export function patchBets(bets, jwt) {
   return axios.patch(
     `${BASE_URL}/bets`,

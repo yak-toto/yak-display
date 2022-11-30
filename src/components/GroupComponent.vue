@@ -37,7 +37,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="[index, result] in groupResult.entries()">
+          <tr v-for="[index, result] in groupResult.entries()" :key="result.id">
             <td>{{ index + 1 }}</td>
             <td>{{ result["description"] }}</td>
             <td>{{ result["points"] }}</td>

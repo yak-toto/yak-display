@@ -7,7 +7,7 @@
         <h3 class="title">{{ phase.description }}</h3>
 
         <div class="box-group">
-          <form v-on:submit.prevent="postGroup">
+          <form v-on:submit.prevent="putFinalePhaseBet">
             <table class="table-final-phase">
               <thead>
                 <tr>
@@ -15,13 +15,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="index in Array(finalePhaseBet[groups[0].id].length).keys()">
+                <tr v-for="index in Array(finalePhaseBet[groups[0].id].length).keys()" :key="index"
+                  v-if="groups.length > 0"
+                >
                   <template v-for="[groupIndex, group] in groups.entries()" class="box-match" :key="group.id">
                     <td
                       :rowspan="Math.pow(2, groupIndex)" v-if="index % Math.pow(2, groupIndex) === 0"
                     >
                       <div class="box-match">
-                        <template v-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description === ''
+                        <template
+                          v-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description === ''
                           || finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description === ''"
                         >
                           <div>
@@ -33,17 +36,41 @@
                           </div>
                         </template>
                         <template v-else>
-                          <a
-                            @click="pushBet(groupIndex, index/Math.pow(2, groupIndex), finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1, true)"
-                          >
-                            &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description }}
-                          </a>
+                          <div class="box-team">
+                            <a
+                              @click="pushBet(groupIndex, index/Math.pow(2, groupIndex), finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1, true)"
+                            >
+                              &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description }}
+                            </a>
+                            <div class="box-match-tick-green"
+                              v-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].is_one_won === true"
+                            >
+                              V
+                            </div>
+                            <div class="box-match-tick-red"
+                              v-else-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].is_one_won === false"
+                            >
+                              D
+                            </div>
+                          </div>
                           <hr/>
-                          <a
-                            @click="pushBet(groupIndex, index/Math.pow(2, groupIndex), finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2, false)"
-                          >
-                            &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description }}
-                          </a>
+                          <div class="box-team">
+                            <a
+                              @click="pushBet(groupIndex, index/Math.pow(2, groupIndex), finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2, false)"
+                            >
+                              &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description }}
+                            </a>
+                            <div class="box-match-tick-green"
+                              v-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].is_one_won === false"
+                            >
+                              V
+                            </div>
+                            <div class="box-match-tick-red"
+                              v-else-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].is_one_won === true"
+                            >
+                              D
+                            </div>
+                          </div>
                         </template>
                       </div>
                     </td>
@@ -81,6 +108,7 @@ export default {
   data() {
     return {
       finalePhaseBet: {},
+      finalePhaseBetCopy: {},
       groups: [],
       phase: {},
       displayStatus: false,
@@ -92,16 +120,18 @@ export default {
       this.$store.dispatch('postBetsFinalePhase')
         .then((res) => {
           this.phase = res.data.result.phase;
-          this.groups = res.data.result.groups.filter(group => group.code !== '3');
+          this.groups = res.data.result.groups.filter((group) => group.code !== '3');
 
           this.groups.sort((group1, group2) => parseInt(group2.code) - parseInt(group1.code));
 
           for (const group of this.groups) {
-            this.finalePhaseBet[group.id] = Array
-              .from(
-                { length: parseInt(group.code) },
-                () => ({
+            this.finalePhaseBet[group.id] = [];
+
+            for (const index of _.range(0, parseInt(group.code))) {
+              this.finalePhaseBet[group.id].push(
+                {
                   is_one_won: null,
+                  index: index + 1,
                   group: {
                     id: group.id,
                   },
@@ -111,34 +141,76 @@ export default {
                   team2: {
                     description: '',
                   },
-                }),
+                },
               );
+            }
           }
 
-          for (const binary_bets of res.data.result.binary_bets) {
-            this.finalePhaseBet[binary_bets.group.id][binary_bets.index - 1] = binary_bets;
+          for (const binaryBets of res.data.result.binary_bets) {
+            if (binaryBets.team1.won === null) {
+              binaryBets.is_one_won = null;
+            } else {
+              binaryBets.is_one_won = binaryBets.team1.won;
+            }
+
+            this.finalePhaseBet[binaryBets.group.id][binaryBets.index - 1] = binaryBets;
           }
+
+          this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
         });
     },
     pushBet(groupIndex, betIndex, team, isOneWon) {
       this.finalePhaseBet[this.groups[groupIndex].id][betIndex].is_one_won = isOneWon;
 
-      var teamIndex = betIndex % 2 === 0 ? 1 : 2;
-      var newBetIndex = betIndex % 2 === 0 ? betIndex/2 : (betIndex - 1)/2
-      var originalTeamDescription = this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`].description;
+      const teamIndex = betIndex % 2 === 0 ? 1 : 2;
+      const newBetIndex = betIndex % 2 === 0 ? betIndex / 2 : (betIndex - 1) / 2;
+      const originalTeamDescription = this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`].description;
 
       this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`] = _.clone(team);
 
       for (const group of this.groups.slice(groupIndex + 2)) {
-        for ( const bet of this.finalePhaseBet[group.id]) {
+        for (const bet of this.finalePhaseBet[group.id]) {
           if (bet.team1.description === originalTeamDescription) {
-            bet.team1.description = ""
+            bet.team1.description = '';
           }
           if (bet.team2.description === originalTeamDescription) {
-            bet.team2.description = ""
+            bet.team2.description = '';
           }
         }
       }
+    },
+    putFinalePhaseBet() {
+      const putFinalePhaseBody = Object.values(this.finalePhaseBet).flat().filter((bet) => bet.team1.hasOwnProperty('id') && bet.team2.hasOwnProperty('id'));
+
+      this.$store.dispatch('putBetsByPhase', { phaseCode: 'FINAL', bets: putFinalePhaseBody })
+        .then(() => {
+          this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
+
+          this.updateProperly.push(true);
+          this.displayStatus = true;
+
+          setTimeout(
+            () => {
+              this.displayStatus = false;
+              this.updateProperly.length = 0;
+            },
+            2000,
+          );
+        })
+        .catch(() => {
+          this.finalePhaseBet = _.cloneDeep(this.finalePhaseBetCopy);
+
+          this.updateProperly.push(false);
+          this.displayStatus = true;
+
+          setTimeout(
+            () => {
+              this.displayStatus = false;
+              this.updateProperly.length = 0;
+            },
+            2000,
+          );
+        });
     },
   },
   created() {
@@ -182,6 +254,19 @@ export default {
   color: #535353;
   display: block;
   padding: 0.3rem;
+}
+
+.box-team {
+  display: flex;
+  justify-content: space-between;
+}
+
+.box-match-tick-green {
+  color: green;
+}
+
+.box-match-tick-red {
+  color: red;
 }
 
 .box-match hr {
