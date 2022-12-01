@@ -37,7 +37,10 @@
                         </template>
                         <template v-else>
                           <div class="box-team">
-                            <a
+                            <div v-if="isLocked">
+                              &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description }}
+                            </div>
+                            <a v-else
                               @click="pushBet(groupIndex, index/Math.pow(2, groupIndex), finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1, true)"
                             >
                               &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description }}
@@ -55,7 +58,10 @@
                           </div>
                           <hr/>
                           <div class="box-team">
-                            <a
+                            <div v-if="isLocked">
+                              &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description }}
+                            </div>
+                            <a v-else
                               @click="pushBet(groupIndex, index/Math.pow(2, groupIndex), finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2, false)"
                             >
                               &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description }}
@@ -79,7 +85,7 @@
               </tbody>
             </table>
             <div class="div-button-finale-phase">
-              <button type="submit" class="button-finale-phase">Valider</button>
+              <button type="submit" class="button-finale-phase" :disabled="isLocked">Valider</button>
               <div class="updated-properly" v-if="displayStatus && updateProperly.length !== 0 && updateProperly.every(v => v === true)">
                 Résultats soumis &#10003;
               </div>
@@ -111,6 +117,7 @@ export default {
       finalePhaseBetCopy: {},
       groups: [],
       phase: {},
+      isLocked: false,
       displayStatus: false,
       updateProperly: [],
     };
@@ -151,6 +158,10 @@ export default {
               binaryBets.is_one_won = null;
             } else {
               binaryBets.is_one_won = binaryBets.team1.won;
+            }
+
+            if (binaryBets.locked) {
+              this.isLocked = true
             }
 
             this.finalePhaseBet[binaryBets.group.id][binaryBets.index - 1] = binaryBets;
@@ -335,6 +346,10 @@ export default {
   border-color: #363636;
   background-color: white;
   color: #363636;
+}
+
+.button-finale-phase:disabled {
+  display: none;
 }
 
 .updated-properly {
