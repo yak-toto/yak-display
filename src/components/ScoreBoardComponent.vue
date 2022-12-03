@@ -14,6 +14,10 @@
               <th>Nombre de scores trouvés</th>
               <th>Nombre de qualifiés trouvés</th>
               <th>Nombre de premier trouvés</th>
+              <th>Nombre de quart de finalistes</th>
+              <th>Nombre de demi-finalistes</th>
+              <th>Nombre de finalistes</th>
+              <th>Vainqueur trouvé</th>
               <th>Points</th>
             </tr>
           </thead>
@@ -23,6 +27,10 @@
             <td>{{ res["number_score_guess"] }}</td>
             <td>{{ res["number_qualified_teams_guess"] }}</td>
             <td>{{ res["number_first_qualified_guess"] }}</td>
+            <td>{{ res["number_quarter_final_guess"] }}</td>
+            <td>{{ res["number_semi_final_guess"] }}</td>
+            <td>{{ res["number_final_guess"] }}</td>
+            <td>{{ res["number_winner_guess"] }}</td>
             <td>{{ res["points"] }}</td>
           </tr>
         </table>
