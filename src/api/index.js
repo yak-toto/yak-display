@@ -24,30 +24,30 @@ export function postLogin(userData) {
 // ------------------------------
 
 export function getGroupNames(phaseName, jwt) {
-  return axios.get(`${BASE_URL}/groups/phases/${phaseName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.get(`${BASE_URL}/groups/phases/${phaseName}`, { headers: { Authorization: `Bearer ${jwt}` } });
 }
 
 export function getGroup(groupName, jwt) {
-  return axios.get(`${BASE_URL}/bets/groups/${groupName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.get(`${BASE_URL}/bets/groups/${groupName}`, { headers: { Authorization: `Bearer ${jwt}` } });
 }
 
 export function getGroupResult(groupName, jwt) {
-  return axios.get(`${BASE_URL}/bets/groups/results/${groupName}`, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.get(`${BASE_URL}/bets/groups/results/${groupName}`, { headers: { Authorization: `Bearer ${jwt}` } });
 }
 
 export function postBetsFinalePhase(jwt) {
-  return axios.post(`${BASE_URL}/bets/finale_phase`, null, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.post(`${BASE_URL}/bets/finale_phase`, null, { headers: { Authorization: `Bearer ${jwt}` } });
 }
 
 export function putBetsByPhase(phaseCode, bets, jwt) {
-  return axios.put(`${BASE_URL}/bets/phases/${phaseCode}`, bets, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.put(`${BASE_URL}/bets/phases/${phaseCode}`, bets, { headers: { Authorization: `Bearer ${jwt}` } });
 }
 
 export function patchBets(bets, jwt) {
   return axios.patch(
     `${BASE_URL}/bets`,
     bets,
-    { headers: { Authorization: `Bearer: ${jwt}` } },
+    { headers: { Authorization: `Bearer ${jwt}` } },
   );
 }
 
@@ -56,7 +56,7 @@ export function patchBets(bets, jwt) {
 // ------------------------------
 
 export function getScoreBoard(jwt) {
-  return axios.get(`${BASE_URL}/score_board`, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.get(`${BASE_URL}/score_board`, { headers: { Authorization: `Bearer ${jwt}` } });
 }
 
 // ------------------------------
@@ -64,5 +64,5 @@ export function getScoreBoard(jwt) {
 // ------------------------------
 
 export function postComputePoints(jwt) {
-  return axios.post(`${BASE_URL}/compute_points`, null, { headers: { Authorization: `Bearer: ${jwt}` } });
+  return axios.post(`${BASE_URL}/compute_points`, null, { headers: { Authorization: `Bearer ${jwt}` } });
 }
