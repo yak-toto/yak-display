@@ -21,17 +21,17 @@
               <th>Points</th>
             </tr>
           </thead>
-          <tr v-for="res in scoreBoardResource" :key="res.id">
-            <td>{{ `${res["first_name"]} ${res["last_name"]}` }}</td>
-            <td>{{ res["number_match_guess"] }}</td>
-            <td>{{ res["number_score_guess"] }}</td>
-            <td>{{ res["number_qualified_teams_guess"] }}</td>
-            <td>{{ res["number_first_qualified_guess"] }}</td>
-            <td>{{ res["number_quarter_final_guess"] }}</td>
-            <td>{{ res["number_semi_final_guess"] }}</td>
-            <td>{{ res["number_final_guess"] }}</td>
-            <td>{{ res["number_winner_guess"] }}</td>
-            <td>{{ res["points"] }}</td>
+          <tr v-for="res in scoreBoardResource" :key="res.full_name">
+            <td>{{ res.full_name }}</td>
+            <td>{{ res.number_match_guess }}</td>
+            <td>{{ res.number_score_guess }}</td>
+            <td>{{ res.number_qualified_teams_guess }}</td>
+            <td>{{ res.number_first_qualified_guess }}</td>
+            <td>{{ res.number_quarter_final_guess }}</td>
+            <td>{{ res.number_semi_final_guess }}</td>
+            <td>{{ res.number_final_guess }}</td>
+            <td>{{ res.number_winner_guess }}</td>
+            <td>{{ res.points }}</td>
           </tr>
         </table>
       </div>
