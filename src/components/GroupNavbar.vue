@@ -1,12 +1,12 @@
 <template>
   <div class="vertical-menu">
-    <h1>{{ phase["description"] }}</h1>
+    <h1>{{ phase.description }}</h1>
     <router-link
       v-for="group in groups"
-      :key="group['id']"
-      :to="`/groups/${group['code']}`"
+      :key="group.id"
+      :to="`/groups/${group.code}`"
     >
-      {{ group['description'] }}
+      {{ group.description }}
     </router-link>
     <h1>Phase finale</h1>
     <router-link to="/finale_phase">Phase finale</router-link>

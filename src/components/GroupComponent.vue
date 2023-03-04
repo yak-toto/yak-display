@@ -54,17 +54,17 @@
 
       <div class="box-group">
         <form v-on:submit.prevent="postGroup">
-          <div class="grid-bet" v-for="match in scoreBets" :key="match['id']">
-            <div class="team-bet-1">{{ match["team1"]["description"] }}</div>
+          <div class="grid-bet" v-for="match in scoreBets" :key="match.id">
+            <div class="team-bet-1">{{ match.team1.description }}</div>
             <div class="input-bet-1">
               <input min="0" type="number"
-                v-model="match['team1']['score']" :readonly="match['locked']">
+                v-model="match.team1.score" :readonly="match.locked">
             </div>
             <div class="input-bet-2">
               <input min="0" type="number"
-                v-model="match['team2']['score']" :readonly="match['locked']">
+                v-model="match.team2.score" :readonly="match.locked">
             </div>
-            <div class="team-bet-2">{{ match["team2"]["description"] }}</div>
+            <div class="team-bet-2">{{ match.team2.description }}</div>
           </div>
           <div class="div-button-group">
             <button type="submit" class="button-group" :disabled="scoreBets.map(bet => bet.locked).some(x => x === true)">Valider</button>
