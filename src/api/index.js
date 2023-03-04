@@ -32,7 +32,7 @@ export function getGroup(groupName, jwt) {
 }
 
 export function getGroupResult(groupName, jwt) {
-  return axios.get(`${BASE_URL}/bets/groups/results/${groupName}`, { headers: { Authorization: `Bearer ${jwt}` } });
+  return axios.get(`${BASE_URL}/bets/groups/rank/${groupName}`, { headers: { Authorization: `Bearer ${jwt}` } });
 }
 
 export function postBetsFinalePhase(jwt) {

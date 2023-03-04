@@ -37,17 +37,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="[index, result] in groupResult.entries()" :key="result.id">
+          <tr v-for="[index, result] in groupRank.entries()" :key="result.team.id">
             <td>{{ index + 1 }}</td>
-            <td>{{ result["description"] }}</td>
-            <td>{{ result["points"] }}</td>
-            <td>{{ result["played"] }}</td>
-            <td>{{ result["won"] }}</td>
-            <td>{{ result["drawn"] }}</td>
-            <td>{{ result["lost"] }}</td>
-            <td>{{ result["goals_for"] }}</td>
-            <td>{{ result["goals_against"] }}</td>
-            <td>{{ result["goals_difference"] }}</td>
+            <td>{{ result.team.description }}</td>
+            <td>{{ result.points }}</td>
+            <td>{{ result.played }}</td>
+            <td>{{ result.won }}</td>
+            <td>{{ result.drawn }}</td>
+            <td>{{ result.lost }}</td>
+            <td>{{ result.goals_for }}</td>
+            <td>{{ result.goals_against }}</td>
+            <td>{{ result.goals_difference }}</td>
           </tr>
         </tbody>
       </table>
@@ -102,7 +102,7 @@ export default {
       scoreBets: [],
       // keep copy of group resource to send only PATCH /match of the updated matches
       scoreBetsCopy: [],
-      groupResult: [],
+      groupRank: [],
       displayStatus: false,
       updateProperly: [],
     };
@@ -119,7 +119,7 @@ export default {
     getGroupResult(groupName) {
       this.$store.dispatch('getGroupResult', { groupName })
         .then((res) => {
-          this.groupResult = res.data.result.results;
+          this.groupRank = res.data.result.group_rank;
         });
     },
     postGroup() {
