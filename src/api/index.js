@@ -43,10 +43,10 @@ export function putBetsByPhase(phaseCode, bets, jwt) {
   return axios.put(`${BASE_URL}/bets/phases/${phaseCode}`, bets, { headers: { Authorization: `Bearer ${jwt}` } });
 }
 
-export function patchBets(bets, jwt) {
+export function patchScoreBet(betId, score1, score2, jwt) {
   return axios.patch(
-    `${BASE_URL}/bets`,
-    bets,
+    `${BASE_URL}/bets/${betId}?type=score`,
+    { team1: { score: score1 }, team2: { score: score2 } },
     { headers: { Authorization: `Bearer ${jwt}` } },
   );
 }

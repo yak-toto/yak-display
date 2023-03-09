@@ -53,7 +53,7 @@
       </table>
 
       <div class="box-group">
-        <form v-on:submit.prevent="postGroup">
+        <form v-on:submit.prevent="patchGroup">
           <div class="grid-bet" v-for="match in scoreBets" :key="match.id">
             <div class="team-bet-1">{{ match.team1.description }}</div>
             <div class="input-bet-1">
@@ -67,14 +67,18 @@
             <div class="team-bet-2">{{ match.team2.description }}</div>
           </div>
           <div class="div-button-group">
-            <button type="submit" class="button-group" :disabled="scoreBets.map(bet => bet.locked).some(x => x === true)">Valider</button>
-            <div class="updated-properly" v-if="displayStatus && updateProperly.length !== 0 && updateProperly.every(v => v === true)">
+            <button type="submit" class="button-group"
+              :disabled="scoreBets.map(bet => bet.locked).some(x => x === true)"
+            >
+              Valider
+            </button>
+            <div class="updated-properly" v-if="displayStatus && updateProperly === true">
               Résultats soumis &#10003;
             </div>
-            <div class="not-updated-properly" v-else-if="displayStatus && updateProperly.some(v => v === false)">
+            <div class="not-updated-properly" v-else-if="displayStatus && updateProperly === false">
               Erreur : Résultats non synchronisés &#10005;
             </div>
-            <div class="updated-properly" v-else-if="displayStatus && updateProperly.length === 0">
+            <div class="updated-properly" v-else-if="displayStatus">
               Aucuns changements observés &#10003;
             </div>
           </div>
@@ -104,7 +108,7 @@ export default {
       scoreBetsCopy: [],
       groupRank: [],
       displayStatus: false,
-      updateProperly: [],
+      updateProperly: null,
     };
   },
   methods: {
@@ -122,7 +126,7 @@ export default {
           this.groupRank = res.data.result.group_rank;
         });
     },
-    postGroup() {
+    patchGroup() {
       this.displayStatus = false;
 
       const modifyBets = [];
@@ -140,10 +144,11 @@ export default {
       }
 
       if (modifyBets.length !== 0) {
-        this.$store.dispatch('patchBets', { bets: modifyBets })
+        Promise.all(modifyBets.map((bet) => this.$store.dispatch('patchScoreBet', { betId: bet.id, score1: bet.team1.score, score2: bet.team2.score })))
           .then(() => {
             this.scoreBetsCopy = _.cloneDeep(this.scoreBets);
-            this.updateProperly.push(true);
+
+            this.updateProperly = true;
             this.displayStatus = true;
 
             this.getGroupResult(this.group.code);
@@ -151,20 +156,21 @@ export default {
             setTimeout(
               () => {
                 this.displayStatus = false;
-                this.updateProperly.length = 0;
+                this.updateProperly = null;
               },
               2000,
             );
           })
           .catch(() => {
             this.scoreBets = _.cloneDeep(this.scoreBetsCopy);
-            this.updateProperly.push(false);
+
+            this.updateProperly = false;
             this.displayStatus = true;
 
             setTimeout(
               () => {
                 this.displayStatus = false;
-                this.updateProperly.length = 0;
+                this.updateProperly = null;
               },
               2000,
             );

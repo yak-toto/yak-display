@@ -161,7 +161,7 @@ export default {
             }
 
             if (binaryBets.locked) {
-              this.isLocked = true
+              this.isLocked = true;
             }
 
             this.finalePhaseBet[binaryBets.group.id][binaryBets.index - 1] = binaryBets;
