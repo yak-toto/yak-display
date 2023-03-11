@@ -167,6 +167,10 @@ export default {
             this.finalePhaseBet[binaryBets.group.id][binaryBets.index - 1] = binaryBets;
           }
 
+          if (res.data.result.binary_bets.length === 0) {
+            this.isLocked = true;
+          }
+
           this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
         });
     },
