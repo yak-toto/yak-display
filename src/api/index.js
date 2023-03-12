@@ -40,7 +40,7 @@ export function postBetsFinalePhase(jwt) {
 }
 
 export function putBetsByPhase(phaseCode, bets, jwt) {
-  return axios.put(`${BASE_URL}/bets/phases/${phaseCode}`, bets, { headers: { Authorization: `Bearer ${jwt}` } });
+  return axios.put(`${BASE_URL}/binary_bets/phases/${phaseCode}`, bets, { headers: { Authorization: `Bearer ${jwt}` } });
 }
 
 export function patchScoreBet(betId, score1, score2, jwt) {
