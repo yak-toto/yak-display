@@ -1,11 +1,7 @@
 import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
 
-import {
-  postSignup, postLogin, getGroupNames, getGroup,
-  getGroupResult, postBetsFinalePhase,
-  getScoreBoard, postComputePoints, putBetsByPhase, patchScoreBet,
-} from '@/api';
+import api from '@/api';
 import isValidJwt from '@/utils';
 
 const stateObject = {
@@ -15,34 +11,34 @@ const stateObject = {
 
 const actions = {
   getGroup(context, { groupName }) {
-    return getGroup(groupName, context.state.jwt);
+    return api.getGroup(groupName, context.state.jwt);
   },
   getGroupResult(context, { groupName }) {
-    return getGroupResult(groupName, context.state.jwt);
+    return api.getGroupResult(groupName, context.state.jwt);
   },
   postBetsFinalePhase(context) {
-    return postBetsFinalePhase(context.state.jwt);
+    return api.postBetsFinalePhase(context.state.jwt);
   },
   getScoreBoard(context) {
-    return getScoreBoard(context.state.jwt);
+    return api.getScoreBoard(context.state.jwt);
   },
   getGroupNames(context, { phaseName }) {
-    return getGroupNames(phaseName, context.state.jwt);
+    return api.getGroupNames(phaseName, context.state.jwt);
   },
   putBetsByPhase(context, { phaseCode, bets }) {
-    return putBetsByPhase(phaseCode, bets, context.state.jwt);
+    return api.putBetsByPhase(phaseCode, bets, context.state.jwt);
   },
   patchScoreBet(context, { betId, score1, score2 }) {
-    return patchScoreBet(betId, score1, score2, context.state.jwt);
+    return api.patchScoreBet(betId, score1, score2, context.state.jwt);
   },
   login(context, userData) {
-    return postLogin(userData);
+    return api.postLogin(userData);
   },
   signup(context, userData) {
-    return postSignup(userData);
+    return api.postSignup(userData);
   },
   computePoints(context) {
-    return postComputePoints(context.state.jwt);
+    return api.postComputePoints(context.state.jwt);
   },
 };
 
