@@ -86,13 +86,13 @@
             </table>
             <div class="div-button-finale-phase">
               <button type="submit" class="button-finale-phase" :disabled="isLocked">Valider</button>
-              <div class="updated-properly" v-if="displayStatus && updateProperly.length !== 0 && updateProperly.every(v => v === true)">
+              <div class="updated-properly" v-if="displayStatus && updateProperly === true">
                 Résultats soumis &#10003;
               </div>
-              <div class="not-updated-properly" v-else-if="displayStatus && updateProperly.some(v => v === false)">
+              <div class="not-updated-properly" v-else-if="displayStatus && updateProperly === false">
                 Erreur : Résultats non synchronisés &#10005;
               </div>
-              <div class="updated-properly" v-else-if="displayStatus && updateProperly.length === 0">
+              <div class="updated-properly" v-else-if="displayStatus && updateProperly === null">
                 Aucuns changements observés &#10003;
               </div>
             </div>
@@ -119,7 +119,7 @@ export default {
       phase: {},
       isLocked: false,
       displayStatus: false,
-      updateProperly: [],
+      updateProperly: null,
     };
   },
   methods: {
@@ -195,19 +195,22 @@ export default {
       }
     },
     putFinalePhaseBet() {
-      const putFinalePhaseBody = Object.values(this.finalePhaseBet).flat().filter((bet) => bet.team1.hasOwnProperty('id') && bet.team2.hasOwnProperty('id'));
+      const putFinalePhaseBody = Object.values(this.finalePhaseBet)
+        .flat().filter(
+          (bet) => Object.prototype.hasOwnProperty.call(bet.team1, 'id') && Object.prototype.hasOwnProperty.call(bet.team2, 'id'),
+        );
 
       this.$store.dispatch('putBetsByPhase', { phaseCode: 'FINAL', bets: putFinalePhaseBody })
         .then(() => {
           this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
 
-          this.updateProperly.push(true);
+          this.updateProperly = true;
           this.displayStatus = true;
 
           setTimeout(
             () => {
               this.displayStatus = false;
-              this.updateProperly.length = 0;
+              this.updateProperly = null;
             },
             2000,
           );
@@ -215,13 +218,13 @@ export default {
         .catch(() => {
           this.finalePhaseBet = _.cloneDeep(this.finalePhaseBetCopy);
 
-          this.updateProperly.push(false);
+          this.updateProperly = false;
           this.displayStatus = true;
 
           setTimeout(
             () => {
               this.displayStatus = false;
-              this.updateProperly.length = 0;
+              this.updateProperly = null;
             },
             2000,
           );
