@@ -57,12 +57,10 @@
           <div class="grid-bet" v-for="match in scoreBets" :key="match.id">
             <div class="team-bet-1">{{ match.team1.description }}</div>
             <div class="input-bet-1">
-              <input min="0" type="number"
-                v-model="match.team1.score" :readonly="match.locked">
+              <input min="0" type="number" v-model="match.team1.score" :readonly="match.locked">
             </div>
             <div class="input-bet-2">
-              <input min="0" type="number"
-                v-model="match.team2.score" :readonly="match.locked">
+              <input min="0" type="number" v-model="match.team2.score" :readonly="match.locked">
             </div>
             <div class="team-bet-2">{{ match.team2.description }}</div>
           </div>
@@ -72,15 +70,17 @@
             >
               Valider
             </button>
-            <div class="updated-properly" v-if="displayStatus && updateProperly === true">
-              Résultats soumis &#10003;
-            </div>
-            <div class="not-updated-properly" v-else-if="displayStatus && updateProperly === false">
-              Erreur : Résultats non synchronisés &#10005;
-            </div>
-            <div class="updated-properly" v-else-if="displayStatus">
-              Aucuns changements observés &#10003;
-            </div>
+            <template v-if="displayStatus">
+              <div class="updated-properly" v-if="updateProperly === true">
+                Résultats soumis &#10003;
+              </div>
+              <div class="not-updated-properly" v-else-if="updateProperly === false">
+                Erreur : Résultats non synchronisés &#10005;
+              </div>
+              <div class="updated-properly" v-else>
+                Aucuns changements observés &#10003;
+              </div>
+            </template>
           </div>
         </form>
       </div>
@@ -177,12 +177,7 @@ export default {
           });
       } else {
         this.displayStatus = true;
-        setTimeout(
-          () => {
-            this.displayStatus = false;
-          },
-          2000,
-        );
+        setTimeout(() => { this.displayStatus = false; }, 2000);
       }
     },
   },
