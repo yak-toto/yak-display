@@ -4,7 +4,7 @@ import GroupComponent from '@/components/GroupComponent.vue';
 import SignupComponent from '@/components/SignupComponent.vue';
 import ScoreBoardComponent from '@/components/ScoreBoardComponent.vue';
 import FinalePhaseComponent from '@/components/FinalePhaseComponent.vue';
-import store from '@/store';
+import useYakStore from '@/store';
 
 const routes = [
   {
@@ -26,9 +26,10 @@ const routes = [
     path: '/logout',
     name: 'logout',
     beforeEnter(to, from, next) {
-      if (store.getters.isAuthenticated) {
-        store.commit('eraseJwtToken');
-      }
+      const yakStore = useYakStore();
+
+      yakStore.eraseJwtToken();
+
       next('/login');
     },
   },
@@ -56,14 +57,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  const yakStore = useYakStore();
+
   if (to.name !== 'login' && to.name !== 'signup') {
-    if (!store.getters.isAuthenticated) {
-      store.commit('eraseJwtToken');
-      next({ name: 'login' });
+    if (!yakStore.isAuthenticated()) {
+      yakStore.eraseJwtToken();
+      next('/login');
     } else {
       next();
     }
-  } else if (store.getters.isAuthenticated) {
+  } else if (yakStore.isAuthenticated()) {
     next({ name: 'groups', params: { groupName: 'A' } });
   } else {
     next();

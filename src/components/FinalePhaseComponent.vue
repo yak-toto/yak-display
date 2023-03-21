@@ -1,109 +1,154 @@
 <template>
-    <div class="grid-finale-phase">
-      <div class="navbar-finale-phase">
-        <GroupNavbar />
-      </div>
-      <div class="table-finale-phase">
-        <h3 class="title">{{ phase.description }}</h3>
+  <div class="grid-finale-phase">
+    <div class="navbar-finale-phase">
+      <GroupNavbar />
+    </div>
+    <div class="table-finale-phase">
+      <h3 class="title">{{ phase.description }}</h3>
 
-        <div class="box-group">
-          <form v-on:submit.prevent="putFinalePhaseBet">
-            <table class="table-final-phase">
-              <thead>
-                <tr>
-                  <th v-for="group of groups" :key="group.id">{{ group.description }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="index in Array(finalePhaseBet[groups[0].id].length).keys()" :key="index"
-                  v-if="groups.length > 0"
-                >
-                  <template v-for="[groupIndex, group] in groups.entries()" class="box-match" :key="group.id">
-                    <td
-                      :rowspan="Math.pow(2, groupIndex)" v-if="index % Math.pow(2, groupIndex) === 0"
-                    >
-                      <div class="box-match">
-                        <template
-                          v-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description === ''
-                          || finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description === ''"
-                        >
-                          <div>
-                            &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description }}
+      <div class="box-group">
+        <form v-on:submit.prevent="putFinalePhaseBet">
+          <table class="table-final-phase">
+            <thead>
+              <tr>
+                <th v-for="group of groups" :key="group.id">{{ group.description }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="index in Array(finalePhaseBet[groups[0].id].length).keys()"
+                :key="index"
+                v-if="groups.length > 0"
+              >
+                <template v-for="[groupIndex, group] in groups.entries()" class="box-match" :key="group.id">
+                  <td :rowspan="Math.pow(2, groupIndex)" v-if="index % Math.pow(2, groupIndex) === 0">
+                    <div class="box-match">
+                      <template
+                        v-if="
+                          finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1.description ===
+                            '' ||
+                          finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2.description === ''
+                        "
+                      >
+                        <div>
+                          &#8205;{{
+                            finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1.description
+                          }}
+                        </div>
+                        <hr />
+                        <div>
+                          &#8205;{{
+                            finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2.description
+                          }}
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="box-team">
+                          <div v-if="isLocked">
+                            &#8205;{{
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1.description
+                            }}
                           </div>
-                          <hr/>
-                          <div>
-                            &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description }}
+                          <a
+                            v-else
+                            @click="
+                              pushBet(
+                                groupIndex,
+                                index / Math.pow(2, groupIndex),
+                                finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1,
+                                true
+                              )
+                            "
+                          >
+                            &#8205;{{
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1.description
+                            }}
+                          </a>
+                          <div
+                            class="box-match-tick-green"
+                            v-if="
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].is_one_won === true
+                            "
+                          >
+                            V
                           </div>
-                        </template>
-                        <template v-else>
-                          <div class="box-team">
-                            <div v-if="isLocked">
-                              &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description }}
-                            </div>
-                            <a v-else
-                              @click="pushBet(groupIndex, index/Math.pow(2, groupIndex), finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1, true)"
-                            >
-                              &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team1.description }}
-                            </a>
-                            <div class="box-match-tick-green"
-                              v-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].is_one_won === true"
-                            >
-                              V
-                            </div>
-                            <div class="box-match-tick-red"
-                              v-else-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].is_one_won === false"
-                            >
-                              D
-                            </div>
+                          <div
+                            class="box-match-tick-red"
+                            v-else-if="
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].is_one_won === false
+                            "
+                          >
+                            D
                           </div>
-                          <hr/>
-                          <div class="box-team">
-                            <div v-if="isLocked">
-                              &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description }}
-                            </div>
-                            <a v-else
-                              @click="pushBet(groupIndex, index/Math.pow(2, groupIndex), finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2, false)"
-                            >
-                              &#8205;{{ finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].team2.description }}
-                            </a>
-                            <div class="box-match-tick-green"
-                              v-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].is_one_won === false"
-                            >
-                              V
-                            </div>
-                            <div class="box-match-tick-red"
-                              v-else-if="finalePhaseBet[group.id][index/Math.pow(2, groupIndex)].is_one_won === true"
-                            >
-                              D
-                            </div>
+                        </div>
+                        <hr />
+                        <div class="box-team">
+                          <div v-if="isLocked">
+                            &#8205;{{
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2.description
+                            }}
                           </div>
-                        </template>
-                      </div>
-                    </td>
-                  </template>
-                </tr>
-              </tbody>
-            </table>
-            <div class="div-button-finale-phase">
-              <button type="submit" class="button-finale-phase" :disabled="isLocked">Valider</button>
-              <div class="updated-properly" v-if="displayStatus && updateProperly === true">
-                Résultats soumis &#10003;
-              </div>
-              <div class="not-updated-properly" v-else-if="displayStatus && updateProperly === false">
-                Erreur : Résultats non synchronisés &#10005;
-              </div>
-              <div class="updated-properly" v-else-if="displayStatus && updateProperly === null">
-                Aucuns changements observés &#10003;
-              </div>
+                          <a
+                            v-else
+                            @click="
+                              pushBet(
+                                groupIndex,
+                                index / Math.pow(2, groupIndex),
+                                finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2,
+                                false
+                              )
+                            "
+                          >
+                            &#8205;{{
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2.description
+                            }}
+                          </a>
+                          <div
+                            class="box-match-tick-green"
+                            v-if="
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].is_one_won === false
+                            "
+                          >
+                            V
+                          </div>
+                          <div
+                            class="box-match-tick-red"
+                            v-else-if="
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].is_one_won === true
+                            "
+                          >
+                            D
+                          </div>
+                        </div>
+                      </template>
+                    </div>
+                  </td>
+                </template>
+              </tr>
+            </tbody>
+          </table>
+          <div class="div-button-finale-phase">
+            <button type="submit" class="button-finale-phase" :disabled="isLocked">Valider</button>
+            <div class="updated-properly" v-if="displayStatus && updateProperly === true">
+              Résultats soumis &#10003;
             </div>
-          </form>
-        </div>
+            <div class="not-updated-properly" v-else-if="displayStatus && updateProperly === false">
+              Erreur : Résultats non synchronisés &#10005;
+            </div>
+            <div class="updated-properly" v-else-if="displayStatus && updateProperly === null">
+              Aucuns changements observés &#10003;
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-  </template>
+  </div>
+</template>
 
 <script>
 import _ from 'lodash';
+import useYakStore from '@/store';
+import { ref } from 'vue';
 import GroupNavbar from './GroupNavbar.vue';
 
 export default {
@@ -111,20 +156,21 @@ export default {
   components: {
     GroupNavbar,
   },
-  data() {
+  setup() {
     return {
-      finalePhaseBet: {},
-      finalePhaseBetCopy: {},
-      groups: [],
-      phase: {},
-      isLocked: false,
-      displayStatus: false,
-      updateProperly: null,
+      yakStore: useYakStore(),
+      finalePhaseBet: ref({}),
+      finalePhaseBetCopy: ref({}),
+      groups: ref([]),
+      phase: ref({}),
+      isLocked: ref(false),
+      displayStatus: ref(false),
+      updateProperly: ref(null),
     };
   },
   methods: {
     getFinalePhase() {
-      this.$store.dispatch('postBetsFinalePhase')
+      this.yakStore.postBetsFinalePhase()
         .then((res) => {
           this.phase = res.data.result.phase;
           this.groups = res.data.result.groups.filter((group) => group.code !== '3');
@@ -135,21 +181,19 @@ export default {
             this.finalePhaseBet[group.id] = [];
 
             for (const index of _.range(0, parseInt(group.code))) {
-              this.finalePhaseBet[group.id].push(
-                {
-                  is_one_won: null,
-                  index: index + 1,
-                  group: {
-                    id: group.id,
-                  },
-                  team1: {
-                    description: '',
-                  },
-                  team2: {
-                    description: '',
-                  },
+              this.finalePhaseBet[group.id].push({
+                is_one_won: null,
+                index: index + 1,
+                group: {
+                  id: group.id,
                 },
-              );
+                team1: {
+                  description: '',
+                },
+                team2: {
+                  description: '',
+                },
+              });
             }
           }
 
@@ -196,24 +240,23 @@ export default {
     },
     putFinalePhaseBet() {
       const putFinalePhaseBody = Object.values(this.finalePhaseBet)
-        .flat().filter(
-          (bet) => Object.prototype.hasOwnProperty.call(bet.team1, 'id') && Object.prototype.hasOwnProperty.call(bet.team2, 'id'),
+        .flat()
+        .filter(
+          (bet) => Object.prototype.hasOwnProperty.call(bet.team1, 'id')
+            && Object.prototype.hasOwnProperty.call(bet.team2, 'id'),
         );
 
-      this.$store.dispatch('putBetsByPhase', { phaseCode: 'FINAL', bets: putFinalePhaseBody })
+      this.yakStore.putBetsByPhase({ phaseCode: 'FINAL', bets: putFinalePhaseBody })
         .then(() => {
           this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
 
           this.updateProperly = true;
           this.displayStatus = true;
 
-          setTimeout(
-            () => {
-              this.displayStatus = false;
-              this.updateProperly = null;
-            },
-            2000,
-          );
+          setTimeout(() => {
+            this.displayStatus = false;
+            this.updateProperly = null;
+          }, 2000);
         })
         .catch(() => {
           this.finalePhaseBet = _.cloneDeep(this.finalePhaseBetCopy);
@@ -221,13 +264,10 @@ export default {
           this.updateProperly = false;
           this.displayStatus = true;
 
-          setTimeout(
-            () => {
-              this.displayStatus = false;
-              this.updateProperly = null;
-            },
-            2000,
-          );
+          setTimeout(() => {
+            this.displayStatus = false;
+            this.updateProperly = null;
+          }, 2000);
         });
     },
   },
@@ -235,7 +275,6 @@ export default {
     this.getFinalePhase();
   },
 };
-
 </script>
 
 <style lang="css">
@@ -246,7 +285,9 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
-  .grid-finale-phase {display: block;}
+  .grid-finale-phase {
+    display: block;
+  }
 }
 
 .navbar-finale-phase {
@@ -310,7 +351,8 @@ export default {
   margin-bottom: 2rem;
 }
 
-.table-final-phase th, .table-final-phase td {
+.table-final-phase th,
+.table-final-phase td {
   border-width: 0 0 1px;
   border-color: #53535321;
   text-align: left;

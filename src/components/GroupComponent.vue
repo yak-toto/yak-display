@@ -5,36 +5,34 @@
     </div>
     <div class="table-group">
       <h3 class="title">{{ group.description }}</h3>
-      <GroupRank :groupRank="groupRank"/>
+      <GroupRank :groupRank="groupRank" />
 
       <div class="box-group">
         <form v-on:submit.prevent="patchGroup">
           <div class="grid-bet" v-for="match in scoreBets" :key="match.id">
             <div class="team-bet-1">{{ match.team1.description }}</div>
             <div class="input-bet-1">
-              <input min="0" type="number" v-model="match.team1.score" :readonly="match.locked">
+              <input min="0" type="number" v-model="match.team1.score" :readonly="match.locked" />
             </div>
             <div class="input-bet-2">
-              <input min="0" type="number" v-model="match.team2.score" :readonly="match.locked">
+              <input min="0" type="number" v-model="match.team2.score" :readonly="match.locked" />
             </div>
             <div class="team-bet-2">{{ match.team2.description }}</div>
           </div>
           <div class="div-button-group">
-            <button type="submit" class="button-group"
-              :disabled="scoreBets.map(bet => bet.locked).some(x => x === true)"
+            <button
+              type="submit"
+              class="button-group"
+              :disabled="scoreBets.map((bet) => bet.locked).some((x) => x === true)"
             >
               Valider
             </button>
             <template v-if="displayStatus">
-              <div class="updated-properly" v-if="updateProperly === true">
-                Résultats soumis &#10003;
-              </div>
+              <div class="updated-properly" v-if="updateProperly === true">Résultats soumis &#10003;</div>
               <div class="not-updated-properly" v-else-if="updateProperly === false">
                 Erreur : Résultats non synchronisés &#10005;
               </div>
-              <div class="updated-properly" v-else>
-                Aucuns changements observés &#10003;
-              </div>
+              <div class="updated-properly" v-else>Aucuns changements observés &#10003;</div>
             </template>
           </div>
         </form>
@@ -45,6 +43,8 @@
 
 <script>
 import _ from 'lodash';
+import useYakStore from '@/store';
+import { ref } from 'vue';
 import GroupNavbar from './GroupNavbar.vue';
 import GroupRank from './GroupRank.vue';
 
@@ -57,20 +57,21 @@ export default {
   props: {
     groupName: String,
   },
-  data() {
+  setup() {
     return {
-      group: {},
-      scoreBets: [],
+      yakStore: useYakStore(),
+      group: ref({}),
+      scoreBets: ref([]),
       // keep copy of group resource to send only PATCH /match of the updated matches
-      scoreBetsCopy: [],
-      groupRank: [],
-      displayStatus: false,
-      updateProperly: null,
+      scoreBetsCopy: ref([]),
+      groupRank: ref([]),
+      displayStatus: ref(false),
+      updateProperly: ref(null),
     };
   },
   methods: {
     getGroup(groupName) {
-      this.$store.dispatch('getGroup', { groupName })
+      this.yakStore.getGroup({ groupName })
         .then((res) => {
           this.group = res.data.result.group;
           this.scoreBets = res.data.result.score_bets;
@@ -78,7 +79,7 @@ export default {
         });
     },
     getGroupResult(groupName) {
-      this.$store.dispatch('getGroupResult', { groupName })
+      this.yakStore.getGroupResult({ groupName })
         .then((res) => {
           this.groupRank = res.data.result.group_rank;
         });
@@ -101,7 +102,13 @@ export default {
       }
 
       if (modifyBets.length !== 0) {
-        Promise.all(modifyBets.map((bet) => this.$store.dispatch('patchScoreBet', { betId: bet.id, score1: bet.team1.score, score2: bet.team2.score })))
+        Promise.all(
+          modifyBets.map((bet) => this.yakStore.patchScoreBet({
+            betId: bet.id,
+            score1: bet.team1.score,
+            score2: bet.team2.score,
+          })),
+        )
           .then(() => {
             this.scoreBetsCopy = _.cloneDeep(this.scoreBets);
 
@@ -110,13 +117,10 @@ export default {
 
             this.getGroupResult(this.group.code);
 
-            setTimeout(
-              () => {
-                this.displayStatus = false;
-                this.updateProperly = null;
-              },
-              2000,
-            );
+            setTimeout(() => {
+              this.displayStatus = false;
+              this.updateProperly = null;
+            }, 2000);
           })
           .catch(() => {
             this.scoreBets = _.cloneDeep(this.scoreBetsCopy);
@@ -124,17 +128,16 @@ export default {
             this.updateProperly = false;
             this.displayStatus = true;
 
-            setTimeout(
-              () => {
-                this.displayStatus = false;
-                this.updateProperly = null;
-              },
-              2000,
-            );
+            setTimeout(() => {
+              this.displayStatus = false;
+              this.updateProperly = null;
+            }, 2000);
           });
       } else {
         this.displayStatus = true;
-        setTimeout(() => { this.displayStatus = false; }, 2000);
+        setTimeout(() => {
+          this.displayStatus = false;
+        }, 2000);
       }
     },
   },
@@ -149,7 +152,6 @@ export default {
     this.getGroupResult(this.groupName);
   },
 };
-
 </script>
 
 <style lang="css">
@@ -160,7 +162,9 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
-  .grid-group {display: block;}
+  .grid-group {
+    display: block;
+  }
 }
 
 .navbar-group {
@@ -195,7 +199,8 @@ export default {
   margin-bottom: 2rem;
 }
 
-.result-group th, .result-group td {
+.result-group th,
+.result-group td {
   border: 1px solid;
   border-width: 0 0 1px;
   border-color: #53535321;
@@ -241,8 +246,12 @@ input:read-only {
 }
 
 @media screen and (max-width: 900px) {
-  .team-bet-1 {grid-column: 1 / 5;}
-  .input-bet-1 {grid-column: 5 / 8;}
+  .team-bet-1 {
+    grid-column: 1 / 5;
+  }
+  .input-bet-1 {
+    grid-column: 5 / 8;
+  }
 }
 
 .input-bet-2 {
@@ -257,8 +266,12 @@ input:read-only {
 }
 
 @media screen and (max-width: 900px) {
-  .input-bet-2 {grid-column: 8 / 11;}
-  .team-bet-2 {grid-column: 11 / 15;}
+  .input-bet-2 {
+    grid-column: 8 / 11;
+  }
+  .team-bet-2 {
+    grid-column: 11 / 15;
+  }
 }
 
 .div-button-group {

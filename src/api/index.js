@@ -21,36 +21,25 @@ const api = {
   // Group interface
   // ------------------------------
   getGroupNames(phaseName, jwt) {
-    return axios.get(
-      `${BASE_URL}/groups/phases/${phaseName}`,
-      { headers: { Authorization: `Bearer ${jwt}` } },
-    );
+    return axios.get(`${BASE_URL}/groups/phases/${phaseName}`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
   },
   getGroup(groupName, jwt) {
-    return axios.get(
-      `${BASE_URL}/bets/groups/${groupName}`,
-      { headers: { Authorization: `Bearer ${jwt}` } },
-    );
+    return axios.get(`${BASE_URL}/bets/groups/${groupName}`, { headers: { Authorization: `Bearer ${jwt}` } });
   },
   getGroupResult(groupName, jwt) {
-    return axios.get(
-      `${BASE_URL}/bets/groups/rank/${groupName}`,
-      { headers: { Authorization: `Bearer ${jwt}` } },
-    );
+    return axios.get(`${BASE_URL}/bets/groups/rank/${groupName}`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
   },
   postBetsFinalePhase(jwt) {
-    return axios.post(
-      `${BASE_URL}/bets/finale_phase`,
-      null,
-      { headers: { Authorization: `Bearer ${jwt}` } },
-    );
+    return axios.post(`${BASE_URL}/bets/finale_phase`, null, { headers: { Authorization: `Bearer ${jwt}` } });
   },
   putBetsByPhase(phaseCode, bets, jwt) {
-    return axios.put(
-      `${BASE_URL}/binary_bets/phases/${phaseCode}`,
-      bets,
-      { headers: { Authorization: `Bearer ${jwt}` } },
-    );
+    return axios.put(`${BASE_URL}/binary_bets/phases/${phaseCode}`, bets, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
   },
   patchScoreBet(betId, score1, score2, jwt) {
     return axios.patch(
@@ -63,20 +52,13 @@ const api = {
   // Result interface
   // ------------------------------
   getScoreBoard(jwt) {
-    return axios.get(
-      `${BASE_URL}/score_board`,
-      { headers: { Authorization: `Bearer ${jwt}` } },
-    );
+    return axios.get(`${BASE_URL}/score_board`, { headers: { Authorization: `Bearer ${jwt}` } });
   },
   // ------------------------------
   // Admin interface
   // ------------------------------
   postComputePoints(jwt) {
-    return axios.post(
-      `${BASE_URL}/compute_points`,
-      null,
-      { headers: { Authorization: `Bearer ${jwt}` } },
-    );
+    return axios.post(`${BASE_URL}/compute_points`, null, { headers: { Authorization: `Bearer ${jwt}` } });
   },
 };
 

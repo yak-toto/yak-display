@@ -2,94 +2,99 @@
   <section class="hero is-fullheight">
     <div class="navbar-yaktoto">
       <div class="navbar-left">
-        <template v-if="
-            $store.getters.isAuthenticated &&
-            $route.name !== 'login' && $route.name !== 'signup'"
+        <template
+          v-if="isAuthenticated() && $route.name !== 'login' && $route.name !== 'signup'"
+        >
+          <div class="navbar-item-custom">
+            Utilisateur:&nbsp;<strong>{{ getUserName() }}</strong>
+          </div>
+          <template
+            v-if="
+              isAuthenticated() &&
+              $route.name !== 'login' &&
+              $route.name !== 'signup' &&
+              getUserName() === 'admin'
+            "
           >
-            <div class="navbar-item-custom">
-              Utilisateur:&nbsp;<strong>{{ $store.getters.getUserName }}</strong>
-            </div>
-            <template v-if="
-              $store.getters.isAuthenticated &&
-              $route.name !== 'login' && $route.name !== 'signup' &&
-              $store.getters.getUserName === 'admin'"
-            >
-              <a @click="computePoints" class="navbar-item-custom clickable">
-                Calculer les points
-              </a>
-              <template v-if="displayStatus">
-                <div class="navbar-item-custom success" v-if="pointsComputedProperly">
-                  Points calculés &#10003;
-                </div>
-                <div class="navbar-item-custom error" v-else>
-                  Erreur : les points n'ont pas été calculés &#10005;
-                </div>
-              </template>
+            <a @click="computePoints" class="navbar-item-custom clickable"> Calculer les points </a>
+            <template v-if="displayStatus">
+              <div class="navbar-item-custom success" v-if="pointsComputedProperly">
+                Points calculés &#10003;
+              </div>
+              <div class="navbar-item-custom error" v-else>
+                Erreur : les points n'ont pas été calculés &#10005;
+              </div>
             </template>
           </template>
+        </template>
       </div>
       <div class="navbar-right">
         <router-link
-            to="/login" class="navbar-item-custom clickable"
-            v-if="!($store.getters.isAuthenticated) && !($route.name === 'login')">
+          to="/login"
+          class="navbar-item-custom clickable"
+          v-if="!isAuthenticated() && !($route.name === 'login')"
+        >
           Se connecter
         </router-link>
         <router-link
-            to="/signup" class="navbar-item-custom clickable"
-            v-if="!($store.getters.isAuthenticated) && !($route.name == 'signup')">
+          to="/signup"
+          class="navbar-item-custom clickable"
+          v-if="!isAuthenticated() && !($route.name == 'signup')"
+        >
           Créer un compte
         </router-link>
-        <router-link
-            to="/logout" class="navbar-item-custom clickable"
-            v-if="($store.getters.isAuthenticated)">
+        <router-link to="/logout" class="navbar-item-custom clickable" v-if="isAuthenticated()">
           Se déconnecter
         </router-link>
       </div>
     </div>
 
     <div class="body-yaktoto">
-      <router-view class="body-yaktoto-page"/>
+      <router-view class="body-yaktoto-page" />
     </div>
-
   </section>
 </template>
 
 <script>
+import { ref } from 'vue';
+import useYakStore from './store';
+
 export default {
   name: 'App',
-  data() {
+  setup() {
     return {
-      displayStatus: false,
-      pointsComputedProperly: false,
+      yakStore: useYakStore(),
+      displayStatus: ref(false),
+      pointsComputedProperly: ref(false),
     };
   },
   methods: {
     computePoints() {
-      this.$store.dispatch('computePoints')
+      this.yakStore.computePoints()
         .then(() => {
           this.pointsComputedProperly = true;
           this.displayStatus = true;
 
-          setTimeout(
-            () => {
-              this.displayStatus = false;
-              this.pointsComputedProperly = false;
-            },
-            2000,
-          );
+          setTimeout(() => {
+            this.displayStatus = false;
+            this.pointsComputedProperly = false;
+          }, 2000);
         })
         .catch(() => {
           this.pointsComputedProperly = false;
           this.displayStatus = true;
 
-          setTimeout(
-            () => {
-              this.displayStatus = false;
-              this.pointsComputedProperly = false;
-            },
-            2000,
-          );
+          setTimeout(() => {
+            this.displayStatus = false;
+            this.pointsComputedProperly = false;
+          }, 2000);
         });
+    },
+    isAuthenticated() {
+      return this.yakStore.isAuthenticated();
+    },
+    getUserName() {
+      return this.yakStore.getUserName;
     },
   },
 };
@@ -118,8 +123,13 @@ html {
   text-size-adjust: 100%;
 }
 
-body, button, input, select, textarea {
-  font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+body,
+button,
+input,
+select,
+textarea {
+  font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
 .hero {
@@ -133,7 +143,9 @@ body, button, input, select, textarea {
   min-height: 100vh;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
