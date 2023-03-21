@@ -3,40 +3,46 @@
     <div class="box-signup">
       <h3 class="title">Créer un compte</h3>
       <div class="box-signup-form">
-        <div class="notification is-danger" v-if="invalidSignup">
-          Nom déjà existant
-        </div>
+        <div class="notification is-danger" v-if="invalidSignup">Nom déjà existant</div>
 
         <form v-on:submit.prevent="signup">
           <div class="field control">
             <label class="label" for="pseudo">
               Pseudo
-              <input type="text" class="input is-large" id="pseudo"
-                placeholder="pseudo" v-model="name">
+              <input type="text" class="input is-large" id="pseudo" placeholder="pseudo" v-model="name" />
             </label>
           </div>
 
           <div class="field control">
             <label class="label" for="firstName">
               Prénom
-              <input type="text" class="input is-large" id="firstName"
-                placeholder="prénom" v-model="firstName">
+              <input
+                type="text"
+                class="input is-large"
+                id="firstName"
+                placeholder="prénom"
+                v-model="firstName"
+              />
             </label>
           </div>
 
           <div class="field control">
             <label class="label" for="lastName">
               Nom de famille
-              <input type="text" class="input is-large" id="lastName"
-                placeholder="nom de famille" v-model="lastName">
+              <input
+                type="text"
+                class="input is-large"
+                id="lastName"
+                placeholder="nom de famille"
+                v-model="lastName"
+              />
             </label>
           </div>
 
           <div class="field control">
             <label class="label" for="password">
               Mot de passe
-              <input type="password" class="input is-large"
-                placeholder="mot de passe" v-model="password">
+              <input type="password" class="input is-large" placeholder="mot de passe" v-model="password" />
             </label>
           </div>
 
@@ -48,6 +54,9 @@
 </template>
 
 <script>
+import useYakStore from '@/store';
+import api from '@/api';
+
 export default {
   name: 'SignupComponent',
   data() {
@@ -61,15 +70,17 @@ export default {
   },
   methods: {
     signup() {
-      this.$store.dispatch('signup', {
+      api.postSignup({
         name: this.name,
         first_name: this.firstName,
         last_name: this.lastName,
         password: this.password,
       })
         .then((response) => {
-          this.$store.commit({ type: 'setJwtToken', jwt: response.data.result.token });
-          this.$store.commit({ type: 'setUserName', userName: response.data.result.name });
+          const yakStore = useYakStore();
+          yakStore.setJwtToken({ jwt: response.data.result.token });
+          yakStore.setUserName({ userName: response.data.result.name });
+
           this.$router.push('/groups/A');
         })
         .catch(() => {

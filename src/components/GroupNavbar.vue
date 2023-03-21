@@ -1,32 +1,32 @@
 <template>
   <div class="vertical-menu">
     <h1>{{ phase.description }}</h1>
-    <router-link
-      v-for="group in groups"
-      :key="group.id"
-      :to="`/groups/${group.code}`"
-    >
+    <router-link v-for="group in groups" :key="group.id" :to="`/groups/${group.code}`">
       {{ group.description }}
     </router-link>
     <h1>Phase finale</h1>
     <router-link to="/finale_phase">Phase finale</router-link>
     <h1>Classement</h1>
     <router-link to="/score_board">Classement</router-link>
-</div>
+  </div>
 </template>
 
 <script>
+import useYakStore from '@/store';
+import { ref } from 'vue';
+
 export default {
   name: 'GroupNavbar',
-  data() {
+  setup() {
     return {
-      phase: {},
-      groups: [],
+      yakStore: useYakStore(),
+      phase: ref({}),
+      groups: ref([]),
     };
   },
   methods: {
     getGroupList() {
-      this.$store.dispatch('getGroupNames', { phaseName: 'GROUP' })
+      this.yakStore.getGroupNames({ phaseName: 'GROUP' })
         .then((res) => {
           this.phase = res.data.result.phase;
           this.groups = res.data.result.groups;

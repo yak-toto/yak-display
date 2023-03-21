@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import useYakStore from '@/store';
+import { ref } from 'vue';
 import GroupNavbar from './GroupNavbar.vue';
 
 export default {
@@ -47,22 +49,24 @@ export default {
   components: {
     GroupNavbar,
   },
-  data() {
+  setup() {
     return {
-      scoreBoardResource: [],
+      yakStore: useYakStore(),
+      scoreBoardResource: ref([]),
     };
   },
   methods: {
     getScoreBoard() {
-      this.$store.dispatch('getScoreBoard')
-        .then((res) => { this.scoreBoardResource = res.data.result; });
+      this.yakStore.getScoreBoard()
+        .then((res) => {
+          this.scoreBoardResource = res.data.result;
+        });
     },
   },
   created() {
     this.getScoreBoard();
   },
 };
-
 </script>
 
 <style lang="css">
@@ -73,7 +77,9 @@ export default {
 }
 
 @media screen and (max-width: 800px) {
-  .grid-score-board {display: block;}
+  .grid-score-board {
+    display: block;
+  }
 }
 
 .navbar-score-board {

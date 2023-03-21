@@ -11,16 +11,27 @@
           <div class="field control">
             <label class="label" for="pseudo">
               Pseudo
-              <input type="text" class="input is-large" id="pseudo" name="pseudo"
-                placeholder="pseudo" v-model="name" />
+              <input
+                type="text"
+                class="input is-large"
+                id="pseudo"
+                name="pseudo"
+                placeholder="pseudo"
+                v-model="name"
+              />
             </label>
           </div>
 
           <div class="field control">
             <label class="label" for="password">
               Mot de passe
-              <input type="password" class="input is-large" name="password"
-                placeholder="mot de passe" v-model="password" />
+              <input
+                type="password"
+                class="input is-large"
+                name="password"
+                placeholder="mot de passe"
+                v-model="password"
+              />
             </label>
           </div>
 
@@ -32,6 +43,9 @@
 </template>
 
 <script>
+import useYakStore from '@/store';
+import api from '@/api';
+
 export default {
   name: 'LoginComponent',
   data() {
@@ -43,10 +57,12 @@ export default {
   },
   methods: {
     login() {
-      this.$store.dispatch('login', { name: this.name, password: this.password })
+      api.postLogin({ name: this.name, password: this.password })
         .then((response) => {
-          this.$store.commit({ type: 'setJwtToken', jwt: response.data.result.token });
-          this.$store.commit({ type: 'setUserName', userName: response.data.result.name });
+          const yakStore = useYakStore();
+          yakStore.setJwtToken({ jwt: response.data.result.token });
+          yakStore.setUserName({ userName: response.data.result.name });
+
           this.$router.push('/groups/A');
         })
         .catch(() => {

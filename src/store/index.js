@@ -1,80 +1,52 @@
-import Vuex from 'vuex';
-import VuexPersistence from 'vuex-persist';
+import { defineStore } from 'pinia';
 
 import api from '@/api';
 import isValidJwt from '@/utils';
 
-const stateObject = {
-  userName: '',
-  jwt: '',
-};
-
-const actions = {
-  getGroup(context, { groupName }) {
-    return api.getGroup(groupName, context.state.jwt);
+const useYakStore = defineStore('yakStorage', {
+  state: () => ({ userName: '', jwt: '' }),
+  getters: {
+    getUserName: (state) => state.userName,
   },
-  getGroupResult(context, { groupName }) {
-    return api.getGroupResult(groupName, context.state.jwt);
+  actions: {
+    getGroup({ groupName }) {
+      return api.getGroup(groupName, this.jwt);
+    },
+    getGroupResult({ groupName }) {
+      return api.getGroupResult(groupName, this.jwt);
+    },
+    postBetsFinalePhase() {
+      return api.postBetsFinalePhase(this.jwt);
+    },
+    getScoreBoard() {
+      return api.getScoreBoard(this.jwt);
+    },
+    getGroupNames({ phaseName }) {
+      return api.getGroupNames(phaseName, this.jwt);
+    },
+    putBetsByPhase({ phaseCode, bets }) {
+      return api.putBetsByPhase(phaseCode, bets, this.jwt);
+    },
+    patchScoreBet({ betId, score1, score2 }) {
+      return api.patchScoreBet(betId, score1, score2, this.jwt);
+    },
+    computePoints() {
+      return api.postComputePoints(this.jwt);
+    },
+    setUserName(payload) {
+      this.userName = payload.userName;
+    },
+    eraseJwtToken() {
+      this.$reset();
+    },
+    setJwtToken(payload) {
+      this.jwt = payload.jwt;
+    },
+    isAuthenticated() {
+      return this.jwt && isValidJwt(this.jwt);
+    },
   },
-  postBetsFinalePhase(context) {
-    return api.postBetsFinalePhase(context.state.jwt);
-  },
-  getScoreBoard(context) {
-    return api.getScoreBoard(context.state.jwt);
-  },
-  getGroupNames(context, { phaseName }) {
-    return api.getGroupNames(phaseName, context.state.jwt);
-  },
-  putBetsByPhase(context, { phaseCode, bets }) {
-    return api.putBetsByPhase(phaseCode, bets, context.state.jwt);
-  },
-  patchScoreBet(context, { betId, score1, score2 }) {
-    return api.patchScoreBet(betId, score1, score2, context.state.jwt);
-  },
-  login(context, userData) {
-    return api.postLogin(userData);
-  },
-  signup(context, userData) {
-    return api.postSignup(userData);
-  },
-  computePoints(context) {
-    return api.postComputePoints(context.state.jwt);
-  },
-};
-
-const mutations = {
-  setUserName(state, payload) {
-    state.userName = payload.userName;
-  },
-  setJwtToken(state, payload) {
-    state.jwt = payload.jwt;
-  },
-  eraseJwtToken(state) {
-    state.jwt = 'deleted';
-    state.userName = '';
-  },
-};
-
-const getters = {
-  isAuthenticated(state) {
-    return state.jwt && isValidJwt(state.jwt);
-  },
-  getUserName(state) {
-    return state.userName;
-  },
-};
-
-const vuexPersist = new VuexPersistence({
-  key: 'myStorage',
-  reducer: (state) => state,
+  persist: true,
 });
 
-const store = new Vuex.Store({
-  stateObject,
-  actions,
-  mutations,
-  getters,
-  plugins: [vuexPersist.plugin],
-});
-
-export default store;
+export default useYakStore;
