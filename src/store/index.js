@@ -12,6 +12,9 @@ const useYakStore = defineStore('yakStorage', {
     getGroup({ groupName }) {
       return api.getGroup(groupName, this.jwt);
     },
+    getGroups() {
+      return api.getGroups(this.jwt);
+    },
     getGroupResult({ groupName }) {
       return api.getGroupResult(groupName, this.jwt);
     },
@@ -20,9 +23,6 @@ const useYakStore = defineStore('yakStorage', {
     },
     getScoreBoard() {
       return api.getScoreBoard(this.jwt);
-    },
-    getGroupNames({ phaseName }) {
-      return api.getGroupNames(phaseName, this.jwt);
     },
     putBetsByPhase({ phaseCode, bets }) {
       return api.putBetsByPhase(phaseCode, bets, this.jwt);

@@ -24,14 +24,15 @@ const api = {
   // ------------------------------
   // Group interface
   // ------------------------------
-  getGroupNames(phaseName, jwt) {
-    return axios.get(`${BASE_URL}/groups/phases/${phaseName}`, {
-      headers: { Authorization: encodeBearerToken(jwt) },
-    });
-  },
   getGroup(groupName, jwt) {
     return axios.get(
       `${BASE_URL}/bets/groups/${groupName}`,
+      { headers: { Authorization: encodeBearerToken(jwt) } },
+    );
+  },
+  getGroups(jwt) {
+    return axios.get(
+      `${BASE_URL}/groups`,
       { headers: { Authorization: encodeBearerToken(jwt) } },
     );
   },

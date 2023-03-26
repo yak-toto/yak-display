@@ -1,11 +1,11 @@
 <template>
   <div class="vertical-menu">
-    <h1>{{ phase.description }}</h1>
+    <h1>{{ groupPhase.description }}</h1>
     <router-link v-for="group in groups" :key="group.id" :to="`/groups/${group.code}`">
       {{ group.description }}
     </router-link>
-    <h1>Phase finale</h1>
-    <router-link to="/finale_phase">Phase finale</router-link>
+    <h1>{{ finalePhase.description }}</h1>
+    <router-link to="/finale_phase">{{ finalePhase.description }}</router-link>
     <h1>Classement</h1>
     <router-link to="/score_board">Classement</router-link>
   </div>
@@ -20,21 +20,23 @@ export default {
   setup() {
     return {
       yakStore: useYakStore(),
-      phase: ref({}),
+      groupPhase: ref({}),
+      finalePhase: ref({}),
       groups: ref([]),
     };
   },
   methods: {
-    getGroupList() {
-      this.yakStore.getGroupNames({ phaseName: 'GROUP' })
-        .then((res) => {
-          this.phase = res.data.result.phase;
-          this.groups = res.data.result.groups;
+    getGroups() {
+      this.yakStore.getGroups()
+        .then((response) => {
+          this.groupPhase = response.data.result.phases.filter((phase) => phase.code === 'GROUP')[0];
+          this.finalePhase = response.data.result.phases.filter((phase) => phase.code === 'FINAL')[0];
+          this.groups = response.data.result.groups.filter((group) => group.phase.id === this.groupPhase.id);
         });
-    },
+    }
   },
   created() {
-    this.getGroupList();
+    this.getGroups();
   },
 };
 </script>
