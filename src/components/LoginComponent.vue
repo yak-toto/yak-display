@@ -1,43 +1,39 @@
 <template>
-  <div class="grid-login">
-    <div class="box-login">
-      <h3 class="title">Se connecter</h3>
-      <div class="box">
-        <div class="notification is-danger" v-if="invalidLogin">
-          Veuillez vérifier vos identifiants et réessayer.
+  <div class="box-login">
+    <h3 class="title">Se connecter</h3>
+    <div class="box">
+      <div class="notification is-danger" v-if="invalidLogin">{{ errorMessage }}</div>
+
+      <form v-on:submit.prevent="login">
+        <div class="field control">
+          <label class="label" for="pseudo">
+            Pseudo
+            <input
+              type="text"
+              class="input is-large"
+              id="pseudo"
+              name="pseudo"
+              placeholder="pseudo"
+              v-model="name"
+            />
+          </label>
         </div>
 
-        <form v-on:submit.prevent="login">
-          <div class="field control">
-            <label class="label" for="pseudo">
-              Pseudo
-              <input
-                type="text"
-                class="input is-large"
-                id="pseudo"
-                name="pseudo"
-                placeholder="pseudo"
-                v-model="name"
-              />
-            </label>
-          </div>
+        <div class="field control">
+          <label class="label" for="password">
+            Mot de passe
+            <input
+              type="password"
+              class="input is-large"
+              name="password"
+              placeholder="mot de passe"
+              v-model="password"
+            />
+          </label>
+        </div>
 
-          <div class="field control">
-            <label class="label" for="password">
-              Mot de passe
-              <input
-                type="password"
-                class="input is-large"
-                name="password"
-                placeholder="mot de passe"
-                v-model="password"
-              />
-            </label>
-          </div>
-
-          <button class="button is-block is-info is-large is-fullwidth">Se connecter</button>
-        </form>
-      </div>
+        <button class="button is-block is-info is-large is-fullwidth">Se connecter</button>
+      </form>
     </div>
   </div>
 </template>
@@ -53,6 +49,7 @@ export default {
       name: '',
       password: '',
       invalidLogin: false,
+      errorMessage: '',
     };
   },
   methods: {
@@ -65,8 +62,14 @@ export default {
 
           this.$router.push('/groups/A');
         })
-        .catch(() => {
+        .catch((error) => {
           this.invalidLogin = true;
+          this.errorMessage = error.response.data.description;
+
+          setTimeout(() => {
+            this.invalidLogin = false;
+            this.errorMessage = '';
+          }, 2000);
         });
     },
   },
@@ -74,12 +77,6 @@ export default {
 </script>
 
 <style lang="css">
-.grid-login {
-  /* display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px; */
-}
-
 .box-login {
   border: solid;
   border-width: 1px;

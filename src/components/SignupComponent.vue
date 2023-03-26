@@ -3,7 +3,7 @@
     <div class="box-signup">
       <h3 class="title">Créer un compte</h3>
       <div class="box-signup-form">
-        <div class="notification is-danger" v-if="invalidSignup">Nom déjà existant</div>
+        <div class="notification is-danger" v-if="invalidSignup">{{ errorMessage }}</div>
 
         <form v-on:submit.prevent="signup">
           <div class="field control">
@@ -66,6 +66,7 @@ export default {
       lastName: '',
       password: '',
       invalidSignup: false,
+      errorMessage: '',
     };
   },
   methods: {
@@ -83,8 +84,14 @@ export default {
 
           this.$router.push('/groups/A');
         })
-        .catch(() => {
+        .catch((error) => {
           this.invalidSignup = true;
+          this.errorMessage = error.response.data.description;
+
+          setTimeout(() => {
+            this.invalidSignup = false;
+            this.errorMessage = '';
+          }, 2000);
         });
     },
   },
