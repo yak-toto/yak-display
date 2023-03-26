@@ -9,14 +9,14 @@ const useYakStore = defineStore('yakStorage', {
     getUserName: (state) => state.userName,
   },
   actions: {
-    getGroup({ groupName }) {
-      return api.getGroup(groupName, this.jwt);
+    getBetsByGroupCode({ groupName }) {
+      return api.getBetsByGroupCode(groupName, this.jwt);
     },
     getGroups() {
       return api.getGroups(this.jwt);
     },
-    getGroupResult({ groupName }) {
-      return api.getGroupResult(groupName, this.jwt);
+    getGroupRankByCode({ groupName }) {
+      return api.getGroupRankByCode(groupName, this.jwt);
     },
     postBetsFinalePhase() {
       return api.postBetsFinalePhase(this.jwt);
@@ -27,8 +27,8 @@ const useYakStore = defineStore('yakStorage', {
     putBetsByPhase({ phaseCode, bets }) {
       return api.putBetsByPhase(phaseCode, bets, this.jwt);
     },
-    patchScoreBet({ betId, score1, score2 }) {
-      return api.patchScoreBet(betId, score1, score2, this.jwt);
+    modifyScoreBet({ betId, score1, score2 }) {
+      return api.modifyScoreBet(betId, score1, score2, this.jwt);
     },
     computePoints() {
       return api.postComputePoints(this.jwt);

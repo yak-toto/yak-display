@@ -24,7 +24,7 @@ const api = {
   // ------------------------------
   // Group interface
   // ------------------------------
-  getGroup(groupName, jwt) {
+  getBetsByGroupCode(groupName, jwt) {
     return axios.get(
       `${BASE_URL}/bets/groups/${groupName}`,
       { headers: { Authorization: encodeBearerToken(jwt) } },
@@ -36,7 +36,7 @@ const api = {
       { headers: { Authorization: encodeBearerToken(jwt) } },
     );
   },
-  getGroupResult(groupName, jwt) {
+  getGroupRankByCode(groupName, jwt) {
     return axios.get(`${BASE_URL}/bets/groups/rank/${groupName}`, {
       headers: { Authorization: encodeBearerToken(jwt) },
     });
@@ -53,7 +53,7 @@ const api = {
       headers: { Authorization: encodeBearerToken(jwt) },
     });
   },
-  patchScoreBet(betId, score1, score2, jwt) {
+  modifyScoreBet(betId, score1, score2, jwt) {
     return axios.patch(
       `${BASE_URL}/score_bets/${betId}`,
       { team1: { score: score1 }, team2: { score: score2 } },

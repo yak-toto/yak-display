@@ -70,16 +70,16 @@ export default {
     };
   },
   methods: {
-    getGroup(groupName) {
-      this.yakStore.getGroup({ groupName })
+    getBetsByGroupCode(groupName) {
+      this.yakStore.getBetsByGroupCode({ groupName })
         .then((res) => {
           this.group = res.data.result.group;
           this.scoreBets = res.data.result.score_bets;
           this.scoreBetsCopy = _.cloneDeep(this.scoreBets);
         });
     },
-    getGroupResult(groupName) {
-      this.yakStore.getGroupResult({ groupName })
+    getGroupRankByCode(groupName) {
+      this.yakStore.getGroupRankByCode({ groupName })
         .then((res) => {
           this.groupRank = res.data.result.group_rank;
         });
@@ -103,7 +103,7 @@ export default {
 
       if (modifyBets.length !== 0) {
         Promise.all(
-          modifyBets.map((bet) => this.yakStore.patchScoreBet({
+          modifyBets.map((bet) => this.yakStore.modifyScoreBet({
             betId: bet.id,
             score1: bet.team1.score,
             score2: bet.team2.score,
@@ -115,7 +115,7 @@ export default {
             this.updateProperly = true;
             this.displayStatus = true;
 
-            this.getGroupResult(this.group.code);
+            this.getGroupRankByCode(this.group.code);
 
             setTimeout(() => {
               this.displayStatus = false;
@@ -142,14 +142,14 @@ export default {
     },
   },
   beforeRouteUpdate(to, _, next) {
-    this.getGroup(to.params.groupName);
-    this.getGroupResult(to.params.groupName);
+    this.getBetsByGroupCode(to.params.groupName);
+    this.getGroupRankByCode(to.params.groupName);
     this.displayStatus = false;
     next();
   },
   created() {
-    this.getGroup(this.groupName);
-    this.getGroupResult(this.groupName);
+    this.getBetsByGroupCode(this.groupName);
+    this.getGroupRankByCode(this.groupName);
   },
 };
 </script>
