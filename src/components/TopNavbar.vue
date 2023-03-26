@@ -1,18 +1,14 @@
 <template>
   <div class="navbar-yaktoto">
     <div class="navbar-left">
-      <template
-        v-if="isAuthenticated() && $route.name !== 'login' && $route.name !== 'signup'"
-      >
+      <template v-if="!$route.meta.allowAnonymous">
         <div class="navbar-item-custom">
           Utilisateur:&nbsp;<strong>{{ getUserName() }}</strong>
         </div>
         <template
           v-if="
-            isAuthenticated() &&
-            $route.name !== 'login' &&
-            $route.name !== 'signup' &&
-            getUserName() === 'admin'
+            getUserName() === 'admin' &&
+            !$route.meta.allowAnonymous
           "
         >
           <a @click="computePoints" class="navbar-item-custom clickable"> Calculer les points </a>
@@ -31,14 +27,14 @@
       <router-link
         to="/login"
         class="navbar-item-custom clickable"
-        v-if="!isAuthenticated() && !($route.name === 'login')"
+        v-if="$route.name === 'signup'"
       >
         Se connecter
       </router-link>
       <router-link
         to="/signup"
         class="navbar-item-custom clickable"
-        v-if="!isAuthenticated() && !($route.name == 'signup')"
+        v-if="$route.name == 'login'"
       >
         Créer un compte
       </router-link>

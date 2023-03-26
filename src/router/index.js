@@ -11,27 +11,30 @@ const routes = [
     path: '/',
     name: 'home',
     redirect: '/login',
+    meta: {
+      allowAnonymous: true
+    },
   },
   {
     path: '/login',
     name: 'login',
     component: LoginComponent,
+    meta: {
+      allowAnonymous: true
+    },
   },
   {
     path: '/signup',
     name: 'signup',
     component: SignupComponent,
+    meta: {
+      allowAnonymous: true
+    },
   },
   {
     path: '/logout',
     name: 'logout',
-    beforeEnter(to, from, next) {
-      const yakStore = useYakStore();
-
-      yakStore.eraseJwtToken();
-
-      next('/login');
-    },
+    redirect: '/login',
   },
   {
     path: '/groups/:groupName',
@@ -59,15 +62,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const yakStore = useYakStore();
 
-  if (to.name !== 'login' && to.name !== 'signup') {
-    if (!yakStore.isAuthenticated()) {
-      yakStore.eraseJwtToken();
-      next('/login');
-    } else {
-      next();
-    }
-  } else if (yakStore.isAuthenticated()) {
-    next({ name: 'groups', params: { groupName: 'A' } });
+  if (!to.meta.allowAnonymous && !yakStore.isAuthenticated()) {
+    yakStore.eraseJwtToken();
+    next('/login');
+  } else if (to.meta.allowAnonymous && !from.meta.allowAnonymous) {
+    yakStore.eraseJwtToken();
+    next();
   } else {
     next();
   }
