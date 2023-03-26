@@ -9,7 +9,8 @@
           <div class="field control">
             <label class="label" for="pseudo">
               Pseudo
-              <input type="text" class="input is-large" id="pseudo" placeholder="pseudo" v-model="name" />
+              <input type="text" class="input is-large"
+                id="pseudo" placeholder="pseudo" v-model="name" />
             </label>
           </div>
 
@@ -42,7 +43,8 @@
           <div class="field control">
             <label class="label" for="password">
               Mot de passe
-              <input type="password" class="input is-large" placeholder="mot de passe" v-model="password" />
+              <input type="password" class="input is-large"
+                placeholder="mot de passe" v-model="password" />
             </label>
           </div>
 

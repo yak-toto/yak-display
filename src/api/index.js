@@ -45,7 +45,7 @@ const api = {
     return axios.post(
       `${BASE_URL}/bets/finale_phase`,
       null,
-      { headers: { Authorization: encodeBearerToken(jwt) } }
+      { headers: { Authorization: encodeBearerToken(jwt) } },
     );
   },
   putBetsByPhase(phaseCode, bets, jwt) {
@@ -73,7 +73,7 @@ const api = {
     return axios.post(
       `${BASE_URL}/compute_points`,
       null,
-      { headers: { Authorization: encodeBearerToken(jwt) } }
+      { headers: { Authorization: encodeBearerToken(jwt) } },
     );
   },
 };

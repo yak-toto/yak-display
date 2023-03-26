@@ -20,7 +20,7 @@
                 :key="index"
                 v-if="groups.length > 0"
               >
-                <template v-for="[groupIndex, group] in groups.entries()" class="box-match" :key="group.id">
+                <template v-for="[groupIndex, group] in groups.entries()" :key="group.id">
                   <td :rowspan="Math.pow(2, groupIndex)" v-if="index % Math.pow(2, groupIndex) === 0">
                     <div class="box-match">
                       <template
@@ -175,12 +175,14 @@ export default {
           this.phase = res.data.result.phase;
           this.groups = res.data.result.groups.filter((group) => group.code !== '3');
 
-          this.groups.sort((group1, group2) => parseInt(group2.code) - parseInt(group1.code));
+          this.groups.sort(
+            (group1, group2) => parseInt(group2.code, 10) - parseInt(group1.code, 10),
+          );
 
           for (const group of this.groups) {
             this.finalePhaseBet[group.id] = [];
 
-            for (const index of _.range(0, parseInt(group.code))) {
+            for (const index of _.range(0, parseInt(group.code, 10))) {
               this.finalePhaseBet[group.id].push({
                 is_one_won: null,
                 index: index + 1,

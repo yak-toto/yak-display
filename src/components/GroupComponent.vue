@@ -28,7 +28,9 @@
               Valider
             </button>
             <template v-if="displayStatus">
-              <div class="updated-properly" v-if="updateProperly === true">Résultats soumis &#10003;</div>
+              <div class="updated-properly" v-if="updateProperly === true">
+                Résultats soumis &#10003;
+              </div>
               <div class="not-updated-properly" v-else-if="updateProperly === false">
                 Erreur : Résultats non synchronisés &#10005;
               </div>

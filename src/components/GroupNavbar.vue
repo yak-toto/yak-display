@@ -29,11 +29,13 @@ export default {
     getGroups() {
       this.yakStore.getGroups()
         .then((response) => {
-          this.groupPhase = response.data.result.phases.filter((phase) => phase.code === 'GROUP')[0];
-          this.finalePhase = response.data.result.phases.filter((phase) => phase.code === 'FINAL')[0];
-          this.groups = response.data.result.groups.filter((group) => group.phase.id === this.groupPhase.id);
+          this.groupPhase = response.data.result.phases.find((phase) => phase.code === 'GROUP');
+          this.finalePhase = response.data.result.phases.find((phase) => phase.code === 'FINAL');
+          this.groups = response.data.result.groups.filter(
+            (group) => group.phase.id === this.groupPhase.id,
+          );
         });
-    }
+    },
   },
   created() {
     this.getGroups();
