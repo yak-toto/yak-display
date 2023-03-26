@@ -1,53 +1,6 @@
 <template>
   <section class="hero is-fullheight">
-    <div class="navbar-yaktoto">
-      <div class="navbar-left">
-        <template
-          v-if="isAuthenticated() && $route.name !== 'login' && $route.name !== 'signup'"
-        >
-          <div class="navbar-item-custom">
-            Utilisateur:&nbsp;<strong>{{ getUserName() }}</strong>
-          </div>
-          <template
-            v-if="
-              isAuthenticated() &&
-              $route.name !== 'login' &&
-              $route.name !== 'signup' &&
-              getUserName() === 'admin'
-            "
-          >
-            <a @click="computePoints" class="navbar-item-custom clickable"> Calculer les points </a>
-            <template v-if="displayStatus">
-              <div class="navbar-item-custom success" v-if="pointsComputedProperly">
-                Points calculés &#10003;
-              </div>
-              <div class="navbar-item-custom error" v-else>
-                Erreur : les points n'ont pas été calculés &#10005;
-              </div>
-            </template>
-          </template>
-        </template>
-      </div>
-      <div class="navbar-right">
-        <router-link
-          to="/login"
-          class="navbar-item-custom clickable"
-          v-if="!isAuthenticated() && !($route.name === 'login')"
-        >
-          Se connecter
-        </router-link>
-        <router-link
-          to="/signup"
-          class="navbar-item-custom clickable"
-          v-if="!isAuthenticated() && !($route.name == 'signup')"
-        >
-          Créer un compte
-        </router-link>
-        <router-link to="/logout" class="navbar-item-custom clickable" v-if="isAuthenticated()">
-          Se déconnecter
-        </router-link>
-      </div>
-    </div>
+    <TopNavbar />
 
     <div class="body-yaktoto">
       <router-view class="body-yaktoto-page" />
@@ -56,46 +9,12 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import useYakStore from './store';
+import TopNavbar from '@/components/TopNavbar.vue';
 
 export default {
   name: 'App',
-  setup() {
-    return {
-      yakStore: useYakStore(),
-      displayStatus: ref(false),
-      pointsComputedProperly: ref(false),
-    };
-  },
-  methods: {
-    computePoints() {
-      this.yakStore.computePoints()
-        .then(() => {
-          this.pointsComputedProperly = true;
-          this.displayStatus = true;
-
-          setTimeout(() => {
-            this.displayStatus = false;
-            this.pointsComputedProperly = false;
-          }, 2000);
-        })
-        .catch(() => {
-          this.pointsComputedProperly = false;
-          this.displayStatus = true;
-
-          setTimeout(() => {
-            this.displayStatus = false;
-            this.pointsComputedProperly = false;
-          }, 2000);
-        });
-    },
-    isAuthenticated() {
-      return this.yakStore.isAuthenticated();
-    },
-    getUserName() {
-      return this.yakStore.getUserName;
-    },
+  components: {
+    TopNavbar,
   },
 };
 </script>
@@ -150,29 +69,6 @@ textarea {
   box-sizing: inherit;
 }
 
-.navbar-yaktoto {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-}
-
-.navbar-left {
-  border-bottom: solid;
-  border-width: 1px;
-  border-color: #53535321;
-  padding: 0.5rem;
-  grid-column: 2 / 6;
-  text-align: left;
-}
-
-.navbar-right {
-  border-bottom: solid;
-  border-width: 1px;
-  border-color: #53535321;
-  padding: 0.5rem;
-  grid-column: 6 / 8;
-  text-align: right;
-}
-
 .body-yaktoto {
   flex-grow: 1;
   flex-shrink: 0;
@@ -184,28 +80,5 @@ textarea {
 
 .body-yaktoto-page {
   grid-column: 2 / 8;
-}
-
-.navbar-item-custom {
-  align-items: center;
-  padding: 0.5rem 0.75rem;
-  color: black;
-  display: inline;
-  text-decoration: none;
-}
-
-.navbar-item-custom.clickable:hover {
-  cursor: pointer;
-  background-color: #fafafa;
-}
-
-.navbar-item-custom.success {
-  color: green;
-  font-weight: bold;
-}
-
-.navbar-item-custom.error {
-  color: red;
-  font-weight: bold;
 }
 </style>
