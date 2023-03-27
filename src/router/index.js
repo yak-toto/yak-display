@@ -12,7 +12,7 @@ const routes = [
     name: 'home',
     redirect: '/login',
     meta: {
-      allowAnonymous: true
+      allowAnonymous: true,
     },
   },
   {
@@ -20,7 +20,7 @@ const routes = [
     name: 'login',
     component: LoginComponent,
     meta: {
-      allowAnonymous: true
+      allowAnonymous: true,
     },
   },
   {
@@ -28,7 +28,7 @@ const routes = [
     name: 'signup',
     component: SignupComponent,
     meta: {
-      allowAnonymous: true
+      allowAnonymous: true,
     },
   },
   {

@@ -18,7 +18,6 @@
               <tr
                 v-for="index in Array(finalePhaseBet[groups[0].id].length).keys()"
                 :key="index"
-                v-if="groups.length > 0"
               >
                 <template v-for="[groupIndex, group] in groups.entries()" :key="group.id">
                   <td :rowspan="Math.pow(2, groupIndex)" v-if="index % Math.pow(2, groupIndex) === 0">
