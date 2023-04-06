@@ -30,6 +30,12 @@ const api = {
       { headers: { Authorization: encodeBearerToken(jwt) } },
     );
   },
+  getBetsByPhaseCode(phaseCode, jwt) {
+    return axios.get(
+      `${BASE_URL}/bets/phases/${phaseCode}`,
+      { headers: { Authorization: encodeBearerToken(jwt) } },
+    );
+  },
   getGroups(jwt) {
     return axios.get(
       `${BASE_URL}/groups`,
@@ -72,6 +78,16 @@ const api = {
   postComputePoints(jwt) {
     return axios.post(
       `${BASE_URL}/compute_points`,
+      null,
+      { headers: { Authorization: encodeBearerToken(jwt) } },
+    );
+  },
+  // ------------------------------
+  // Admin interface
+  // ------------------------------
+  executeRule(ruleId, jwt) {
+    return axios.post(
+      `${BASE_URL}/rules/${ruleId}`,
       null,
       { headers: { Authorization: encodeBearerToken(jwt) } },
     );

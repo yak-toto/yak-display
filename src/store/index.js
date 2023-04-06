@@ -12,6 +12,9 @@ const useYakStore = defineStore('yakStorage', {
     getBetsByGroupCode({ groupName }) {
       return api.getBetsByGroupCode(groupName, this.jwt);
     },
+    getBetsByPhaseCode({ phaseCode }) {
+      return api.getBetsByPhaseCode(phaseCode, this.jwt);
+    },
     getGroups() {
       return api.getGroups(this.jwt);
     },
@@ -32,6 +35,9 @@ const useYakStore = defineStore('yakStorage', {
     },
     computePoints() {
       return api.postComputePoints(this.jwt);
+    },
+    executeRule(ruleId) {
+      return api.executeRule(ruleId, this.jwt);
     },
     setUserName(payload) {
       this.userName = payload.userName;
