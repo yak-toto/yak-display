@@ -17,7 +17,7 @@
             <tbody>
               <tr
                 v-for="index in Array(finalePhaseBet[groups[0].id].length).keys()"
-                :key="index"
+                :key="index" v-if="groups.length !== 0"
               >
                 <template v-for="[groupIndex, group] in groups.entries()" :key="group.id">
                   <td :rowspan="Math.pow(2, groupIndex)" v-if="index % Math.pow(2, groupIndex) === 0">
@@ -169,55 +169,59 @@ export default {
   },
   methods: {
     getFinalePhase() {
-      this.yakStore.postBetsFinalePhase()
+      this.yakStore.executeRule('492345de-8d4a-45b6-8b94-d219f2b0c3e9')
         .then((res) => {
-          this.phase = res.data.result.phase;
-          this.groups = res.data.result.groups.filter((group) => group.code !== '3');
 
-          this.groups.sort(
-            (group1, group2) => parseInt(group2.code, 10) - parseInt(group1.code, 10),
-          );
+          this.yakStore.getBetsByPhaseCode({ phaseCode: 'FINAL' })
+            .then((res) => {
+              this.phase = res.data.result.phase;
+              this.groups = res.data.result.groups.filter((group) => group.code !== '3');
 
-          for (const group of this.groups) {
-            this.finalePhaseBet[group.id] = [];
+              this.groups.sort(
+                (group1, group2) => parseInt(group2.code, 10) - parseInt(group1.code, 10),
+              );
 
-            for (const index of _.range(0, parseInt(group.code, 10))) {
-              this.finalePhaseBet[group.id].push({
-                is_one_won: null,
-                index: index + 1,
-                group: {
-                  id: group.id,
-                },
-                team1: {
-                  description: '',
-                },
-                team2: {
-                  description: '',
-                },
-              });
-            }
-          }
+              for (const group of this.groups) {
+                this.finalePhaseBet[group.id] = [];
 
-          for (const binaryBets of res.data.result.binary_bets) {
-            if (binaryBets.team1.won === null) {
-              binaryBets.is_one_won = null;
-            } else {
-              binaryBets.is_one_won = binaryBets.team1.won;
-            }
+                for (const index of _.range(0, parseInt(group.code, 10))) {
+                  this.finalePhaseBet[group.id].push({
+                    is_one_won: null,
+                    index: index + 1,
+                    group: {
+                      id: group.id,
+                    },
+                    team1: {
+                      description: '',
+                    },
+                    team2: {
+                      description: '',
+                    },
+                  });
+                }
+              }
 
-            if (binaryBets.locked) {
-              this.isLocked = true;
-            }
+              for (const binaryBets of res.data.result.binary_bets) {
+                if (binaryBets.team1.won === null) {
+                  binaryBets.is_one_won = null;
+                } else {
+                  binaryBets.is_one_won = binaryBets.team1.won;
+                }
 
-            this.finalePhaseBet[binaryBets.group.id][binaryBets.index - 1] = binaryBets;
-          }
+                if (binaryBets.locked) {
+                  this.isLocked = true;
+                }
 
-          if (res.data.result.binary_bets.length === 0) {
-            this.isLocked = true;
-          }
+                this.finalePhaseBet[binaryBets.group.id][binaryBets.index - 1] = binaryBets;
+              }
 
-          this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
-        });
+              if (res.data.result.binary_bets.length === 0) {
+                this.isLocked = true;
+              }
+
+              this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
+            })
+          })
     },
     pushBet(groupIndex, betIndex, team, isOneWon) {
       this.finalePhaseBet[this.groups[groupIndex].id][betIndex].is_one_won = isOneWon;
