@@ -21,9 +21,6 @@ const useYakStore = defineStore('yakStorage', {
     getGroupRankByCode({ groupName }) {
       return api.getGroupRankByCode(groupName, this.jwt);
     },
-    postBetsFinalePhase() {
-      return api.postBetsFinalePhase(this.jwt);
-    },
     getScoreBoard() {
       return api.getScoreBoard(this.jwt);
     },

@@ -47,13 +47,6 @@ const api = {
       headers: { Authorization: encodeBearerToken(jwt) },
     });
   },
-  postBetsFinalePhase(jwt) {
-    return axios.post(
-      `${BASE_URL}/bets/finale_phase`,
-      null,
-      { headers: { Authorization: encodeBearerToken(jwt) } },
-    );
-  },
   putBetsByPhase(phaseCode, bets, jwt) {
     return axios.put(`${BASE_URL}/binary_bets/phases/${phaseCode}`, bets, {
       headers: { Authorization: encodeBearerToken(jwt) },
@@ -83,7 +76,7 @@ const api = {
     );
   },
   // ------------------------------
-  // Admin interface
+  // Rule interface
   // ------------------------------
   executeRule(ruleId, jwt) {
     return axios.post(
