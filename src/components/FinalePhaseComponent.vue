@@ -16,7 +16,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="index in Array(finalePhaseBet[groups[0].id].length).keys()"
+                v-for="index in range(finalePhaseBet[groups[0].id].length)"
                 :key="index" v-if="groups.length !== 0"
               >
                 <template v-for="[groupIndex, group] in groups.entries()" :key="group.id">
@@ -146,6 +146,7 @@
 
 <script>
 import _ from 'lodash';
+import { range } from 'lodash';
 import useYakStore from '@/store';
 import { ref } from 'vue';
 import GroupNavbar from './GroupNavbar.vue';
@@ -168,6 +169,7 @@ export default {
     };
   },
   methods: {
+    range,
     getFinalePhase() {
       this.yakStore.executeRule('492345de-8d4a-45b6-8b94-d219f2b0c3e9')
         .then((res) => {
@@ -176,10 +178,6 @@ export default {
             .then((res) => {
               this.phase = res.data.result.phase;
               this.groups = res.data.result.groups.filter((group) => group.code !== '3');
-
-              this.groups.sort(
-                (group1, group2) => parseInt(group2.code, 10) - parseInt(group1.code, 10),
-              );
 
               for (const group of this.groups) {
                 this.finalePhaseBet[group.id] = [];
