@@ -24,11 +24,11 @@ const useYakStore = defineStore('yakStorage', {
     getScoreBoard() {
       return api.getScoreBoard(this.jwt);
     },
-    putBetsByPhase({ phaseCode, bets }) {
-      return api.putBetsByPhase(phaseCode, bets, this.jwt);
-    },
     modifyScoreBet({ betId, score1, score2 }) {
       return api.modifyScoreBet(betId, score1, score2, this.jwt);
+    },
+    modifyBinaryBet(id, body) {
+      return api.modifyBinaryBet(id, body, this.jwt);
     },
     computePoints() {
       return api.postComputePoints(this.jwt);

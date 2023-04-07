@@ -47,15 +47,17 @@ const api = {
       headers: { Authorization: encodeBearerToken(jwt) },
     });
   },
-  putBetsByPhase(phaseCode, bets, jwt) {
-    return axios.put(`${BASE_URL}/binary_bets/phases/${phaseCode}`, bets, {
-      headers: { Authorization: encodeBearerToken(jwt) },
-    });
-  },
   modifyScoreBet(betId, score1, score2, jwt) {
     return axios.patch(
       `${BASE_URL}/score_bets/${betId}`,
       { team1: { score: score1 }, team2: { score: score2 } },
+      { headers: { Authorization: encodeBearerToken(jwt) } },
+    );
+  },
+  modifyBinaryBet(id, body, jwt) {
+    return axios.patch(
+      `${BASE_URL}/binary_bets/${id}`,
+      body,
       { headers: { Authorization: encodeBearerToken(jwt) } },
     );
   },

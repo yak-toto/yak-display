@@ -145,8 +145,7 @@
 </template>
 
 <script>
-import _ from 'lodash';
-import { range } from 'lodash';
+import _, { range } from 'lodash';
 import useYakStore from '@/store';
 import { ref } from 'vue';
 import GroupNavbar from './GroupNavbar.vue';
@@ -173,7 +172,6 @@ export default {
     getFinalePhase() {
       this.yakStore.executeRule('492345de-8d4a-45b6-8b94-d219f2b0c3e9')
         .then((res) => {
-
           this.yakStore.getBetsByPhaseCode({ phaseCode: 'FINAL' })
             .then((res) => {
               this.phase = res.data.result.phase;
@@ -181,26 +179,38 @@ export default {
 
               for (const group of this.groups) {
                 this.finalePhaseBet[group.id] = [];
-
-                for (const index of _.range(0, parseInt(group.code, 10))) {
-                  this.finalePhaseBet[group.id].push({
-                    is_one_won: null,
-                    index: index + 1,
-                    group: {
-                      id: group.id,
-                    },
-                    team1: {
-                      description: '',
-                    },
-                    team2: {
-                      description: '',
-                    },
-                  });
-                }
               }
 
               for (const binaryBets of res.data.result.binary_bets) {
-                if (binaryBets.team1.won === null) {
+                if (binaryBets.team1 === null && binaryBets.team2 === null) {
+                  binaryBets.is_one_won = null;
+                  binaryBets.team1 = {
+                    description: '',
+                  };
+                  binaryBets.team2 = {
+                    description: '',
+                  };
+                } else if (binaryBets.team1 === null) {
+                  if (binaryBets.team2.won === null) {
+                    binaryBets.is_one_won = null;
+                  } else {
+                    binaryBets.is_one_won = !binaryBets.team2.won;
+                  }
+
+                  binaryBets.team1 = {
+                    description: '',
+                  };
+                } else if (binaryBets.team2 === null) {
+                  if (binaryBets.team1.won === null) {
+                    binaryBets.is_one_won = null;
+                  } else {
+                    binaryBets.is_one_won = binaryBets.team1.won;
+                  }
+
+                  binaryBets.team2 = {
+                    description: '',
+                  };
+                } else if (binaryBets.team1.won === null) {
                   binaryBets.is_one_won = null;
                 } else {
                   binaryBets.is_one_won = binaryBets.team1.won;
@@ -218,8 +228,8 @@ export default {
               }
 
               this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
-            })
-          })
+            });
+        });
     },
     pushBet(groupIndex, betIndex, team, isOneWon) {
       this.finalePhaseBet[this.groups[groupIndex].id][betIndex].is_one_won = isOneWon;
@@ -242,36 +252,35 @@ export default {
       }
     },
     putFinalePhaseBet() {
-      const putFinalePhaseBody = Object.values(this.finalePhaseBet)
-        .flat()
-        .filter(
-          (bet) => Object.prototype.hasOwnProperty.call(bet.team1, 'id')
-            && Object.prototype.hasOwnProperty.call(bet.team2, 'id'),
-        );
+      for (
+        const [newBet, originalBet] of
+        _.zip(
+          Object.values(this.finalePhaseBet).flat().sort((bet) => bet.id),
+          Object.values(this.finalePhaseBetCopy).flat().sort((bet) => bet.id),
+        )
+      ) {
+        const requestBody = {};
+        let isUpdateRequired = false;
 
-      this.yakStore.putBetsByPhase({ phaseCode: 'FINAL', bets: putFinalePhaseBody })
-        .then(() => {
-          this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
+        if (newBet.team1.id !== originalBet.team1.id) {
+          isUpdateRequired = true;
+          requestBody.team1 = { id: newBet.team1.id };
+        }
 
-          this.updateProperly = true;
-          this.displayStatus = true;
+        if (newBet.team2.id !== originalBet.team2.id) {
+          isUpdateRequired = true;
+          requestBody.team2 = { id: newBet.team2.id };
+        }
 
-          setTimeout(() => {
-            this.displayStatus = false;
-            this.updateProperly = null;
-          }, 2000);
-        })
-        .catch(() => {
-          this.finalePhaseBet = _.cloneDeep(this.finalePhaseBetCopy);
+        if (newBet.is_one_won !== originalBet.is_one_won) {
+          isUpdateRequired = true;
+          requestBody.is_one_won = newBet.is_one_won;
+        }
 
-          this.updateProperly = false;
-          this.displayStatus = true;
-
-          setTimeout(() => {
-            this.displayStatus = false;
-            this.updateProperly = null;
-          }, 2000);
-        });
+        if (isUpdateRequired === true) {
+          this.yakStore.modifyBinaryBet(newBet.id, requestBody);
+        }
+      }
     },
   },
   created() {
