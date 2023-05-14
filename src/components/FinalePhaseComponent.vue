@@ -144,8 +144,8 @@
   </div>
 </template>
 
-<script>
-import _, { range } from 'lodash';
+<script lang="ts">
+import { clone, cloneDeep, range, zip } from 'lodash';
 import useYakStore from '@/store';
 import { ref } from 'vue';
 import GroupNavbar from './GroupNavbar.vue';
@@ -161,7 +161,7 @@ export default {
       finalePhaseBet: ref({}),
       finalePhaseBetCopy: ref({}),
       groups: ref([]),
-      phase: ref({}),
+      phase: ref({'description': ''}),
       isLocked: ref(false),
       displayStatus: ref(false),
       updateProperly: ref(null),
@@ -227,7 +227,7 @@ export default {
                 this.isLocked = true;
               }
 
-              this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
+              this.finalePhaseBetCopy = cloneDeep(this.finalePhaseBet);
             });
         });
     },
@@ -238,7 +238,7 @@ export default {
       const newBetIndex = betIndex % 2 === 0 ? betIndex / 2 : (betIndex - 1) / 2;
       const originalTeamDescription = this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`].description;
 
-      this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`] = _.clone(team);
+      this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`] = clone(team);
 
       for (const group of this.groups.slice(groupIndex + 2)) {
         for (const bet of this.finalePhaseBet[group.id]) {
@@ -254,7 +254,7 @@ export default {
     putFinalePhaseBet() {
       for (
         const [newBet, originalBet] of
-        _.zip(
+        zip(
           Object.values(this.finalePhaseBet).flat().sort((bet) => bet.id),
           Object.values(this.finalePhaseBetCopy).flat().sort((bet) => bet.id),
         )

@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import useYakStore from '@/store';
 import { ref } from 'vue';
 
@@ -20,8 +20,8 @@ export default {
   setup() {
     return {
       yakStore: useYakStore(),
-      groupPhase: ref({}),
-      finalePhase: ref({}),
+      groupPhase: ref({'description': ''}),
+      finalePhase: ref({'description': ''}),
       groups: ref([]),
     };
   },

@@ -7,7 +7,7 @@ const GLOBAL_ENDPOINT = 'api';
 const VERSION = 'v1';
 const BASE_URL = `${URL}/${GLOBAL_ENDPOINT}/${VERSION}`;
 
-function encodeBearerToken(jwtToken) {
+function encodeBearerToken(jwtToken: string) {
   return `Bearer ${jwtToken}`;
 }
 
@@ -15,46 +15,46 @@ const api = {
   // ------------------------------
   // Auth interface
   // ------------------------------
-  postSignup(userData) {
+  postSignup(userData: Object) {
     return axios.post(`${BASE_URL}/users/signup`, userData);
   },
-  postLogin(userData) {
+  postLogin(userData: Object) {
     return axios.post(`${BASE_URL}/users/login`, userData);
   },
   // ------------------------------
   // Group interface
   // ------------------------------
-  getBetsByGroupCode(groupName, jwt) {
+  getBetsByGroupCode(groupName: string, jwt: string) {
     return axios.get(
       `${BASE_URL}/bets/groups/${groupName}`,
       { headers: { Authorization: encodeBearerToken(jwt) } },
     );
   },
-  getBetsByPhaseCode(phaseCode, jwt) {
+  getBetsByPhaseCode(phaseCode: string, jwt: string) {
     return axios.get(
       `${BASE_URL}/bets/phases/${phaseCode}`,
       { headers: { Authorization: encodeBearerToken(jwt) } },
     );
   },
-  getGroups(jwt) {
+  getGroups(jwt: string) {
     return axios.get(
       `${BASE_URL}/groups`,
       { headers: { Authorization: encodeBearerToken(jwt) } },
     );
   },
-  getGroupRankByCode(groupName, jwt) {
+  getGroupRankByCode(groupName: string, jwt: string) {
     return axios.get(`${BASE_URL}/bets/groups/rank/${groupName}`, {
       headers: { Authorization: encodeBearerToken(jwt) },
     });
   },
-  modifyScoreBet(betId, score1, score2, jwt) {
+  modifyScoreBet(betId: string, score1: bigint, score2: bigint, jwt: string) {
     return axios.patch(
       `${BASE_URL}/score_bets/${betId}`,
       { team1: { score: score1 }, team2: { score: score2 } },
       { headers: { Authorization: encodeBearerToken(jwt) } },
     );
   },
-  modifyBinaryBet(id, body, jwt) {
+  modifyBinaryBet(id: string, body: Object, jwt: string) {
     return axios.patch(
       `${BASE_URL}/binary_bets/${id}`,
       body,
@@ -64,13 +64,13 @@ const api = {
   // ------------------------------
   // Result interface
   // ------------------------------
-  getScoreBoard(jwt) {
+  getScoreBoard(jwt: string) {
     return axios.get(`${BASE_URL}/score_board`, { headers: { Authorization: encodeBearerToken(jwt) } });
   },
   // ------------------------------
   // Admin interface
   // ------------------------------
-  postComputePoints(jwt) {
+  postComputePoints(jwt: string) {
     return axios.post(
       `${BASE_URL}/compute_points`,
       null,
@@ -80,7 +80,7 @@ const api = {
   // ------------------------------
   // Rule interface
   // ------------------------------
-  executeRule(ruleId, jwt) {
+  executeRule(ruleId: string, jwt: string) {
     return axios.post(
       `${BASE_URL}/rules/${ruleId}`,
       null,
