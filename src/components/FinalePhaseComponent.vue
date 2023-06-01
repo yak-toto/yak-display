@@ -220,7 +220,7 @@ export default {
                   this.isLocked = true;
                 }
 
-                this.finalePhaseBet[binaryBets.group.id][binaryBets.index - 1] = binaryBets;
+                this.finalePhaseBet[binaryBets.group.id].push(binaryBets);
               }
 
               if (res.data.result.binary_bets.length === 0) {
