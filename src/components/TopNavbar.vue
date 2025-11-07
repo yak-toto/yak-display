@@ -5,12 +5,7 @@
         <div class="navbar-item-custom">
           Utilisateur:&nbsp;<strong>{{ getUserName() }}</strong>
         </div>
-        <template
-          v-if="
-            getUserName() === 'admin' &&
-            !$route.meta.allowAnonymous
-          "
-        >
+        <template v-if="getUserName() === 'admin' && !$route.meta.allowAnonymous">
           <a @click="computePoints" class="navbar-item-custom clickable"> Calculer les points </a>
           <template v-if="displayStatus">
             <div class="navbar-item-custom success" v-if="pointsComputedProperly">
@@ -24,18 +19,10 @@
       </template>
     </div>
     <div class="navbar-right">
-      <router-link
-        to="/login"
-        class="navbar-item-custom clickable"
-        v-if="$route.name === 'signup'"
-      >
+      <router-link to="/login" class="navbar-item-custom clickable" v-if="$route.name === 'signup'">
         Se connecter
       </router-link>
-      <router-link
-        to="/signup"
-        class="navbar-item-custom clickable"
-        v-if="$route.name == 'login'"
-      >
+      <router-link to="/signup" class="navbar-item-custom clickable" v-if="$route.name == 'login'">
         Créer un compte
       </router-link>
       <router-link to="/logout" class="navbar-item-custom clickable" v-if="isAuthenticated()">
@@ -64,7 +51,8 @@ export default {
     computePoints() {
       const yakStore = useYakStore();
 
-      yakStore.computePoints()
+      yakStore
+        .computePoints()
         .then(() => {
           this.pointsComputedProperly = true;
           this.displayStatus = true;

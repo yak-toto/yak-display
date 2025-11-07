@@ -1,6 +1,6 @@
 // utils/index.js
 
-const { Buffer } = require('buffer/');
+import { Buffer } from 'buffer';
 
 export default function isValidJwt(jwt) {
   if (!jwt || jwt.split('.').length < 3) {
