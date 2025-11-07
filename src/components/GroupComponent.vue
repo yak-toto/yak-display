@@ -73,18 +73,16 @@ export default {
   },
   methods: {
     getBetsByGroupCode(groupName) {
-      this.yakStore.getBetsByGroupCode({ groupName })
-        .then((res) => {
-          this.group = res.data.result.group;
-          this.scoreBets = res.data.result.score_bets;
-          this.scoreBetsCopy = _.cloneDeep(this.scoreBets);
-        });
+      this.yakStore.getBetsByGroupCode({ groupName }).then((res) => {
+        this.group = res.data.result.group;
+        this.scoreBets = res.data.result.score_bets;
+        this.scoreBetsCopy = _.cloneDeep(this.scoreBets);
+      });
     },
     getGroupRankByCode(groupName) {
-      this.yakStore.getGroupRankByCode({ groupName })
-        .then((res) => {
-          this.groupRank = res.data.result.group_rank;
-        });
+      this.yakStore.getGroupRankByCode({ groupName }).then((res) => {
+        this.groupRank = res.data.result.group_rank;
+      });
     },
     patchGroup() {
       this.displayStatus = false;
@@ -105,11 +103,13 @@ export default {
 
       if (modifyBets.length !== 0) {
         Promise.all(
-          modifyBets.map((bet) => this.yakStore.modifyScoreBet({
-            betId: bet.id,
-            score1: bet.team1.score,
-            score2: bet.team2.score,
-          })),
+          modifyBets.map((bet) =>
+            this.yakStore.modifyScoreBet({
+              betId: bet.id,
+              score1: bet.team1.score,
+              score2: bet.team2.score,
+            }),
+          ),
         )
           .then(() => {
             this.scoreBetsCopy = _.cloneDeep(this.scoreBets);

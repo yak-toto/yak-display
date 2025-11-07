@@ -9,8 +9,13 @@
           <div class="field control">
             <label class="label" for="pseudo">
               Pseudo
-              <input type="text" class="input is-large"
-                id="pseudo" placeholder="pseudo" v-model="name" />
+              <input
+                type="text"
+                class="input is-large"
+                id="pseudo"
+                placeholder="pseudo"
+                v-model="name"
+              />
             </label>
           </div>
 
@@ -43,8 +48,12 @@
           <div class="field control">
             <label class="label" for="password">
               Mot de passe
-              <input type="password" class="input is-large"
-                placeholder="mot de passe" v-model="password" />
+              <input
+                type="password"
+                class="input is-large"
+                placeholder="mot de passe"
+                v-model="password"
+              />
             </label>
           </div>
 
@@ -73,12 +82,13 @@ export default {
   },
   methods: {
     signup() {
-      api.postSignup({
-        name: this.name,
-        first_name: this.firstName,
-        last_name: this.lastName,
-        password: this.password,
-      })
+      api
+        .postSignup({
+          name: this.name,
+          first_name: this.firstName,
+          last_name: this.lastName,
+          password: this.password,
+        })
         .then((response) => {
           const yakStore = useYakStore();
           yakStore.setJwtToken({ jwt: response.data.result.access_token });
@@ -114,7 +124,9 @@ export default {
 .box-signup-form {
   background-color: white;
   border-radius: 6px;
-  box-shadow: 0 2px 3px rgb(10 10 10 / 10%), 0 0 0 1px rgb(10 10 10 / 10%);
+  box-shadow:
+    0 2px 3px rgb(10 10 10 / 10%),
+    0 0 0 1px rgb(10 10 10 / 10%);
   color: #4a4a4a;
   display: block;
   padding: 1.25rem;

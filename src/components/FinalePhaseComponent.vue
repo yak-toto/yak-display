@@ -17,27 +17,34 @@
             <tbody>
               <tr
                 v-for="index in range(finalePhaseBet[groups[0].id].length)"
-                :key="index" v-if="groups.length !== 0"
+                :key="index"
+                v-if="groups.length !== 0"
               >
                 <template v-for="[groupIndex, group] in groups.entries()" :key="group.id">
-                  <td :rowspan="Math.pow(2, groupIndex)" v-if="index % Math.pow(2, groupIndex) === 0">
+                  <td
+                    :rowspan="Math.pow(2, groupIndex)"
+                    v-if="index % Math.pow(2, groupIndex) === 0"
+                  >
                     <div class="box-match">
                       <template
                         v-if="
-                          finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1.description ===
-                            '' ||
-                          finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2.description === ''
+                          finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1
+                            .description === '' ||
+                          finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2
+                            .description === ''
                         "
                       >
                         <div>
                           &#8205;{{
-                            finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1.description
+                            finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1
+                              .description
                           }}
                         </div>
                         <hr />
                         <div>
                           &#8205;{{
-                            finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2.description
+                            finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2
+                              .description
                           }}
                         </div>
                       </template>
@@ -45,7 +52,8 @@
                         <div class="box-team">
                           <div v-if="isLocked">
                             &#8205;{{
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1.description
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1
+                                .description
                             }}
                           </div>
                           <a
@@ -55,18 +63,20 @@
                                 groupIndex,
                                 index / Math.pow(2, groupIndex),
                                 finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1,
-                                true
+                                true,
                               )
                             "
                           >
                             &#8205;{{
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1.description
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1
+                                .description
                             }}
                           </a>
                           <div
                             class="box-match-tick-green"
                             v-if="
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].is_one_won === true
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)]
+                                .is_one_won === true
                             "
                           >
                             V
@@ -74,7 +84,8 @@
                           <div
                             class="box-match-tick-red"
                             v-else-if="
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].is_one_won === false
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)]
+                                .is_one_won === false
                             "
                           >
                             D
@@ -84,7 +95,8 @@
                         <div class="box-team">
                           <div v-if="isLocked">
                             &#8205;{{
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2.description
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2
+                                .description
                             }}
                           </div>
                           <a
@@ -94,18 +106,20 @@
                                 groupIndex,
                                 index / Math.pow(2, groupIndex),
                                 finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2,
-                                false
+                                false,
                               )
                             "
                           >
                             &#8205;{{
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2.description
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2
+                                .description
                             }}
                           </a>
                           <div
                             class="box-match-tick-green"
                             v-if="
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].is_one_won === false
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)]
+                                .is_one_won === false
                             "
                           >
                             V
@@ -113,7 +127,8 @@
                           <div
                             class="box-match-tick-red"
                             v-else-if="
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].is_one_won === true
+                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)]
+                                .is_one_won === true
                             "
                           >
                             D
@@ -170,75 +185,76 @@ export default {
   methods: {
     range,
     getFinalePhase() {
-      this.yakStore.executeRule('492345de-8d4a-45b6-8b94-d219f2b0c3e9')
-        .then((res) => {
-          this.yakStore.getBetsByPhaseCode({ phaseCode: 'FINAL' })
-            .then((res) => {
-              this.phase = res.data.result.phase;
-              this.groups = res.data.result.groups.filter((group) => group.code !== '3');
+      this.yakStore.executeRule('492345de-8d4a-45b6-8b94-d219f2b0c3e9').then((res) => {
+        this.yakStore.getBetsByPhaseCode({ phaseCode: 'FINAL' }).then((res) => {
+          this.phase = res.data.result.phase;
+          this.groups = res.data.result.groups.filter((group) => group.code !== '3');
 
-              for (const group of this.groups) {
-                this.finalePhaseBet[group.id] = [];
+          for (const group of this.groups) {
+            this.finalePhaseBet[group.id] = [];
+          }
+
+          for (const binaryBets of res.data.result.binary_bets) {
+            if (binaryBets.team1 === null && binaryBets.team2 === null) {
+              binaryBets.is_one_won = null;
+              binaryBets.team1 = {
+                description: '',
+              };
+              binaryBets.team2 = {
+                description: '',
+              };
+            } else if (binaryBets.team1 === null) {
+              if (binaryBets.team2.won === null) {
+                binaryBets.is_one_won = null;
+              } else {
+                binaryBets.is_one_won = !binaryBets.team2.won;
               }
 
-              for (const binaryBets of res.data.result.binary_bets) {
-                if (binaryBets.team1 === null && binaryBets.team2 === null) {
-                  binaryBets.is_one_won = null;
-                  binaryBets.team1 = {
-                    description: '',
-                  };
-                  binaryBets.team2 = {
-                    description: '',
-                  };
-                } else if (binaryBets.team1 === null) {
-                  if (binaryBets.team2.won === null) {
-                    binaryBets.is_one_won = null;
-                  } else {
-                    binaryBets.is_one_won = !binaryBets.team2.won;
-                  }
-
-                  binaryBets.team1 = {
-                    description: '',
-                  };
-                } else if (binaryBets.team2 === null) {
-                  if (binaryBets.team1.won === null) {
-                    binaryBets.is_one_won = null;
-                  } else {
-                    binaryBets.is_one_won = binaryBets.team1.won;
-                  }
-
-                  binaryBets.team2 = {
-                    description: '',
-                  };
-                } else if (binaryBets.team1.won === null) {
-                  binaryBets.is_one_won = null;
-                } else {
-                  binaryBets.is_one_won = binaryBets.team1.won;
-                }
-
-                if (binaryBets.locked) {
-                  this.isLocked = true;
-                }
-
-                this.finalePhaseBet[binaryBets.group.id].push(binaryBets);
+              binaryBets.team1 = {
+                description: '',
+              };
+            } else if (binaryBets.team2 === null) {
+              if (binaryBets.team1.won === null) {
+                binaryBets.is_one_won = null;
+              } else {
+                binaryBets.is_one_won = binaryBets.team1.won;
               }
 
-              if (res.data.result.binary_bets.length === 0) {
-                this.isLocked = true;
-              }
+              binaryBets.team2 = {
+                description: '',
+              };
+            } else if (binaryBets.team1.won === null) {
+              binaryBets.is_one_won = null;
+            } else {
+              binaryBets.is_one_won = binaryBets.team1.won;
+            }
 
-              this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
-            });
+            if (binaryBets.locked) {
+              this.isLocked = true;
+            }
+
+            this.finalePhaseBet[binaryBets.group.id].push(binaryBets);
+          }
+
+          if (res.data.result.binary_bets.length === 0) {
+            this.isLocked = true;
+          }
+
+          this.finalePhaseBetCopy = _.cloneDeep(this.finalePhaseBet);
         });
+      });
     },
     pushBet(groupIndex, betIndex, team, isOneWon) {
       this.finalePhaseBet[this.groups[groupIndex].id][betIndex].is_one_won = isOneWon;
 
       const teamIndex = betIndex % 2 === 0 ? 1 : 2;
       const newBetIndex = betIndex % 2 === 0 ? betIndex / 2 : (betIndex - 1) / 2;
-      const originalTeamDescription = this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`].description;
+      const originalTeamDescription =
+        this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`]
+          .description;
 
-      this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`] = _.clone(team);
+      this.finalePhaseBet[this.groups[groupIndex + 1].id][newBetIndex][`team${teamIndex}`] =
+        _.clone(team);
 
       for (const group of this.groups.slice(groupIndex + 2)) {
         for (const bet of this.finalePhaseBet[group.id]) {
@@ -252,13 +268,14 @@ export default {
       }
     },
     putFinalePhaseBet() {
-      for (
-        const [newBet, originalBet] of
-        _.zip(
-          Object.values(this.finalePhaseBet).flat().sort((bet) => bet.id),
-          Object.values(this.finalePhaseBetCopy).flat().sort((bet) => bet.id),
-        )
-      ) {
+      for (const [newBet, originalBet] of _.zip(
+        Object.values(this.finalePhaseBet)
+          .flat()
+          .sort((bet) => bet.id),
+        Object.values(this.finalePhaseBetCopy)
+          .flat()
+          .sort((bet) => bet.id),
+      )) {
         const requestBody = {};
         let isUpdateRequired = false;
 

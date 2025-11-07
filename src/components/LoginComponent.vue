@@ -54,7 +54,8 @@ export default {
   },
   methods: {
     login() {
-      api.postLogin({ name: this.name, password: this.password })
+      api
+        .postLogin({ name: this.name, password: this.password })
         .then((response) => {
           const yakStore = useYakStore();
           yakStore.setJwtToken({ jwt: response.data.result.access_token });

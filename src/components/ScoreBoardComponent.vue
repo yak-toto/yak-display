@@ -57,10 +57,9 @@ export default {
   },
   methods: {
     getScoreBoard() {
-      this.yakStore.getScoreBoard()
-        .then((res) => {
-          this.scoreBoardResource = res.data.result;
-        });
+      this.yakStore.getScoreBoard().then((res) => {
+        this.scoreBoardResource = res.data.result;
+      });
     },
   },
   created() {
