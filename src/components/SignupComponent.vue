@@ -81,7 +81,7 @@ export default {
       })
         .then((response) => {
           const yakStore = useYakStore();
-          yakStore.setJwtToken({ jwt: response.data.result.token });
+          yakStore.setJwtToken({ jwt: response.data.result.access_token });
           yakStore.setUserName({ userName: response.data.result.name });
 
           this.$router.push('/groups/A');
