@@ -14,12 +14,8 @@
                 <th v-for="group of groups" :key="group.id">{{ group.description }}</th>
               </tr>
             </thead>
-            <tbody>
-              <tr
-                v-for="index in range(finalePhaseBet[groups[0].id].length)"
-                :key="index"
-                v-if="groups.length !== 0"
-              >
+            <tbody v-if="groups.length !== 0">
+              <tr v-for="index in range(finalePhaseBet[groups[0].id].length)" :key="index">
                 <template v-for="[groupIndex, group] in groups.entries()" :key="group.id">
                   <td
                     :rowspan="Math.pow(2, groupIndex)"
@@ -185,7 +181,7 @@ export default {
   methods: {
     range,
     getFinalePhase() {
-      this.yakStore.executeRule('492345de-8d4a-45b6-8b94-d219f2b0c3e9').then((res) => {
+      this.yakStore.executeRule('492345de-8d4a-45b6-8b94-d219f2b0c3e9').then(() => {
         this.yakStore.getBetsByPhaseCode({ phaseCode: 'FINAL' }).then((res) => {
           this.phase = res.data.result.phase;
           this.groups = res.data.result.groups.filter((group) => group.code !== '3');
