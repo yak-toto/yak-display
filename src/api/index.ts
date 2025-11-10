@@ -1,5 +1,3 @@
-// api/index.js
-
 import axios from 'axios';
 
 const URL = import.meta.env.PROD ? 'https://yak-toto.com' : 'http://127.0.0.1:8000';
