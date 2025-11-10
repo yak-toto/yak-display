@@ -47,13 +47,10 @@
   </table>
 </template>
 
-<script>
-export default {
-  name: 'GroupRank',
-  props: {
-    groupRank: Array,
-  },
-};
+<script setup>
+defineProps({
+  groupRank: Array,
+});
 </script>
 
 <style>

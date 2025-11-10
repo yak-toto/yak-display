@@ -64,49 +64,47 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import useYakStore from '@/store';
 import api from '@/api';
 
-export default {
-  name: 'SignupComponent',
-  data() {
-    return {
-      name: '',
-      firstName: '',
-      lastName: '',
-      password: '',
-      invalidSignup: false,
-      errorMessage: '',
-    };
-  },
-  methods: {
-    signup() {
-      api
-        .postSignup({
-          name: this.name,
-          first_name: this.firstName,
-          last_name: this.lastName,
-          password: this.password,
-        })
-        .then((response) => {
-          const yakStore = useYakStore();
-          yakStore.setJwtToken({ jwt: response.data.result.access_token });
-          yakStore.setUserName({ userName: response.data.result.name });
+const router = useRouter();
+const yakStore = useYakStore();
 
-          this.$router.push('/groups/A');
-        })
-        .catch((error) => {
-          this.invalidSignup = true;
-          this.errorMessage = error.response.data.description;
+// Reactive data
+const name = ref('');
+const firstName = ref('');
+const lastName = ref('');
+const password = ref('');
+const invalidSignup = ref(false);
+const errorMessage = ref('');
 
-          setTimeout(() => {
-            this.invalidSignup = false;
-            this.errorMessage = '';
-          }, 2000);
-        });
-    },
-  },
+// Methods
+const signup = () => {
+  api
+    .postSignup({
+      name: name.value,
+      first_name: firstName.value,
+      last_name: lastName.value,
+      password: password.value,
+    })
+    .then((response) => {
+      yakStore.setJwtToken({ jwt: response.data.result.access_token });
+      yakStore.setUserName({ userName: response.data.result.name });
+
+      router.push('/groups/A');
+    })
+    .catch((error) => {
+      invalidSignup.value = true;
+      errorMessage.value = error.response.data.description;
+
+      setTimeout(() => {
+        invalidSignup.value = false;
+        errorMessage.value = '';
+      }, 2000);
+    });
 };
 </script>
 
