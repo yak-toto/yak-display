@@ -47,7 +47,7 @@
   </table>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps({
   groupRank: Array,
 });
