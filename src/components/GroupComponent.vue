@@ -43,7 +43,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import _ from 'lodash';
 import { ref } from 'vue';
 import { onBeforeRouteUpdate } from 'vue-router';

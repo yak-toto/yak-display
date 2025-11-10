@@ -8,7 +8,7 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TopNavbar from '@/components/TopNavbar.vue';
 </script>
 
