@@ -32,47 +32,41 @@
   </div>
 </template>
 
-<script>
-import { mapActions, mapState } from 'pinia';
-
+<script setup>
+import { ref } from 'vue';
 import useYakStore from '@/store';
 
-export default {
-  name: 'TopNavbar',
-  data() {
-    return {
-      displayStatus: false,
-      pointsComputedProperly: false,
-    };
-  },
-  methods: {
-    ...mapActions(useYakStore, ['isAuthenticated']),
-    ...mapState(useYakStore, ['getUserName']),
-    computePoints() {
-      const yakStore = useYakStore();
+const yakStore = useYakStore();
 
-      yakStore
-        .computePoints()
-        .then(() => {
-          this.pointsComputedProperly = true;
-          this.displayStatus = true;
+// Reactive data
+const displayStatus = ref(false);
+const pointsComputedProperly = ref(false);
 
-          setTimeout(() => {
-            this.displayStatus = false;
-            this.pointsComputedProperly = false;
-          }, 2000);
-        })
-        .catch(() => {
-          this.pointsComputedProperly = false;
-          this.displayStatus = true;
+// Methods
+const isAuthenticated = () => yakStore.isAuthenticated();
+const getUserName = () => yakStore.getUserName;
 
-          setTimeout(() => {
-            this.displayStatus = false;
-            this.pointsComputedProperly = false;
-          }, 2000);
-        });
-    },
-  },
+const computePoints = () => {
+  yakStore
+    .computePoints()
+    .then(() => {
+      pointsComputedProperly.value = true;
+      displayStatus.value = true;
+
+      setTimeout(() => {
+        displayStatus.value = false;
+        pointsComputedProperly.value = false;
+      }, 2000);
+    })
+    .catch(() => {
+      pointsComputedProperly.value = false;
+      displayStatus.value = true;
+
+      setTimeout(() => {
+        displayStatus.value = false;
+        pointsComputedProperly.value = false;
+      }, 2000);
+    });
 };
 </script>
 

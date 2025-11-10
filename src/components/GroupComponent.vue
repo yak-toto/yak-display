@@ -43,117 +43,113 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import _ from 'lodash';
-import useYakStore from '@/store';
 import { ref } from 'vue';
+import { onBeforeRouteUpdate } from 'vue-router';
+import useYakStore from '@/store';
 import GroupNavbar from './GroupNavbar.vue';
 import GroupRank from './GroupRank.vue';
 
-export default {
-  name: 'GroupComponent',
-  components: {
-    GroupNavbar,
-    GroupRank,
-  },
-  props: {
-    groupName: String,
-  },
-  setup() {
-    return {
-      yakStore: useYakStore(),
-      group: ref({}),
-      scoreBets: ref([]),
-      // keep copy of group resource to send only PATCH /match of the updated matches
-      scoreBetsCopy: ref([]),
-      groupRank: ref([]),
-      displayStatus: ref(false),
-      updateProperly: ref(null),
-    };
-  },
-  methods: {
-    getBetsByGroupCode(groupName) {
-      this.yakStore.getBetsByGroupCode({ groupName }).then((res) => {
-        this.group = res.data.result.group;
-        this.scoreBets = res.data.result.score_bets;
-        this.scoreBetsCopy = _.cloneDeep(this.scoreBets);
-      });
-    },
-    getGroupRankByCode(groupName) {
-      this.yakStore.getGroupRankByCode({ groupName }).then((res) => {
-        this.groupRank = res.data.result.group_rank;
-      });
-    },
-    patchGroup() {
-      this.displayStatus = false;
+const props = defineProps({
+  groupName: String,
+});
 
-      const modifyBets = [];
+const yakStore = useYakStore();
 
-      for (const [group, groupCopy] of _.zip(this.scoreBets, this.scoreBetsCopy)) {
-        if (!_.isEqual(group, groupCopy)) {
-          if (group.team1.score === '') {
-            group.team1.score = null;
-          }
-          if (group.team2.score === '') {
-            group.team2.score = null;
-          }
-          modifyBets.push(group);
-        }
-      }
+// Reactive data
+const group = ref({});
+const scoreBets = ref([]);
+// keep copy of group resource to send only PATCH /match of the updated matches
+const scoreBetsCopy = ref([]);
+const groupRank = ref([]);
+const displayStatus = ref(false);
+const updateProperly = ref(null);
 
-      if (modifyBets.length !== 0) {
-        Promise.all(
-          modifyBets.map((bet) =>
-            this.yakStore.modifyScoreBet({
-              betId: bet.id,
-              score1: bet.team1.score,
-              score2: bet.team2.score,
-            }),
-          ),
-        )
-          .then(() => {
-            this.scoreBetsCopy = _.cloneDeep(this.scoreBets);
-
-            this.updateProperly = true;
-            this.displayStatus = true;
-
-            this.getGroupRankByCode(this.group.code);
-
-            setTimeout(() => {
-              this.displayStatus = false;
-              this.updateProperly = null;
-            }, 2000);
-          })
-          .catch(() => {
-            this.scoreBets = _.cloneDeep(this.scoreBetsCopy);
-
-            this.updateProperly = false;
-            this.displayStatus = true;
-
-            setTimeout(() => {
-              this.displayStatus = false;
-              this.updateProperly = null;
-            }, 2000);
-          });
-      } else {
-        this.displayStatus = true;
-        setTimeout(() => {
-          this.displayStatus = false;
-        }, 2000);
-      }
-    },
-  },
-  beforeRouteUpdate(to, _, next) {
-    this.getBetsByGroupCode(to.params.groupName);
-    this.getGroupRankByCode(to.params.groupName);
-    this.displayStatus = false;
-    next();
-  },
-  created() {
-    this.getBetsByGroupCode(this.groupName);
-    this.getGroupRankByCode(this.groupName);
-  },
+// Methods
+const getBetsByGroupCode = (groupName) => {
+  yakStore.getBetsByGroupCode({ groupName }).then((res) => {
+    group.value = res.data.result.group;
+    scoreBets.value = res.data.result.score_bets;
+    scoreBetsCopy.value = _.cloneDeep(scoreBets.value);
+  });
 };
+
+const getGroupRankByCode = (groupName) => {
+  yakStore.getGroupRankByCode({ groupName }).then((res) => {
+    groupRank.value = res.data.result.group_rank;
+  });
+};
+
+const patchGroup = () => {
+  displayStatus.value = false;
+
+  const modifyBets = [];
+
+  for (const [group, groupCopy] of _.zip(scoreBets.value, scoreBetsCopy.value)) {
+    if (!_.isEqual(group, groupCopy)) {
+      if (group.team1.score === '') {
+        group.team1.score = null;
+      }
+      if (group.team2.score === '') {
+        group.team2.score = null;
+      }
+      modifyBets.push(group);
+    }
+  }
+
+  if (modifyBets.length !== 0) {
+    Promise.all(
+      modifyBets.map((bet) =>
+        yakStore.modifyScoreBet({
+          betId: bet.id,
+          score1: bet.team1.score,
+          score2: bet.team2.score,
+        }),
+      ),
+    )
+      .then(() => {
+        scoreBetsCopy.value = _.cloneDeep(scoreBets.value);
+
+        updateProperly.value = true;
+        displayStatus.value = true;
+
+        getGroupRankByCode(group.value.code);
+
+        setTimeout(() => {
+          displayStatus.value = false;
+          updateProperly.value = null;
+        }, 2000);
+      })
+      .catch(() => {
+        scoreBets.value = _.cloneDeep(scoreBetsCopy.value);
+
+        updateProperly.value = false;
+        displayStatus.value = true;
+
+        setTimeout(() => {
+          displayStatus.value = false;
+          updateProperly.value = null;
+        }, 2000);
+      });
+  } else {
+    displayStatus.value = true;
+    setTimeout(() => {
+      displayStatus.value = false;
+    }, 2000);
+  }
+};
+
+// Route navigation guard
+onBeforeRouteUpdate((to) => {
+  getBetsByGroupCode(to.params.groupName);
+  getGroupRankByCode(to.params.groupName);
+  displayStatus.value = false;
+});
+
+// Equivalent to created() lifecycle hook
+getBetsByGroupCode(props.groupName);
+getGroupRankByCode(props.groupName);
 </script>
 
 <style lang="css">

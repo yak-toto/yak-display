@@ -8,15 +8,8 @@
   </section>
 </template>
 
-<script>
+<script setup>
 import TopNavbar from '@/components/TopNavbar.vue';
-
-export default {
-  name: 'App',
-  components: {
-    TopNavbar,
-  },
-};
 </script>
 
 <style lang="css">

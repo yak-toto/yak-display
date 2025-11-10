@@ -39,33 +39,25 @@
   </div>
 </template>
 
-<script>
-import useYakStore from '@/store';
+<script setup>
 import { ref } from 'vue';
+import useYakStore from '@/store';
 import GroupNavbar from './GroupNavbar.vue';
 
-export default {
-  name: 'ScoreBoardComponent',
-  components: {
-    GroupNavbar,
-  },
-  setup() {
-    return {
-      yakStore: useYakStore(),
-      scoreBoardResource: ref([]),
-    };
-  },
-  methods: {
-    getScoreBoard() {
-      this.yakStore.getScoreBoard().then((res) => {
-        this.scoreBoardResource = res.data.result;
-      });
-    },
-  },
-  created() {
-    this.getScoreBoard();
-  },
+const yakStore = useYakStore();
+
+// Reactive data
+const scoreBoardResource = ref([]);
+
+// Methods
+const getScoreBoard = () => {
+  yakStore.getScoreBoard().then((res) => {
+    scoreBoardResource.value = res.data.result;
+  });
 };
+
+// Equivalent to created() lifecycle hook
+getScoreBoard();
 </script>
 
 <style lang="css">

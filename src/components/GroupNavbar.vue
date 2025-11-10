@@ -11,35 +11,30 @@
   </div>
 </template>
 
-<script>
-import useYakStore from '@/store';
+<script setup>
 import { ref } from 'vue';
+import useYakStore from '@/store';
 
-export default {
-  name: 'GroupNavbar',
-  setup() {
-    return {
-      yakStore: useYakStore(),
-      groupPhase: ref({}),
-      finalePhase: ref({}),
-      groups: ref([]),
-    };
-  },
-  methods: {
-    getGroups() {
-      this.yakStore.getGroups().then((response) => {
-        this.groupPhase = response.data.result.phases.find((phase) => phase.code === 'GROUP');
-        this.finalePhase = response.data.result.phases.find((phase) => phase.code === 'FINAL');
-        this.groups = response.data.result.groups.filter(
-          (group) => group.phase.id === this.groupPhase.id,
-        );
-      });
-    },
-  },
-  created() {
-    this.getGroups();
-  },
+const yakStore = useYakStore();
+
+// Reactive data
+const groupPhase = ref({});
+const finalePhase = ref({});
+const groups = ref([]);
+
+// Methods
+const getGroups = () => {
+  yakStore.getGroups().then((response) => {
+    groupPhase.value = response.data.result.phases.find((phase) => phase.code === 'GROUP');
+    finalePhase.value = response.data.result.phases.find((phase) => phase.code === 'FINAL');
+    groups.value = response.data.result.groups.filter(
+      (group) => group.phase.id === groupPhase.value.id,
+    );
+  });
 };
+
+// Equivalent to created() lifecycle hook
+getGroups();
 </script>
 
 <style lang="css">

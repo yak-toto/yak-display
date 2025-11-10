@@ -38,42 +38,40 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import useYakStore from '@/store';
 import api from '@/api';
 
-export default {
-  name: 'LoginComponent',
-  data() {
-    return {
-      name: '',
-      password: '',
-      invalidLogin: false,
-      errorMessage: '',
-    };
-  },
-  methods: {
-    login() {
-      api
-        .postLogin({ name: this.name, password: this.password })
-        .then((response) => {
-          const yakStore = useYakStore();
-          yakStore.setJwtToken({ jwt: response.data.result.access_token });
-          yakStore.setUserName({ userName: response.data.result.name });
+const router = useRouter();
+const yakStore = useYakStore();
 
-          this.$router.push('/groups/A');
-        })
-        .catch((error) => {
-          this.invalidLogin = true;
-          this.errorMessage = error.response.data.description;
+// Reactive data
+const name = ref('');
+const password = ref('');
+const invalidLogin = ref(false);
+const errorMessage = ref('');
 
-          setTimeout(() => {
-            this.invalidLogin = false;
-            this.errorMessage = '';
-          }, 2000);
-        });
-    },
-  },
+// Methods
+const login = () => {
+  api
+    .postLogin({ name: name.value, password: password.value })
+    .then((response) => {
+      yakStore.setJwtToken({ jwt: response.data.result.access_token });
+      yakStore.setUserName({ userName: response.data.result.name });
+
+      router.push('/groups/A');
+    })
+    .catch((error) => {
+      invalidLogin.value = true;
+      errorMessage.value = error.response.data.description;
+
+      setTimeout(() => {
+        invalidLogin.value = false;
+        errorMessage.value = '';
+      }, 2000);
+    });
 };
 </script>
 
