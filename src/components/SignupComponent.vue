@@ -57,7 +57,10 @@
             </label>
           </div>
 
-          <button class="button is-block is-info is-large is-fullwidth">Créer un compte</button>
+          <button class="button is-block is-info is-large is-fullwidth" :disabled="loading">
+            <span v-if="loading">Création en cours...</span>
+            <span v-else>Créer un compte</span>
+          </button>
         </form>
       </div>
     </div>
@@ -68,7 +71,8 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import useYakStore from '@/store';
-import api from '@/api';
+import { signupApiV1UsersSignupPost } from '@/client';
+import type { SignupIn, ErrorOut } from '@/client';
 
 const router = useRouter();
 const yakStore = useYakStore();
@@ -80,31 +84,43 @@ const lastName = ref('');
 const password = ref('');
 const invalidSignup = ref(false);
 const errorMessage = ref('');
+const loading = ref(false);
 
-// Methods
-const signup = () => {
-  api
-    .postSignup({
-      name: name.value,
-      first_name: firstName.value,
-      last_name: lastName.value,
-      password: password.value,
-    })
-    .then((response) => {
-      yakStore.setJwtToken({ jwt: response.data.result.access_token });
-      yakStore.setUserName({ userName: response.data.result.name });
+const signup = async () => {
+  if (loading.value) {
+    return;
+  }
 
-      router.push('/groups/A');
-    })
-    .catch((error) => {
-      invalidSignup.value = true;
-      errorMessage.value = error.response.data.description;
+  loading.value = true;
+  invalidSignup.value = false;
+  errorMessage.value = '';
 
-      setTimeout(() => {
-        invalidSignup.value = false;
-        errorMessage.value = '';
-      }, 2000);
-    });
+  const signupData: SignupIn = {
+    name: name.value,
+    first_name: firstName.value,
+    last_name: lastName.value,
+    password: password.value,
+  };
+
+  const { data, error } = await signupApiV1UsersSignupPost({ body: signupData });
+
+  if (data) {
+    yakStore.setJwtToken({ jwt: data.result.access_token });
+    yakStore.setUserName({ userName: data.result.name });
+
+    router.push('/groups/A');
+  } else {
+    loading.value = false;
+    invalidSignup.value = true;
+    errorMessage.value =
+      (error as ErrorOut)?.description || 'Une erreur est survenue lors de la création du compte';
+  }
+
+  setTimeout(() => {
+    loading.value = false;
+    invalidSignup.value = false;
+    errorMessage.value = '';
+  }, 3_000);
 };
 </script>
 
