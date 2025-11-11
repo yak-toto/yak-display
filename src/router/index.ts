@@ -60,16 +60,28 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const yakStore = useYakStore();
+  // Access store inside the guard function, not during module initialization
+  try {
+    const yakStore = useYakStore();
 
-  if (!to.meta.allowAnonymous && !yakStore.isAuthenticated()) {
-    yakStore.eraseJwtToken();
-    next('/login');
-  } else if (to.meta.allowAnonymous && !from.meta.allowAnonymous) {
-    yakStore.eraseJwtToken();
-    next();
-  } else {
-    next();
+    if (!to.meta.allowAnonymous && !yakStore.isAuthenticated) {
+      yakStore.eraseJwtToken();
+      next('/login');
+    } else if (to.meta.allowAnonymous && !from.meta.allowAnonymous) {
+      yakStore.eraseJwtToken();
+      next();
+    } else {
+      next();
+    }
+  } catch (error) {
+    // If Pinia is not ready yet, allow navigation to continue
+    // This handles the case where the router runs before Pinia is initialized
+    console.warn('Pinia not ready in router guard, allowing navigation:', error);
+    if (!to.meta.allowAnonymous) {
+      next('/login');
+    } else {
+      next();
+    }
   }
 });
 

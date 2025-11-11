@@ -43,7 +43,7 @@ const displayStatus = ref(false);
 const pointsComputedProperly = ref(false);
 
 // Methods
-const isAuthenticated = () => yakStore.isAuthenticated();
+const isAuthenticated = () => yakStore.isAuthenticated;
 const getUserName = () => yakStore.getUserName;
 
 const computePoints = () => {

@@ -41,11 +41,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import useYakStore from '@/store';
-import api from '@/api';
+import { useAuth } from '@/composables/useAuth';
 
 const router = useRouter();
-const yakStore = useYakStore();
+const { login: authLogin } = useAuth();
 
 // Reactive data
 const name = ref('');
@@ -54,24 +53,29 @@ const invalidLogin = ref(false);
 const errorMessage = ref('');
 
 // Methods
-const login = () => {
-  api
-    .postLogin({ name: name.value, password: password.value })
-    .then((response) => {
-      yakStore.setJwtToken({ jwt: response.data.result.access_token });
-      yakStore.setUserName({ userName: response.data.result.name });
+const login = async () => {
+  if (!name.value || !password.value) {
+    invalidLogin.value = true;
+    errorMessage.value = 'Veuillez remplir tous les champs';
+    return;
+  }
 
-      router.push('/groups/A');
-    })
-    .catch((error) => {
-      invalidLogin.value = true;
-      errorMessage.value = error.response.data.description;
+  const result = await authLogin({
+    email: name.value, // Note: Backend might expect 'email' instead of 'name'
+    password: password.value,
+  });
 
-      setTimeout(() => {
-        invalidLogin.value = false;
-        errorMessage.value = '';
-      }, 2000);
-    });
+  if (result.success) {
+    router.push('/groups/A');
+  } else {
+    invalidLogin.value = true;
+    errorMessage.value = result.error || 'Erreur de connexion';
+
+    setTimeout(() => {
+      invalidLogin.value = false;
+      errorMessage.value = '';
+    }, 2000);
+  }
 };
 </script>
 
