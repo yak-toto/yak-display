@@ -35,6 +35,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import useYakStore from '@/store';
+import { executeRuleApiV1RulesRuleIdPost } from '@/client/sdk.gen';
 
 const yakStore = useYakStore();
 
@@ -46,27 +47,28 @@ const pointsComputedProperly = ref(false);
 const isAuthenticated = () => yakStore.isAuthenticated();
 const getUserName = () => yakStore.getUserName;
 
-const computePoints = () => {
-  yakStore
-    .computePoints()
-    .then(() => {
-      pointsComputedProperly.value = true;
-      displayStatus.value = true;
-
-      setTimeout(() => {
-        displayStatus.value = false;
-        pointsComputedProperly.value = false;
-      }, 2000);
-    })
-    .catch(() => {
-      pointsComputedProperly.value = false;
-      displayStatus.value = true;
-
-      setTimeout(() => {
-        displayStatus.value = false;
-        pointsComputedProperly.value = false;
-      }, 2000);
+const computePoints = async () => {
+  try {
+    const jwt = yakStore.jwt;
+    const ruleId = '62d46542-8cf1-4a3b-af77-a5086f10ac59';
+    await executeRuleApiV1RulesRuleIdPost({
+      path: { rule_id: ruleId },
+      headers: { Authorization: `Bearer ${jwt}` },
     });
+    pointsComputedProperly.value = true;
+    displayStatus.value = true;
+    setTimeout(() => {
+      displayStatus.value = false;
+      pointsComputedProperly.value = false;
+    }, 2000);
+  } catch (e) {
+    pointsComputedProperly.value = false;
+    displayStatus.value = true;
+    setTimeout(() => {
+      displayStatus.value = false;
+      pointsComputedProperly.value = false;
+    }, 2000);
+  }
 };
 </script>
 

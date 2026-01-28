@@ -4,7 +4,7 @@
       <GroupNavbar />
     </div>
     <div class="table-finale-phase">
-      <h3 class="title">{{ phase.description }}</h3>
+      <h3 class="title" v-if="phase">{{ phase.description }}</h3>
 
       <div class="box-group">
         <form v-on:submit.prevent="putFinalePhaseBet">
@@ -14,33 +14,37 @@
                 <th v-for="group of groups" :key="group.id">{{ group.description }}</th>
               </tr>
             </thead>
-            <tbody v-if="groups.length !== 0">
-              <tr v-for="index in range(finalePhaseBet[groups[0].id].length)" :key="index">
+            <tbody v-if="groups.length !== 0 && groups[0] && finalePhaseBet[groups[0]!.id]?.length">
+              <tr v-for="index in range(finalePhaseBet[groups[0]!.id]?.length || 0)" :key="index">
                 <template v-for="[groupIndex, group] in groups.entries()" :key="group.id">
                   <td
+                    v-if="
+                      group.id &&
+                      finalePhaseBet[group.id!]?.[Math.floor(index / Math.pow(2, groupIndex))] &&
+                      index % Math.pow(2, groupIndex) === 0
+                    "
                     :rowspan="Math.pow(2, groupIndex)"
-                    v-if="index % Math.pow(2, groupIndex) === 0"
                   >
                     <div class="box-match">
                       <template
                         v-if="
-                          finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1
-                            .description === '' ||
-                          finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2
-                            .description === ''
+                          finalePhaseBet[group.id!]?.[Math.floor(index / Math.pow(2, groupIndex))]
+                            ?.team1?.description === '' ||
+                          finalePhaseBet[group.id!]?.[Math.floor(index / Math.pow(2, groupIndex))]
+                            ?.team2?.description === ''
                         "
                       >
                         <div>
                           &#8205;{{
-                            finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1
-                              .description
+                            finalePhaseBet[group.id!]?.[Math.floor(index / Math.pow(2, groupIndex))]
+                              ?.team1?.description
                           }}
                         </div>
                         <hr />
                         <div>
                           &#8205;{{
-                            finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2
-                              .description
+                            finalePhaseBet[group.id!]?.[Math.floor(index / Math.pow(2, groupIndex))]
+                              ?.team2?.description
                           }}
                         </div>
                       </template>
@@ -48,8 +52,9 @@
                         <div class="box-team">
                           <div v-if="isLocked">
                             &#8205;{{
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1
-                                .description
+                              finalePhaseBet[group.id!]?.[
+                                Math.floor(index / Math.pow(2, groupIndex))
+                              ]?.team1?.description
                             }}
                           </div>
                           <a
@@ -57,22 +62,26 @@
                             @click="
                               pushBet(
                                 groupIndex,
-                                index / Math.pow(2, groupIndex),
-                                finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1,
+                                Math.floor(index / Math.pow(2, groupIndex)),
+                                finalePhaseBet[group.id!]?.[
+                                  Math.floor(index / Math.pow(2, groupIndex))
+                                ]?.team1,
                                 true,
                               )
                             "
                           >
                             &#8205;{{
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team1
-                                .description
+                              finalePhaseBet[group.id!]?.[
+                                Math.floor(index / Math.pow(2, groupIndex))
+                              ]?.team1?.description
                             }}
                           </a>
                           <div
                             class="box-match-tick-green"
                             v-if="
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)]
-                                .is_one_won === true
+                              finalePhaseBet[group.id!]?.[
+                                Math.floor(index / Math.pow(2, groupIndex))
+                              ]?.is_one_won === true
                             "
                           >
                             V
@@ -80,8 +89,9 @@
                           <div
                             class="box-match-tick-red"
                             v-else-if="
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)]
-                                .is_one_won === false
+                              finalePhaseBet[group.id!]?.[
+                                Math.floor(index / Math.pow(2, groupIndex))
+                              ]?.is_one_won === false
                             "
                           >
                             D
@@ -91,8 +101,9 @@
                         <div class="box-team">
                           <div v-if="isLocked">
                             &#8205;{{
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2
-                                .description
+                              finalePhaseBet[group.id!]?.[
+                                Math.floor(index / Math.pow(2, groupIndex))
+                              ]?.team2?.description
                             }}
                           </div>
                           <a
@@ -100,22 +111,26 @@
                             @click="
                               pushBet(
                                 groupIndex,
-                                index / Math.pow(2, groupIndex),
-                                finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2,
+                                Math.floor(index / Math.pow(2, groupIndex)),
+                                finalePhaseBet[group.id!]?.[
+                                  Math.floor(index / Math.pow(2, groupIndex))
+                                ]?.team2,
                                 false,
                               )
                             "
                           >
                             &#8205;{{
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)].team2
-                                .description
+                              finalePhaseBet[group.id!]?.[
+                                Math.floor(index / Math.pow(2, groupIndex))
+                              ]?.team2?.description
                             }}
                           </a>
                           <div
                             class="box-match-tick-green"
                             v-if="
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)]
-                                .is_one_won === false
+                              finalePhaseBet[group.id!]?.[
+                                Math.floor(index / Math.pow(2, groupIndex))
+                              ]?.is_one_won === false
                             "
                           >
                             V
@@ -123,8 +138,9 @@
                           <div
                             class="box-match-tick-red"
                             v-else-if="
-                              finalePhaseBet[group.id][index / Math.pow(2, groupIndex)]
-                                .is_one_won === true
+                              finalePhaseBet[group.id!]?.[
+                                Math.floor(index / Math.pow(2, groupIndex))
+                              ]?.is_one_won === true
                             "
                           >
                             D
@@ -159,125 +175,177 @@
 import _, { range } from 'lodash';
 import { ref } from 'vue';
 import useYakStore from '@/store';
+import type {
+  PhaseOut,
+  GroupWithPhaseIdOut,
+  BinaryBetWithGroupIdOut,
+  ModifyBinaryBetIn,
+} from '@/client';
+import {
+  executeRuleApiV1RulesRuleIdPost,
+  retrieveBetsByPhaseCodeApiV1BetsPhasesPhaseCodeGet,
+  modifyBinaryBetByIdApiV1BinaryBetsBetIdPatch,
+} from '@/client';
 import GroupNavbar from './GroupNavbar.vue';
+
+type BinaryBetOutExtended = BinaryBetWithGroupIdOut & { is_one_won?: boolean | null };
 
 const yakStore = useYakStore();
 
 // Reactive data
-const finalePhaseBet = ref({});
-const finalePhaseBetCopy = ref({});
-const groups = ref([]);
-const phase = ref({});
+const finalePhaseBet = ref<Record<string, BinaryBetOutExtended[]>>({});
+const finalePhaseBetCopy = ref<Record<string, BinaryBetOutExtended[]>>({});
+const groups = ref<GroupWithPhaseIdOut[]>([]);
+const phase = ref<PhaseOut>({} as PhaseOut);
 const isLocked = ref(false);
 const displayStatus = ref(false);
-const updateProperly = ref(null);
+const updateProperly = ref<boolean | null>(null);
 
 // Methods
-const getFinalePhase = () => {
-  yakStore.executeRule('492345de-8d4a-45b6-8b94-d219f2b0c3e9').then(() => {
-    yakStore.getBetsByPhaseCode({ phaseCode: 'FINAL' }).then((res) => {
-      phase.value = res.data.result.phase;
-      groups.value = res.data.result.groups.filter((group) => group.code !== '3');
+const getFinalePhase = async () => {
+  await executeRuleApiV1RulesRuleIdPost({
+    path: { rule_id: '492345de-8d4a-45b6-8b94-d219f2b0c3e9' },
+    headers: { Authorization: `Bearer ${yakStore.jwt}` },
+  });
 
-      for (const group of groups.value) {
-        finalePhaseBet.value[group.id] = [];
-      }
+  const { data: res } = await retrieveBetsByPhaseCodeApiV1BetsPhasesPhaseCodeGet({
+    path: { phase_code: 'FINAL' },
+    headers: { Authorization: `Bearer ${yakStore.jwt}` },
+  });
 
-      for (const binaryBets of res.data.result.binary_bets) {
-        if (binaryBets.team1 === null && binaryBets.team2 === null) {
-          binaryBets.is_one_won = null;
-          binaryBets.team1 = {
-            description: '',
-          };
-          binaryBets.team2 = {
-            description: '',
-          };
-        } else if (binaryBets.team1 === null) {
-          if (binaryBets.team2.won === null) {
-            binaryBets.is_one_won = null;
-          } else {
-            binaryBets.is_one_won = !binaryBets.team2.won;
-          }
+  if (res?.result) {
+    phase.value = res.result.phase;
+    groups.value = (res.result.groups as unknown as GroupWithPhaseIdOut[]).filter(
+      (group) => group.code !== '3',
+    );
 
-          binaryBets.team1 = {
-            description: '',
-          };
-        } else if (binaryBets.team2 === null) {
-          if (binaryBets.team1.won === null) {
-            binaryBets.is_one_won = null;
-          } else {
-            binaryBets.is_one_won = binaryBets.team1.won;
-          }
+    for (const group of groups.value) {
+      finalePhaseBet.value[group.id || ''] = [];
+    }
 
-          binaryBets.team2 = {
-            description: '',
-          };
-        } else if (binaryBets.team1.won === null) {
-          binaryBets.is_one_won = null;
+    for (const binaryBet of res.result.binary_bets) {
+      let is_one_won: boolean | null = null;
+
+      if (!(binaryBet.team1 === null && binaryBet.team2 === null)) {
+        if (binaryBet.team1 === null) {
+          is_one_won = binaryBet.team2!.won ?? null;
+          is_one_won = is_one_won === null ? null : !is_one_won;
+        } else if (binaryBet.team2 === null) {
+          is_one_won = binaryBet.team1!.won ?? null;
         } else {
-          binaryBets.is_one_won = binaryBets.team1.won;
+          is_one_won = binaryBet.team1!.won ?? null;
         }
-
-        if (binaryBets.locked) {
-          isLocked.value = true;
-        }
-
-        finalePhaseBet.value[binaryBets.group.id].push(binaryBets);
       }
 
-      if (res.data.result.binary_bets.length === 0) {
+      const team1: typeof binaryBet.team1 = binaryBet.team1 || {
+        id: '',
+        code: '',
+        description: '',
+        flag: { url: '' },
+        won: null,
+      };
+      const team2: typeof binaryBet.team2 = binaryBet.team2 || {
+        id: '',
+        code: '',
+        description: '',
+        flag: { url: '' },
+        won: null,
+      };
+
+      const extendedBet: BinaryBetOutExtended = {
+        id: binaryBet.id,
+        locked: binaryBet.locked,
+        group: binaryBet.group,
+        team1,
+        team2,
+        is_one_won,
+      };
+
+      if (binaryBet.locked) {
         isLocked.value = true;
       }
 
-      finalePhaseBetCopy.value = _.cloneDeep(finalePhaseBet.value);
-    });
-  });
+      const groupId = extendedBet.group?.id;
+      if (groupId && finalePhaseBet.value[groupId]) {
+        finalePhaseBet.value[groupId]!.push(extendedBet);
+      }
+    }
+
+    if (res.result.binary_bets.length === 0) {
+      isLocked.value = true;
+    }
+
+    finalePhaseBetCopy.value = _.cloneDeep(finalePhaseBet.value);
+  }
 };
 
-const pushBet = (groupIndex, betIndex, team, isOneWon) => {
-  finalePhaseBet.value[groups.value[groupIndex].id][betIndex].is_one_won = isOneWon;
+const pushBet = (groupIndex: number, betIndex: number, team: any, isOneWon: boolean) => {
+  const groupId = groups.value[groupIndex]?.id;
+  const nextGroupId = groups.value[groupIndex + 1]?.id;
+
+  if (!groupId || !nextGroupId) {
+    return;
+  }
+
+  const bet = finalePhaseBet.value[groupId]?.[betIndex];
+  if (!bet) {
+    return;
+  }
+
+  bet.is_one_won = isOneWon;
 
   const teamIndex = betIndex % 2 === 0 ? 1 : 2;
   const newBetIndex = betIndex % 2 === 0 ? betIndex / 2 : (betIndex - 1) / 2;
-  const originalTeamDescription =
-    finalePhaseBet.value[groups.value[groupIndex + 1].id][newBetIndex][`team${teamIndex}`]
-      .description;
+  const nextBets = finalePhaseBet.value[nextGroupId];
+  if (!nextBets?.[newBetIndex]) {
+    return;
+  }
 
-  finalePhaseBet.value[groups.value[groupIndex + 1].id][newBetIndex][`team${teamIndex}`] =
-    _.clone(team);
+  const originalTeamDescription = nextBets[newBetIndex][`team${teamIndex}`]?.description;
+
+  nextBets[newBetIndex][`team${teamIndex}`] = _.clone(team);
 
   for (const group of groups.value.slice(groupIndex + 2)) {
-    for (const bet of finalePhaseBet.value[group.id]) {
-      if (bet.team1.description === originalTeamDescription) {
-        bet.team1.description = '';
+    if (!group.id) continue;
+    const bets = finalePhaseBet.value[group.id];
+    if (!bets) continue;
+    for (const bet of bets) {
+      if (bet.team1?.description === originalTeamDescription) {
+        bet.team1!.description = '';
       }
-      if (bet.team2.description === originalTeamDescription) {
-        bet.team2.description = '';
+      if (bet.team2?.description === originalTeamDescription) {
+        bet.team2!.description = '';
       }
     }
   }
 };
 
-const putFinalePhaseBet = () => {
-  for (const [newBet, originalBet] of _.zip(
-    Object.values(finalePhaseBet.value)
-      .flat()
-      .sort((bet) => bet.id),
-    Object.values(finalePhaseBetCopy.value)
-      .flat()
-      .sort((bet) => bet.id),
-  )) {
-    const requestBody = {};
-    let isUpdateRequired = false;
+const putFinalePhaseBet = async () => {
+  const newBets = Object.values(finalePhaseBet.value)
+    .flat()
+    .sort((a, b) => (a.id || '').localeCompare(b.id || ''));
+  const originalBets = Object.values(finalePhaseBetCopy.value)
+    .flat()
+    .sort((a, b) => (a.id || '').localeCompare(b.id || ''));
 
-    if (newBet.team1.id !== originalBet.team1.id) {
-      isUpdateRequired = true;
-      requestBody.team1 = { id: newBet.team1.id };
+  for (let i = 0; i < newBets.length; i++) {
+    const newBet = newBets[i];
+    const originalBet = originalBets[i];
+    if (!newBet || !originalBet) {
+      continue;
     }
 
-    if (newBet.team2.id !== originalBet.team2.id) {
+    const requestBody: ModifyBinaryBetIn = {};
+    let isUpdateRequired = false;
+
+    if (newBet.team1?.id !== originalBet.team1?.id) {
       isUpdateRequired = true;
-      requestBody.team2 = { id: newBet.team2.id };
+      requestBody.team1 = { id: newBet.team1?.id };
+    }
+
+    if (newBet.team2?.id !== originalBet.team2?.id) {
+      isUpdateRequired = true;
+      requestBody.team2 = { id: newBet.team2?.id };
     }
 
     if (newBet.is_one_won !== originalBet.is_one_won) {
@@ -286,7 +354,11 @@ const putFinalePhaseBet = () => {
     }
 
     if (isUpdateRequired === true) {
-      yakStore.modifyBinaryBet(newBet.id, requestBody);
+      await modifyBinaryBetByIdApiV1BinaryBetsBetIdPatch({
+        path: { bet_id: newBet.id },
+        body: requestBody,
+        headers: { Authorization: `Bearer ${yakStore.jwt}` },
+      });
     }
   }
 };

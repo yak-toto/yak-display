@@ -1,40 +1,45 @@
 <template>
   <div class="vertical-menu">
-    <h1>{{ groupPhase.description }}</h1>
+    <h1 v-if="groupPhase">{{ groupPhase.description }}</h1>
     <router-link v-for="group in groups" :key="group.id" :to="`/groups/${group.code}`">
       {{ group.description }}
     </router-link>
-    <h1>{{ finalePhase.description }}</h1>
-    <router-link to="/finale_phase">{{ finalePhase.description }}</router-link>
+    <h1 v-if="finalePhase">{{ finalePhase.description }}</h1>
+    <router-link v-if="finalePhase" to="/finale_phase">{{ finalePhase.description }}</router-link>
     <h1>Classement</h1>
     <router-link to="/score_board">Classement</router-link>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { retrieveAllGroupsApiV1GroupsGet } from '@/client';
+import type { PhaseOut, GroupWithPhaseIdOut } from '@/client';
 import useYakStore from '@/store';
 
 const yakStore = useYakStore();
 
 // Reactive data
-const groupPhase = ref({});
-const finalePhase = ref({});
-const groups = ref([]);
+const groupPhase = ref<PhaseOut | undefined>(undefined);
+const finalePhase = ref<PhaseOut | undefined>(undefined);
+const groups = ref<GroupWithPhaseIdOut[]>([]);
 
 // Methods
-const getGroups = () => {
-  yakStore.getGroups().then((response) => {
-    groupPhase.value = response.data.result.phases.find((phase) => phase.code === 'GROUP');
-    finalePhase.value = response.data.result.phases.find((phase) => phase.code === 'FINAL');
-    groups.value = response.data.result.groups.filter(
-      (group) => group.phase.id === groupPhase.value.id,
-    );
+const getGroups = async () => {
+  const { data } = await retrieveAllGroupsApiV1GroupsGet({
+    headers: { Authorization: `Bearer ${yakStore.jwt}` },
   });
+  if (data) {
+    groupPhase.value = data.result.phases.find((phase) => phase.code === 'GROUP');
+    finalePhase.value = data.result.phases.find((phase) => phase.code === 'FINAL');
+    if (groupPhase.value) {
+      groups.value = data.result.groups.filter((group) => group.phase.id === groupPhase.value!.id);
+    }
+  }
 };
 
 // Equivalent to created() lifecycle hook
-getGroups();
+onMounted(getGroups);
 </script>
 
 <style lang="css">

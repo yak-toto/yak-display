@@ -48,9 +48,11 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-  groupRank: Array,
-});
+import type { GroupPositionOut } from '@/client';
+
+defineProps<{
+  groupRank: GroupPositionOut[];
+}>();
 </script>
 
 <style>
