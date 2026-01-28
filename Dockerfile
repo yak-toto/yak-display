@@ -1,0 +1,22 @@
+# ===========================
+# 1️⃣ Build Stage (node)
+# ===========================
+FROM node:25-alpine3.23 AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+COPY --from=ghcr.io/astral-sh/uv:0.9.18 /uv /uvx /bin/
+
+RUN npm run generate-client
+RUN npm run build
+
+# ===========================
+# 2️⃣ Runtime Stage (nginx)
+# ===========================
+FROM nginx:1.29.4-alpine3.23
+
+COPY --from=build /app/dist /usr/share/nginx/html

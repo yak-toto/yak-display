@@ -105,8 +105,8 @@ const signup = async () => {
   const { data, error } = await signupApiV1UsersSignupPost({ body: signupData });
 
   if (data) {
-    yakStore.setJwtToken({ jwt: data.result.access_token });
-    yakStore.setUserName({ userName: data.result.name });
+    yakStore.setJwtToken(data.result.access_token);
+    yakStore.setUserName(data.result.name);
 
     router.push('/groups/A');
   } else {

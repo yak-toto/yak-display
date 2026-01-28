@@ -40,24 +40,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { retrieveScoreBoardApiV1ScoreBoardGet } from '@/client';
+import type { UserResult } from '@/client';
 import useYakStore from '@/store';
 import GroupNavbar from './GroupNavbar.vue';
 
 const yakStore = useYakStore();
 
 // Reactive data
-const scoreBoardResource = ref([]);
+const scoreBoardResource = ref<UserResult[]>([]);
 
 // Methods
-const getScoreBoard = () => {
-  yakStore.getScoreBoard().then((res) => {
-    scoreBoardResource.value = res.data.result;
+const getScoreBoard = async () => {
+  const { data } = await retrieveScoreBoardApiV1ScoreBoardGet({
+    headers: { Authorization: `Bearer ${yakStore.jwt}` },
   });
+  if (data) {
+    scoreBoardResource.value = data.result;
+  }
 };
 
 // Equivalent to created() lifecycle hook
-getScoreBoard();
+onMounted(getScoreBoard);
 </script>
 
 <style lang="css">

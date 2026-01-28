@@ -32,7 +32,10 @@
           </label>
         </div>
 
-        <button class="button is-block is-info is-large is-fullwidth">Se connecter</button>
+        <button class="button is-block is-info is-large is-fullwidth" :disabled="loading">
+          <span v-if="loading">Connexion en cours...</span>
+          <span v-else>Se connecter</span>
+        </button>
       </form>
     </div>
   </div>
@@ -42,7 +45,8 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import useYakStore from '@/store';
-import api from '@/api';
+import { loginApiV1UsersLoginPost } from '@/client';
+import type { ErrorOut } from '@/client';
 
 const router = useRouter();
 const yakStore = useYakStore();
@@ -52,26 +56,42 @@ const name = ref('');
 const password = ref('');
 const invalidLogin = ref(false);
 const errorMessage = ref('');
+const loading = ref(false);
 
 // Methods
-const login = () => {
-  api
-    .postLogin({ name: name.value, password: password.value })
-    .then((response) => {
-      yakStore.setJwtToken({ jwt: response.data.result.access_token });
-      yakStore.setUserName({ userName: response.data.result.name });
+const login = async () => {
+  if (loading.value) {
+    return;
+  }
 
-      router.push('/groups/A');
-    })
-    .catch((error) => {
-      invalidLogin.value = true;
-      errorMessage.value = error.response.data.description;
+  loading.value = true;
+  invalidLogin.value = false;
+  errorMessage.value = '';
 
-      setTimeout(() => {
-        invalidLogin.value = false;
-        errorMessage.value = '';
-      }, 2000);
-    });
+  const { data, error } = await loginApiV1UsersLoginPost({
+    body: {
+      name: name.value,
+      password: password.value,
+    },
+  });
+
+  if (data) {
+    yakStore.setJwtToken(data.result.access_token);
+    yakStore.setUserName(data.result.name);
+
+    router.push('/groups/A');
+  } else {
+    loading.value = false;
+    invalidLogin.value = true;
+    errorMessage.value =
+      (error as ErrorOut)?.description || 'Une erreur est survenue lors de la connexion';
+  }
+
+  setTimeout(() => {
+    loading.value = false;
+    invalidLogin.value = false;
+    errorMessage.value = '';
+  }, 2000);
 };
 </script>
 

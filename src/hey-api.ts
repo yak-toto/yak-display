@@ -12,7 +12,6 @@ export const createClientConfig: CreateClientConfig = (config) => {
   return {
     ...config,
     baseUrl,
-    // Add default headers (since Config extends RequestInit, headers should be available)
     headers: {
       'Content-Type': 'application/json',
       ...config?.headers,

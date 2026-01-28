@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 
-import api from '@/api';
 import isValidJwt from '@/utils';
 
 const useYakStore = defineStore('yakStorage', {
@@ -9,41 +8,14 @@ const useYakStore = defineStore('yakStorage', {
     getUserName: (state) => state.userName,
   },
   actions: {
-    getBetsByGroupCode({ groupName }) {
-      return api.getBetsByGroupCode(groupName, this.jwt);
-    },
-    getBetsByPhaseCode({ phaseCode }) {
-      return api.getBetsByPhaseCode(phaseCode, this.jwt);
-    },
-    getGroups() {
-      return api.getGroups(this.jwt);
-    },
-    getGroupRankByCode({ groupName }) {
-      return api.getGroupRankByCode(groupName, this.jwt);
-    },
-    getScoreBoard() {
-      return api.getScoreBoard(this.jwt);
-    },
-    modifyScoreBet({ betId, score1, score2 }) {
-      return api.modifyScoreBet(betId, score1, score2, this.jwt);
-    },
-    modifyBinaryBet(id, body) {
-      return api.modifyBinaryBet(id, body, this.jwt);
-    },
-    computePoints() {
-      return api.postComputePoints(this.jwt);
-    },
-    executeRule(ruleId) {
-      return api.executeRule(ruleId, this.jwt);
-    },
-    setUserName(payload) {
-      this.userName = payload.userName;
+    setUserName(userName: string) {
+      this.userName = userName;
     },
     eraseJwtToken() {
       this.$reset();
     },
-    setJwtToken(payload) {
-      this.jwt = payload.jwt;
+    setJwtToken(jwt: string) {
+      this.jwt = jwt;
     },
     isAuthenticated() {
       return this.jwt && isValidJwt(this.jwt);
