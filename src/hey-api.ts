@@ -6,7 +6,7 @@ import type { CreateClientConfig } from '@/client/client.gen';
  */
 export const createClientConfig: CreateClientConfig = (config) => {
   // Environment-based configuration variables
-  const baseUrl = import.meta.env.PROD ? '/api' : 'http://127.0.0.1:8000';
+  const baseUrl = import.meta.env.PROD ? '/' : 'http://127.0.0.1:8000';
 
   // Return the complete configuration
   return {
