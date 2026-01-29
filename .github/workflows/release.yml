@@ -99,7 +99,6 @@ jobs:
         run: |-
           FULL_MESSAGE="🎉 New Release: ${RELEASE_TAG}
           📁 Repository: ${REPO}
-          📦 PyPI: https://pypi.org/project/yak-server/${RELEASE_TAG}/
           🔗 ${RELEASE_URL}"
 
           curl -s -o /dev/null -S -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
