@@ -19,4 +19,6 @@ RUN npm run build
 # ===========================
 FROM nginx:1.29.4-alpine3.23
 
+LABEL org.opencontainers.image.source=https://github.com/yak-toto/yak-display
+
 COPY --from=build /app/dist /usr/share/nginx/html
