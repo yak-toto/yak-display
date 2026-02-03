@@ -17,8 +17,8 @@
  * @see https://heyapi.dev/openapi-ts/
  */
 
-import { defineConfig } from '@hey-api/openapi-ts';
 import { execSync } from 'node:child_process';
+import { defineConfig } from '@hey-api/openapi-ts';
 
 import pkg from './package.json';
 

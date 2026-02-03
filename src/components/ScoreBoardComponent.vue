@@ -40,9 +40,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { retrieveScoreBoardApiV1ScoreBoardGet } from '@/client';
+import { onMounted, ref } from 'vue';
 import type { UserResult } from '@/client';
+import { retrieveScoreBoardApiV1ScoreBoardGet } from '@/client';
 import useYakStore from '@/store';
 import GroupNavbar from './GroupNavbar.vue';
 

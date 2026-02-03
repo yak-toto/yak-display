@@ -44,15 +44,15 @@
 </template>
 
 <script setup lang="ts">
-import { cloneDeep, zip, isEqual } from 'lodash';
+import { cloneDeep, isEqual, zip } from 'lodash';
 import { ref } from 'vue';
 import { onBeforeRouteUpdate, type RouteLocationNormalizedLoaded } from 'vue-router';
+import type { GroupOut, GroupPositionOut, ScoreBetOut } from '@/client';
 import {
+  modifyScoreBetApiV1ScoreBetsBetIdPatch,
   retrieveBetsByGroupCodeApiV1BetsGroupsGroupCodeGet,
   retrieveGroupRankByCodeApiV1BetsGroupsRankGroupCodeGet,
-  modifyScoreBetApiV1ScoreBetsBetIdPatch,
 } from '@/client';
-import type { GroupOut, ScoreBetOut, GroupPositionOut } from '@/client';
 import useYakStore from '@/store';
 import GroupNavbar from './GroupNavbar.vue';
 import GroupRank from './GroupRank.vue';

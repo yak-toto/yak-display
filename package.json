@@ -13,8 +13,8 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
-    "lint": "eslint . --fix --cache",
-    "format": "prettier --write .",
+    "lint": "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --error-on-warnings .",
+    "format": "biome format --write --no-errors-on-unmatched --files-ignore-unknown=true --error-on-warnings .",
     "generate-client": "openapi-ts"
   },
   "dependencies": {
@@ -27,6 +27,7 @@
     "vue-router": "4.6.4"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.3.14",
     "@hey-api/openapi-ts": "0.90.10",
     "@tsconfig/node22": "22.0.5",
     "@types/lodash": "4.17.23",
