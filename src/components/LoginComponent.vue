@@ -44,9 +44,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import useYakStore from '@/store';
-import { loginApiV1UsersLoginPost } from '@/client';
 import type { ErrorOut } from '@/client';
+import { loginApiV1UsersLoginPost } from '@/client';
+import useYakStore from '@/store';
 
 const router = useRouter();
 const yakStore = useYakStore();

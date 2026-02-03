@@ -12,9 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import type { GroupWithPhaseIdOut, PhaseOut } from '@/client';
 import { retrieveAllGroupsApiV1GroupsGet } from '@/client';
-import type { PhaseOut, GroupWithPhaseIdOut } from '@/client';
 import useYakStore from '@/store';
 
 const yakStore = useYakStore();

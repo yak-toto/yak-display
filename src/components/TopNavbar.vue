@@ -34,8 +34,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import useYakStore from '@/store';
 import { executeRuleApiV1RulesRuleIdPost } from '@/client/sdk.gen';
+import useYakStore from '@/store';
 
 const yakStore = useYakStore();
 
@@ -61,7 +61,7 @@ const computePoints = async () => {
       displayStatus.value = false;
       pointsComputedProperly.value = false;
     }, 2000);
-  } catch (e) {
+  } catch (_) {
     pointsComputedProperly.value = false;
     displayStatus.value = true;
     setTimeout(() => {

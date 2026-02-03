@@ -27,7 +27,7 @@ jobs:
       packages: write # <-- Required for pushing to GHCR
 
     env:
-      NODE_VERSION: "24"
+      NODE_VERSION: '24'
 
     steps:
       - name: Checkout code
@@ -84,7 +84,7 @@ jobs:
         id: create-release
         uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
         with:
-          artifacts: "dist/**"
+          artifacts: 'dist/**'
           generateReleaseNotes: true
           tag: v${{ steps.create-commits.outputs.new-version }}
 

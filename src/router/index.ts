@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import LoginComponent from '@/components/LoginComponent.vue';
-import GroupComponent from '@/components/GroupComponent.vue';
-import SignupComponent from '@/components/SignupComponent.vue';
-import ScoreBoardComponent from '@/components/ScoreBoardComponent.vue';
 import FinalePhaseComponent from '@/components/FinalePhaseComponent.vue';
+import GroupComponent from '@/components/GroupComponent.vue';
+import LoginComponent from '@/components/LoginComponent.vue';
+import ScoreBoardComponent from '@/components/ScoreBoardComponent.vue';
+import SignupComponent from '@/components/SignupComponent.vue';
 import useYakStore from '@/store';
 
 const routes = [

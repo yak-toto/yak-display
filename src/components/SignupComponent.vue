@@ -70,9 +70,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import useYakStore from '@/store';
+import type { ErrorOut, SignupIn } from '@/client';
 import { signupApiV1UsersSignupPost } from '@/client';
-import type { SignupIn, ErrorOut } from '@/client';
+import useYakStore from '@/store';
 
 const router = useRouter();
 const yakStore = useYakStore();

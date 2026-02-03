@@ -174,18 +174,18 @@
 <script setup lang="ts">
 import _, { range } from 'lodash';
 import { ref } from 'vue';
-import useYakStore from '@/store';
 import type {
-  PhaseOut,
-  GroupWithPhaseIdOut,
   BinaryBetWithGroupIdOut,
+  GroupWithPhaseIdOut,
   ModifyBinaryBetIn,
+  PhaseOut,
 } from '@/client';
 import {
   executeRuleApiV1RulesRuleIdPost,
-  retrieveBetsByPhaseCodeApiV1BetsPhasesPhaseCodeGet,
   modifyBinaryBetByIdApiV1BinaryBetsBetIdPatch,
+  retrieveBetsByPhaseCodeApiV1BetsPhasesPhaseCodeGet,
 } from '@/client';
+import useYakStore from '@/store';
 import GroupNavbar from './GroupNavbar.vue';
 
 type BinaryBetOutExtended = BinaryBetWithGroupIdOut & { is_one_won?: boolean | null };
@@ -228,12 +228,12 @@ const getFinalePhase = async () => {
 
       if (!(binaryBet.team1 === null && binaryBet.team2 === null)) {
         if (binaryBet.team1 === null) {
-          is_one_won = binaryBet.team2!.won ?? null;
+          is_one_won = binaryBet.team2?.won ?? null;
           is_one_won = is_one_won === null ? null : !is_one_won;
         } else if (binaryBet.team2 === null) {
-          is_one_won = binaryBet.team1!.won ?? null;
+          is_one_won = binaryBet.team1?.won ?? null;
         } else {
-          is_one_won = binaryBet.team1!.won ?? null;
+          is_one_won = binaryBet.team1?.won ?? null;
         }
       }
 
@@ -267,7 +267,7 @@ const getFinalePhase = async () => {
 
       const groupId = extendedBet.group?.id;
       if (groupId && finalePhaseBet.value[groupId]) {
-        finalePhaseBet.value[groupId]!.push(extendedBet);
+        finalePhaseBet.value[groupId]?.push(extendedBet);
       }
     }
 
