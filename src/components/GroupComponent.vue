@@ -100,12 +100,6 @@ const patchGroup = () => {
 
   for (const [groupBet, groupBetCopy] of zip(scoreBets.value, scoreBetsCopy.value)) {
     if (groupBet && groupBetCopy && !isEqual(groupBet, groupBetCopy)) {
-      if ((groupBet.team1?.score as any) === '') {
-        groupBet.team1!.score = null;
-      }
-      if ((groupBet.team2?.score as any) === '') {
-        groupBet.team2!.score = null;
-      }
       modifyBets.push(groupBet);
     }
   }
