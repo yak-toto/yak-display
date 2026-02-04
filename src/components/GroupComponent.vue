@@ -9,16 +9,17 @@
 
       <div class="box-group">
         <form v-on:submit.prevent="patchGroup">
-          <div class="grid-bet" v-for="match in scoreBets" :key="match.id">
-            <div class="team-bet-1">{{ match.team1?.description }}</div>
-            <div class="input-bet-1">
-              <input min="0" type="number" v-model="match.team1!.score" :readonly="match.locked" />
-            </div>
-            <div class="input-bet-2">
-              <input min="0" type="number" v-model="match.team2!.score" :readonly="match.locked" />
-            </div>
-            <div class="team-bet-2">{{ match.team2?.description }}</div>
-          </div>
+          <MatchBetRow
+            v-for="(match, index) in scoreBets"
+            :key="match.id"
+            :team1Name="match.team1?.description || ''"
+            :team2Name="match.team2?.description || ''"
+            :team1Score="match.team1?.score"
+            :team2Score="match.team2?.score"
+            :locked="match.locked"
+            @update:team1Score="(score) => updateTeamScore(index, 'team1', score)"
+            @update:team2Score="(score) => updateTeamScore(index, 'team2', score)"
+          />
           <div class="div-button-group">
             <button
               type="submit"
@@ -56,6 +57,7 @@ import {
 import useYakStore from '@/store';
 import GroupNavbar from './GroupNavbar.vue';
 import GroupRank from './GroupRank.vue';
+import MatchBetRow from './MatchBetRow.vue';
 
 const props = defineProps({ groupName: String });
 
@@ -93,10 +95,18 @@ const getGroupRankByCode = async (groupName: string) => {
   }
 };
 
+const updateTeamScore = (index: number, teamKey: 'team1' | 'team2', score: number | null) => {
+  const match = scoreBets.value[index];
+  const team = match?.[teamKey];
+  if (team) {
+    team.score = score;
+  }
+};
+
 const patchGroup = () => {
   displayStatus.value = false;
 
-  const modifyBets = [];
+  const modifyBets: ScoreBetOut[] = [];
 
   for (const [groupBet, groupBetCopy] of zip(scoreBets.value, scoreBetsCopy.value)) {
     if (groupBet && groupBetCopy && !isEqual(groupBet, groupBetCopy)) {
@@ -217,68 +227,6 @@ getGroupRankByCode(props.groupName || '');
 
 .result-group abbr {
   cursor: help;
-}
-
-input {
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border-width: 1px;
-  border-color: rgb(10 10 10 / 10%);
-  border-style: solid;
-}
-
-input:read-only {
-  cursor: not-allowed;
-  border: 0;
-  outline: 0;
-}
-
-.grid-bet {
-  display: grid;
-  grid-template-columns: repeat(14, 1fr);
-  grid-gap: 10px;
-  padding: 0.25rem;
-}
-
-.team-bet-1 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-column: 1 / 3;
-}
-
-.input-bet-1 {
-  grid-column: 3 / 8;
-}
-
-@media screen and (max-width: 900px) {
-  .team-bet-1 {
-    grid-column: 1 / 5;
-  }
-  .input-bet-1 {
-    grid-column: 5 / 8;
-  }
-}
-
-.input-bet-2 {
-  grid-column: 8 / 13;
-}
-
-.team-bet-2 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-column: 13 / 15;
-}
-
-@media screen and (max-width: 900px) {
-  .input-bet-2 {
-    grid-column: 8 / 11;
-  }
-  .team-bet-2 {
-    grid-column: 11 / 15;
-  }
 }
 
 .div-button-group {
