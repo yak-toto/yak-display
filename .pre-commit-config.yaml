@@ -4,3 +4,12 @@ repos:
     hooks:
       - id: biome-check
         args: [--error-on-warnings]
+
+  - repo: local
+    hooks:
+      - id: npm-lockfile-check
+        name: Verify package-lock.json is in sync
+        entry: npm ci --dry-run --prefer-offline
+        language: system
+        files: ^(package\.json|package-lock\.json)$
+        pass_filenames: false
