@@ -33,7 +33,7 @@ const getGroups = async () => {
     groupPhase.value = data.result.phases.find((phase) => phase.code === 'GROUP');
     finalePhase.value = data.result.phases.find((phase) => phase.code === 'FINAL');
     if (groupPhase.value) {
-      groups.value = data.result.groups.filter((group) => group.phase.id === groupPhase.value!.id);
+      groups.value = data.result.groups.filter((group) => group.phase.id === groupPhase.value?.id);
     }
   }
 };

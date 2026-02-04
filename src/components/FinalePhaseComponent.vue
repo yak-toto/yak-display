@@ -179,6 +179,7 @@ import type {
   GroupWithPhaseIdOut,
   ModifyBinaryBetIn,
   PhaseOut,
+  TeamWithWonOut,
 } from '@/client';
 import {
   executeRuleApiV1RulesRuleIdPost,
@@ -220,7 +221,7 @@ const getFinalePhase = async () => {
     );
 
     for (const group of groups.value) {
-      finalePhaseBet.value[group.id || ''] = [];
+      finalePhaseBet.value[group.id] = [];
     }
 
     for (const binaryBet of res.result.binary_bets) {
@@ -279,7 +280,12 @@ const getFinalePhase = async () => {
   }
 };
 
-const pushBet = (groupIndex: number, betIndex: number, team: any, isOneWon: boolean) => {
+const pushBet = (
+  groupIndex: number,
+  betIndex: number,
+  team: TeamWithWonOut | null | undefined,
+  isOneWon: boolean,
+) => {
   const groupId = groups.value[groupIndex]?.id;
   const nextGroupId = groups.value[groupIndex + 1]?.id;
 
@@ -310,11 +316,15 @@ const pushBet = (groupIndex: number, betIndex: number, team: any, isOneWon: bool
     const bets = finalePhaseBet.value[group.id];
     if (!bets) continue;
     for (const bet of bets) {
-      if (bet.team1?.description === originalTeamDescription) {
-        bet.team1!.description = '';
+      if (bet.team1) {
+        if (bet.team1.description === originalTeamDescription) {
+          bet.team1.description = '';
+        }
       }
-      if (bet.team2?.description === originalTeamDescription) {
-        bet.team2!.description = '';
+      if (bet.team2) {
+        if (bet.team2.description === originalTeamDescription) {
+          bet.team2.description = '';
+        }
       }
     }
   }
