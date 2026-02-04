@@ -1,70 +1,47 @@
 <template>
-  <div class="grid-signup">
-    <div class="box-signup">
-      <h3 class="title">Créer un compte</h3>
-      <div class="box-signup-form">
-        <div class="notification is-danger" v-if="invalidSignup">{{ errorMessage }}</div>
+  <AuthFormContainer title="Créer un compte">
+    <form v-on:submit.prevent="signup">
+      <TextInput
+        v-model="name"
+        label="Pseudo"
+        input-id="pseudo"
+        name="pseudo"
+        placeholder="pseudo"
+      />
 
-        <form v-on:submit.prevent="signup">
-          <div class="field control">
-            <label class="label" for="pseudo">
-              Pseudo
-              <input
-                type="text"
-                class="input is-large"
-                id="pseudo"
-                placeholder="pseudo"
-                v-model="name"
-              />
-            </label>
-          </div>
+      <TextInput
+        v-model="firstName"
+        label="Prénom"
+        input-id="firstName"
+        name="firstName"
+        placeholder="prénom"
+      />
 
-          <div class="field control">
-            <label class="label" for="firstName">
-              Prénom
-              <input
-                type="text"
-                class="input is-large"
-                id="firstName"
-                placeholder="prénom"
-                v-model="firstName"
-              />
-            </label>
-          </div>
+      <TextInput
+        v-model="lastName"
+        label="Nom de famille"
+        input-id="lastName"
+        name="lastName"
+        placeholder="nom de famille"
+      />
 
-          <div class="field control">
-            <label class="label" for="lastName">
-              Nom de famille
-              <input
-                type="text"
-                class="input is-large"
-                id="lastName"
-                placeholder="nom de famille"
-                v-model="lastName"
-              />
-            </label>
-          </div>
+      <PasswordInput
+        v-model="password"
+        label="Mot de passe"
+        input-id="password"
+        name="password"
+        placeholder="mot de passe"
+      />
 
-          <div class="field control">
-            <label class="label" for="password">
-              Mot de passe
-              <input
-                type="password"
-                class="input is-large"
-                placeholder="mot de passe"
-                v-model="password"
-              />
-            </label>
-          </div>
+      <ErrorNotification :show="invalidSignup" :message="errorMessage" />
 
-          <button class="button is-block is-info is-large is-fullwidth" :disabled="loading">
-            <span v-if="loading">Création en cours...</span>
-            <span v-else>Créer un compte</span>
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
+      <LoadingButton
+        :loading="loading"
+        text="Créer un compte"
+        loading-text="Création en cours..."
+      />
+    </form>
+  </AuthFormContainer>
 </template>
 
 <script setup lang="ts">
@@ -72,6 +49,11 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import type { ErrorOut, SignupIn } from '@/client';
 import { signupApiV1UsersSignupPost } from '@/client';
+import AuthFormContainer from '@/components/form/AuthFormContainer.vue';
+import ErrorNotification from '@/components/form/ErrorNotification.vue';
+import LoadingButton from '@/components/form/LoadingButton.vue';
+import PasswordInput from '@/components/form/PasswordInput.vue';
+import TextInput from '@/components/form/TextInput.vue';
 import useYakStore from '@/store';
 
 const router = useRouter();
@@ -92,8 +74,6 @@ const signup = async () => {
   }
 
   loading.value = true;
-  invalidSignup.value = false;
-  errorMessage.value = '';
 
   const signupData: SignupIn = {
     name: name.value,
@@ -115,41 +95,5 @@ const signup = async () => {
     errorMessage.value =
       (error as ErrorOut)?.description || 'Une erreur est survenue lors de la création du compte';
   }
-
-  setTimeout(() => {
-    loading.value = false;
-    invalidSignup.value = false;
-    errorMessage.value = '';
-  }, 3_000);
 };
 </script>
-
-<style lang="css">
-.grid-signup {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
-}
-
-.box-signup {
-  grid-column: 2;
-}
-
-.box-signup-form {
-  background-color: white;
-  border-radius: 6px;
-  box-shadow:
-    0 2px 3px rgb(10 10 10 / 10%),
-    0 0 0 1px rgb(10 10 10 / 10%);
-  color: #4a4a4a;
-  display: block;
-  padding: 1.25rem;
-}
-
-.button-signup {
-  border-width: 1px;
-  cursor: pointer;
-  text-align: center;
-  white-space: nowrap;
-}
-</style>
