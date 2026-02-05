@@ -111,7 +111,10 @@ input {
 
 input:read-only {
   cursor: not-allowed;
-  border: 0;
-  outline: 0;
+  background-color: #f5f5f5;
+  border-width: 1px;
+  border-color: #e0e0e0;
+  border-style: solid;
+  color: #999;
 }
 </style>
