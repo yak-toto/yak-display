@@ -21,17 +21,23 @@
             @update:team2Score="(score) => updateTeamScore(index, 'team2', score)"
           />
           <div class="div-button-group">
-            <StatusButton
-              :disabled="scoreBets.map((bet) => bet.locked).some((x) => x === true)"
-              :loading="loading"
-              :show-status="displayStatus"
-              :status="buttonStatus"
-              default-text="Valider"
-              loading-text="Envoi en cours..."
-              success-text="Résultats soumis"
-              error-text="Erreur de synchronisation"
-              info-text="Aucun changement"
-            />
+            <div class="button-container">
+              <div v-if="isButtonDisabled" class="disabled-message">
+                <span class="icon">ℹ️</span>
+                <span>{{ disabledMessage }}</span>
+              </div>
+              <StatusButton
+                :disabled="isButtonDisabled"
+                :loading="loading"
+                :show-status="displayStatus"
+                :status="buttonStatus"
+                default-text="Valider"
+                loading-text="Envoi en cours..."
+                success-text="Résultats soumis"
+                error-text="Erreur de synchronisation"
+                info-text="Aucun changement"
+              />
+            </div>
           </div>
         </form>
       </div>
@@ -58,6 +64,9 @@ import MatchBetRow from './MatchBetRow.vue';
 const props = defineProps({ groupName: String });
 
 const yakStore = useYakStore();
+
+// Constants
+const STATUS_DISPLAY_DURATION = 4000;
 
 // Reactive data
 const group = ref<GroupOut>({} as GroupOut);
@@ -100,6 +109,25 @@ const updateTeamScore = (index: number, teamKey: 'team1' | 'team2', score: numbe
   }
 };
 
+const isButtonDisabled = computed(() => {
+  return scoreBets.value.every((bet) => bet.locked);
+});
+
+const disabledMessage = computed(() => {
+  if (!isButtonDisabled.value) {
+    return '';
+  }
+
+  const lockedCount = scoreBets.value.filter((bet) => bet.locked).length;
+  const totalCount = scoreBets.value.length;
+
+  if (lockedCount === totalCount) {
+    return 'Tous les matchs sont verrouillés et ne peuvent plus être modifiés';
+  }
+
+  return `${lockedCount} match${lockedCount > 1 ? 's' : ''} verrouillé${lockedCount > 1 ? 's' : ''} - seuls les matchs non verrouillés peuvent être modifiés`;
+});
+
 const buttonStatus = computed<'success' | 'error' | 'info'>(() => {
   if (updateProperly.value === true) {
     return 'success';
@@ -112,20 +140,44 @@ const buttonStatus = computed<'success' | 'error' | 'info'>(() => {
   return 'info';
 });
 
-const patchGroup = () => {
-  displayStatus.value = false;
-  loading.value = true;
+const showStatusTemporarily = (status: boolean | null) => {
+  updateProperly.value = status;
+  displayStatus.value = true;
 
-  const modifyBets: ScoreBetOut[] = [];
+  setTimeout(() => {
+    updateProperly.value = null;
+    displayStatus.value = false;
+  }, STATUS_DISPLAY_DURATION);
+};
 
-  for (const [groupBet, groupBetCopy] of zip(scoreBets.value, scoreBetsCopy.value)) {
-    if (groupBet && groupBetCopy && !isEqual(groupBet, groupBetCopy)) {
-      modifyBets.push(groupBet);
+const getModifiedBets = (current: ScoreBetOut[], original: ScoreBetOut[]): ScoreBetOut[] => {
+  const modified: ScoreBetOut[] = [];
+
+  for (const [currentBet, originalBet] of zip(current, original)) {
+    if (currentBet && originalBet && !isEqual(currentBet, originalBet)) {
+      modified.push(currentBet);
     }
   }
 
-  if (modifyBets.length !== 0) {
-    Promise.all(
+  return modified;
+};
+
+const patchGroup = async () => {
+  displayStatus.value = false;
+  loading.value = true;
+
+  const modifyBets = getModifiedBets(scoreBets.value, scoreBetsCopy.value);
+
+  // Early return: no changes to submit
+  if (modifyBets.length === 0) {
+    loading.value = false;
+    showStatusTemporarily(null);
+    return;
+  }
+
+  // Submit modified bets
+  try {
+    await Promise.all(
       modifyBets.map((bet) =>
         modifyScoreBetApiV1ScoreBetsBetIdPatch({
           path: { bet_id: bet.id },
@@ -136,39 +188,17 @@ const patchGroup = () => {
           headers: { Authorization: `Bearer ${yakStore.jwt}` },
         }),
       ),
-    )
-      .then(() => {
-        loading.value = false;
-        scoreBetsCopy.value = cloneDeep(scoreBets.value);
+    );
 
-        updateProperly.value = true;
-        displayStatus.value = true;
-
-        getGroupRankByCode(group.value.code);
-
-        setTimeout(() => {
-          displayStatus.value = false;
-          updateProperly.value = null;
-        }, 2000);
-      })
-      .catch(() => {
-        loading.value = false;
-        scoreBets.value = cloneDeep(scoreBetsCopy.value);
-
-        updateProperly.value = false;
-        displayStatus.value = true;
-
-        setTimeout(() => {
-          displayStatus.value = false;
-          updateProperly.value = null;
-        }, 2000);
-      });
-  } else {
+    scoreBetsCopy.value = cloneDeep(scoreBets.value);
+    await getGroupRankByCode(group.value.code);
+    showStatusTemporarily(true);
+  } catch (error) {
+    console.error('Failed to update bets:', error);
+    scoreBets.value = cloneDeep(scoreBetsCopy.value);
+    showStatusTemporarily(false);
+  } finally {
     loading.value = false;
-    displayStatus.value = true;
-    setTimeout(() => {
-      displayStatus.value = false;
-    }, 2000);
   }
 };
 
@@ -247,5 +277,40 @@ getGroupRankByCode(props.groupName || '');
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.disabled-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #666;
+  background-color: #f5f5f5;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border-left: 3px solid #ffa500;
+  max-width: 500px;
+  text-align: left;
+}
+
+.disabled-message .icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .disabled-message {
+    font-size: 0.8125rem;
+    padding: 0.5rem 0.75rem;
+    max-width: 100%;
+  }
 }
 </style>
