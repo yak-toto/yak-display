@@ -21,22 +21,17 @@
             @update:team2Score="(score) => updateTeamScore(index, 'team2', score)"
           />
           <div class="div-button-group">
-            <button
-              type="submit"
-              class="button-group"
+            <StatusButton
               :disabled="scoreBets.map((bet) => bet.locked).some((x) => x === true)"
-            >
-              Valider
-            </button>
-            <template v-if="displayStatus">
-              <div class="updated-properly" v-if="updateProperly === true">
-                Résultats soumis &#10003;
-              </div>
-              <div class="not-updated-properly" v-else-if="updateProperly === false">
-                Erreur : Résultats non synchronisés &#10005;
-              </div>
-              <div class="updated-properly" v-else>Aucuns changements observés &#10003;</div>
-            </template>
+              :loading="loading"
+              :show-status="displayStatus"
+              :status="buttonStatus"
+              default-text="Valider"
+              loading-text="Envoi en cours..."
+              success-text="Résultats soumis"
+              error-text="Erreur de synchronisation"
+              info-text="Aucun changement"
+            />
           </div>
         </form>
       </div>
@@ -46,7 +41,7 @@
 
 <script setup lang="ts">
 import { cloneDeep, isEqual, zip } from 'lodash';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { onBeforeRouteUpdate, type RouteLocationNormalizedLoaded } from 'vue-router';
 import type { GroupOut, GroupPositionOut, ScoreBetOut } from '@/client';
 import {
@@ -55,6 +50,7 @@ import {
   retrieveGroupRankByCodeApiV1BetsGroupsRankGroupCodeGet,
 } from '@/client';
 import useYakStore from '@/store';
+import StatusButton from './form/StatusButton.vue';
 import GroupNavbar from './GroupNavbar.vue';
 import GroupRank from './GroupRank.vue';
 import MatchBetRow from './MatchBetRow.vue';
@@ -71,6 +67,7 @@ const scoreBetsCopy = ref<ScoreBetOut[]>([]);
 const groupRank = ref<GroupPositionOut[]>([]);
 const displayStatus = ref(false);
 const updateProperly = ref<boolean | null>(null);
+const loading = ref(false);
 
 // Methods
 const getBetsByGroupCode = async (groupName: string) => {
@@ -103,8 +100,21 @@ const updateTeamScore = (index: number, teamKey: 'team1' | 'team2', score: numbe
   }
 };
 
+const buttonStatus = computed<'success' | 'error' | 'info'>(() => {
+  if (updateProperly.value === true) {
+    return 'success';
+  }
+
+  if (updateProperly.value === false) {
+    return 'error';
+  }
+
+  return 'info';
+});
+
 const patchGroup = () => {
   displayStatus.value = false;
+  loading.value = true;
 
   const modifyBets: ScoreBetOut[] = [];
 
@@ -128,6 +138,7 @@ const patchGroup = () => {
       ),
     )
       .then(() => {
+        loading.value = false;
         scoreBetsCopy.value = cloneDeep(scoreBets.value);
 
         updateProperly.value = true;
@@ -141,6 +152,7 @@ const patchGroup = () => {
         }, 2000);
       })
       .catch(() => {
+        loading.value = false;
         scoreBets.value = cloneDeep(scoreBetsCopy.value);
 
         updateProperly.value = false;
@@ -152,6 +164,7 @@ const patchGroup = () => {
         }, 2000);
       });
   } else {
+    loading.value = false;
     displayStatus.value = true;
     setTimeout(() => {
       displayStatus.value = false;
@@ -231,48 +244,8 @@ getGroupRankByCode(props.groupName || '');
 
 .div-button-group {
   padding-top: 1rem;
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-}
-
-.button-group {
-  grid-column: 5;
-  cursor: pointer;
-  padding: 0.35rem;
-  background-color: #363636;
-  border-color: transparent;
-  color: whitesmoke;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.button-group:active {
-  border-color: #363636;
-  background-color: white;
-  color: #363636;
-}
-
-.button-group:disabled {
-  display: none;
-}
-
-.updated-properly {
-  text-align: right;
-  padding: 0.35rem;
-  grid-column: 6 / 10;
-  color: green;
-  font-weight: bold;
-  border-color: green;
-  font-size: 1rem;
-}
-
-.not-updated-properly {
-  text-align: right;
-  padding: 0.35rem;
-  grid-column: 6 / 10;
-  color: red;
-  font-weight: bold;
-  border-color: red;
-  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 </style>
