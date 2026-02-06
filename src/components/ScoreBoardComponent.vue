@@ -69,7 +69,8 @@ onMounted(getScoreBoard);
 .grid-score-board {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-gap: 10px;
+  grid-gap: 2rem;
+  align-items: start;
 }
 
 @media screen and (max-width: 800px) {
@@ -80,6 +81,11 @@ onMounted(getScoreBoard);
 
 .navbar-score-board {
   grid-column: 1;
+  position: sticky;
+  top: 1rem;
+  align-self: start;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
 }
 
 .table-score-board {

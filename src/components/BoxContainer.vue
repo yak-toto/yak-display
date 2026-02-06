@@ -19,4 +19,11 @@
 .box-container:hover {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
+
+@media screen and (max-width: 600px) {
+  .box-container {
+    padding: 0.75rem;
+    border-radius: 4px;
+  }
+}
 </style>

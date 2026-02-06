@@ -76,7 +76,7 @@ textarea {
 .body-yaktoto {
   flex-grow: 1;
   flex-shrink: 0;
-  align-items: center;
+  align-items: start;
   text-align: center !important;
   display: grid;
   grid-template-columns: repeat(8, 1fr);

@@ -381,7 +381,8 @@ getFinalePhase();
 .grid-finale-phase {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-gap: 10px;
+  grid-gap: 2rem;
+  align-items: start;
 }
 
 @media screen and (max-width: 600px) {
@@ -392,6 +393,11 @@ getFinalePhase();
 
 .navbar-finale-phase {
   grid-column: 1;
+  position: sticky;
+  top: 1rem;
+  align-self: start;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
 }
 
 .table-finale-phase {

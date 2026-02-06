@@ -74,4 +74,32 @@ defineProps<{
 .result-group abbr {
   cursor: help;
 }
+
+/* Mobile: make table scrollable and reduce font size */
+@media screen and (max-width: 600px) {
+  .result-group {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .result-group th,
+  .result-group td {
+    padding: 0.4em 0.5em;
+  }
+
+  .result-group thead th:first-child,
+  .result-group tbody td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: white;
+    z-index: 1;
+  }
+
+  .result-group tbody tr:nth-child(even) td:first-child {
+    background-color: #fafafa;
+  }
+}
 </style>
