@@ -1,0 +1,77 @@
+/* Color Theme Variables - Elegant Minimalist Palette */
+:root {
+  /* Primary Colors - Gunmetal & Smoky Rose */
+  --color-primary: #353b3c; /* Gunmetal - main brand color */
+  --color-primary-dark: #2a2f30; /* Darker gunmetal for hover states */
+  --color-primary-light: #4a5152; /* Lighter gunmetal for accents */
+  --color-secondary: #846a6a; /* Smoky Rose - complementary color */
+  --color-secondary-dark: #6d5757; /* Darker smoky rose */
+  --color-secondary-light: #9d8383; /* Lighter smoky rose for highlights */
+
+  /* Text Colors */
+  --color-text: #4a5152; /* Light gunmetal for body text */
+  --color-text-dark: #1a1d1e; /* Almost black for headings */
+  --color-text-light: #eef0f2; /* Platinum for dark backgrounds */
+  --color-text-muted: #a2999e; /* Lilac Ash - muted text */
+  --color-text-disabled: #c6c7c4; /* Silver - disabled text */
+  --color-text-label: #353b3c; /* Gunmetal for labels */
+  --color-black: #1a1d1e;
+
+  /* Border Colors */
+  --color-border: rgba(198, 199, 196, 0.4); /* Silver with transparency */
+  --color-border-solid: #c6c7c4; /* Silver */
+  --color-border-input: #a2999e; /* Lilac Ash */
+  --color-border-input-readonly: #c6c7c4; /* Silver */
+  --color-border-input-dark: rgba(53, 59, 60, 0.15); /* Gunmetal subtle */
+
+  /* Background Colors */
+  --color-bg-primary: #eef0f2; /* Platinum - main background */
+  --color-bg-secondary: #fafbfc; /* Slightly lighter than platinum */
+  --color-bg-hover: #e4e6e8; /* Darker platinum for hover */
+  --color-bg-disabled: #e8eaec; /* Light gray */
+  --color-bg-readonly: #f5f6f7; /* Very light gray */
+
+  /* State Colors - Success (Winning Bets) */
+  --color-success: #5a7d5a; /* Muted sage green for wins */
+  --color-success-hover: #4a6b4a;
+  --color-success-text: #3d5a3d; /* Dark muted green text */
+  --color-success-bg: #f0f4f0; /* Very light sage background */
+  --color-success-border: #a8bfa8;
+
+  /* State Colors - Error/Danger (Losing Bets) */
+  --color-error: #a65a5a; /* Muted rose-red for losses */
+  --color-error-hover: #8f4a4a;
+  --color-error-text: #7d3f3f; /* Dark muted red text */
+  --color-danger-bg: #f4f0f0;
+  --color-danger-border: #d4a8a8;
+  --color-danger-text: #6d3535;
+
+  /* State Colors - Info (Match Info) */
+  --color-info: #5a6d7d; /* Muted slate blue for information */
+  --color-info-hover: #4a5b6b;
+  --color-info-bg: #f0f2f4;
+  --color-info-border: #a8b5c4;
+
+  /* State Colors - Warning (Pending Bets) */
+  --color-warning: #9d8a5a; /* Muted gold-brown for pending */
+  --color-warning-hover: #877549;
+  --color-warning-bg: #f7f5f0;
+  --color-warning-border: #d4c4a8;
+  --color-warning-text: #6d5f3f;
+
+  /* Focus Colors */
+  --color-focus: #846a6a; /* Smoky Rose focus for brand consistency */
+  --color-focus-shadow: rgba(132, 106, 106, 0.25);
+
+  /* Shadow Colors */
+  --shadow-sm: 0 1px 2px rgba(53, 59, 60, 0.1);
+  --shadow-md: 0 2px 4px rgba(53, 59, 60, 0.12);
+  --shadow-lg: 0 4px 8px rgba(53, 59, 60, 0.08);
+  --shadow-lg-hover: 0 6px 16px rgba(53, 59, 60, 0.12);
+  --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+
+  /* Spacing & Layout */
+  --border-radius: 6px;
+  --border-radius-sm: 4px;
+  --border-radius-lg: 12px;
+}

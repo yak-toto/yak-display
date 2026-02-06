@@ -3,6 +3,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import './styles/theme.css';
 
 const store = createPinia();
 store.use(piniaPluginPersistedstate);

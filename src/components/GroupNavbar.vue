@@ -144,7 +144,7 @@ onMounted(getGroups);
 
 .vertical-menu a {
   cursor: pointer;
-  color: #5a5a5a;
+  color: var(--color-black);
   display: block;
   padding: 0.65rem 1rem;
   text-decoration: none;
@@ -156,9 +156,7 @@ onMounted(getGroups);
 }
 
 .vertical-menu a:hover {
-  background-color: #f5f5f5;
-  color: #2c2c2c;
-  border-color: #e0e0e0;
+  background-color: var(--color-bg-hover);
 }
 
 .vertical-menu a.router-link-active {

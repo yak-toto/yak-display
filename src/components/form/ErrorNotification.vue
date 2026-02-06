@@ -14,15 +14,15 @@ defineProps<{
 <style scoped>
 .notification {
   padding: 1rem 1.25rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   margin-bottom: 1rem;
   animation: slideDown 0.3s ease-out;
 }
 
 .notification.is-danger {
-  background-color: #fef2f2;
-  border: 1px solid #fca5a5;
-  color: #991b1b;
+  background-color: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  color: var(--color-danger-text);
 }
 
 @keyframes slideDown {

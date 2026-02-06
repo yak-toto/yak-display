@@ -29,6 +29,6 @@ defineProps<{
   line-height: 1.125;
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #2c2c2c;
+  color: var(--color-text-dark);
 }
 </style>

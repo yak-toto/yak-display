@@ -66,7 +66,7 @@ defineProps<{
 .result-group td {
   border: 1px solid;
   border-width: 0 0 1px;
-  border-color: #53535321;
+  border-color: var(--color-border);
   text-align: left;
   padding: 0.5em 0.75em;
 }

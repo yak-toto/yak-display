@@ -95,9 +95,9 @@ onMounted(getScoreBoard);
 .box-score-board {
   border: solid;
   border-width: 1px;
-  border-color: #53535321;
-  border-radius: 6px;
-  color: #535353;
+  border-color: var(--color-border);
+  border-radius: var(--border-radius);
+  color: var(--color-text);
   display: block;
   padding: 1.25rem;
   width: 100%;
@@ -122,12 +122,12 @@ onMounted(getScoreBoard);
 
 .table-custom th {
   border-width: 0 0 2px;
-  color: #363636;
+  color: var(--color-primary);
   padding: 0.5em 0.75em;
 }
 
 .table-custom td {
-  border: 1px solid #dbdbdb;
+  border: 1px solid var(--color-border-input);
   border-width: 0 0 1px;
   padding: 0.5em 0.75em;
   vertical-align: top;

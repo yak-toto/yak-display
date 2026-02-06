@@ -414,9 +414,9 @@ getFinalePhase();
 .box-match {
   border: solid;
   border-width: 1px;
-  border-color: #53535321;
-  border-radius: 6px;
-  color: #535353;
+  border-color: var(--color-border);
+  border-radius: var(--border-radius);
+  color: var(--color-text);
   display: block;
   padding: 0.3rem;
 }
@@ -427,27 +427,27 @@ getFinalePhase();
 }
 
 .box-match-tick-green {
-  color: green;
+  color: var(--color-success-text);
 }
 
 .box-match-tick-red {
-  color: red;
+  color: var(--color-error-text);
 }
 
 .box-match hr {
   margin: 0px;
-  border-color: #53535321;
+  border-color: var(--color-border);
 }
 
 .table-final-phase a {
   cursor: pointer;
-  color: black;
+  color: var(--color-black);
   display: block;
   text-decoration: none;
 }
 
 .table-final-phase a:hover {
-  background-color: #fafafa;
+  background-color: var(--color-bg-hover);
 }
 
 .table-final-phase {
@@ -460,7 +460,7 @@ getFinalePhase();
 .table-final-phase th,
 .table-final-phase td {
   border-width: 0 0 1px;
-  border-color: #53535321;
+  border-color: var(--color-border);
   text-align: left;
   padding: 0.5em 0.75em;
 }
@@ -472,9 +472,9 @@ getFinalePhase();
 .box-group {
   border: solid;
   border-width: 1px;
-  border-color: #53535321;
-  border-radius: 6px;
-  color: #535353;
+  border-color: var(--color-border);
+  border-radius: var(--border-radius);
+  color: var(--color-text);
   display: block;
   padding: 1.25rem;
   width: 100%;
@@ -490,17 +490,17 @@ getFinalePhase();
   grid-column: 5;
   cursor: pointer;
   padding: 0.35rem;
-  background-color: #363636;
+  background-color: var(--color-primary);
   border-color: transparent;
-  color: whitesmoke;
-  border-radius: 4px;
+  color: var(--color-text-light);
+  border-radius: var(--border-radius-sm);
   font-size: 1rem;
 }
 
 .button-finale-phase:active {
-  border-color: #363636;
+  border-color: var(--color-primary);
   background-color: white;
-  color: #363636;
+  color: var(--color-primary);
 }
 
 .button-finale-phase:disabled {
@@ -511,9 +511,9 @@ getFinalePhase();
   text-align: right;
   padding: 0.35rem;
   grid-column: 6 / 10;
-  color: green;
+  color: var(--color-success-text);
   font-weight: bold;
-  border-color: green;
+  border-color: var(--color-success-text);
   font-size: 1rem;
 }
 
@@ -521,9 +521,9 @@ getFinalePhase();
   text-align: right;
   padding: 0.35rem;
   grid-column: 6 / 10;
-  color: red;
+  color: var(--color-error-text);
   font-weight: bold;
-  border-color: red;
+  border-color: var(--color-error-text);
   font-size: 1rem;
 }
 </style>

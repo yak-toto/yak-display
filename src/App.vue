@@ -14,7 +14,7 @@ import TopNavbar from '@/components/TopNavbar.vue';
 
 <style lang="css">
 body {
-  color: #4a4a4a;
+  color: var(--color-text-label);
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -22,7 +22,7 @@ body {
 
 html {
   box-sizing: border-box;
-  background-color: white;
+  background-color: var(--color-bg-primary);
   font-size: 16px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -40,20 +40,7 @@ button,
 input,
 select,
 textarea {
-  font-family:
-    BlinkMacSystemFont,
-    -apple-system,
-    'Segoe UI',
-    'Roboto',
-    'Oxygen',
-    'Ubuntu',
-    'Cantarell',
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    'Helvetica',
-    'Arial',
-    sans-serif;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
 }
 
 .hero {

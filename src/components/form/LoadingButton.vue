@@ -24,23 +24,23 @@ defineProps<{
   padding: 0.5rem;
   width: 100%;
   cursor: pointer;
-  background-color: #363636;
-  color: whitesmoke;
-  border-radius: 4px;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  border-radius: var(--border-radius-sm);
   border-color: transparent;
   font-size: 1rem;
   transition: all 0.2s ease;
 }
 
 .button:hover:not(:disabled) {
-  background-color: #2c2c2c;
+  background-color: var(--color-primary-dark);
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .button:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-sm);
 }
 
 .button:disabled {

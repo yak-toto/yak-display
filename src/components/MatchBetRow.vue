@@ -130,9 +130,9 @@ const updateTeam2Score = (event: Event) => {
 input {
   width: 100%;
   padding: 0.5rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   border-width: 1px;
-  border-color: rgb(10 10 10 / 10%);
+  border-color: var(--color-border-input-dark);
   border-style: solid;
 }
 
@@ -147,10 +147,10 @@ input {
 
 input:read-only {
   cursor: not-allowed;
-  background-color: #f5f5f5;
+  background-color: var(--color-bg-readonly);
   border-width: 1px;
-  border-color: #e0e0e0;
+  border-color: var(--color-border-input-readonly);
   border-style: solid;
-  color: #999;
+  color: var(--color-text-disabled);
 }
 </style>

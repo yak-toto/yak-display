@@ -50,7 +50,7 @@ const showPassword = ref(false);
   display: block;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #4a5568;
+  color: var(--color-text-label);
   margin-bottom: 0.5rem;
 }
 
@@ -61,8 +61,8 @@ const showPassword = ref(false);
 
 .input {
   width: 100%;
-  border: 1px solid #dbdbdb;
-  border-radius: 6px;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--border-radius);
   padding: 0.75rem;
   transition:
     border-color 0.2s ease,
@@ -71,8 +71,8 @@ const showPassword = ref(false);
 
 .input:focus {
   outline: none;
-  border-color: #3273dc;
-  box-shadow: 0 0 0 3px rgba(50, 115, 220, 0.1);
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 3px var(--color-focus-shadow);
 }
 
 .input.is-large {
@@ -107,12 +107,12 @@ const showPassword = ref(false);
 }
 
 .password-toggle:hover {
-  color: #4a5568;
+  color: var(--color-text-label);
 }
 
 .password-toggle:focus {
-  outline: 2px solid #3273dc;
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
 }
 </style>

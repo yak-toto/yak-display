@@ -81,7 +81,7 @@ const computePoints = async () => {
 .navbar-left {
   border-bottom: solid;
   border-width: 1px;
-  border-color: #53535321;
+  border-color: var(--color-border);
   padding: 0.5rem;
   grid-column: 2 / 6;
   text-align: left;
@@ -90,7 +90,7 @@ const computePoints = async () => {
 .navbar-right {
   border-bottom: solid;
   border-width: 1px;
-  border-color: #53535321;
+  border-color: var(--color-border);
   padding: 0.5rem;
   grid-column: 6 / 8;
   text-align: right;
@@ -99,23 +99,23 @@ const computePoints = async () => {
 .navbar-item-custom {
   align-items: center;
   padding: 0.5rem 0.75rem;
-  color: black;
+  color: var(--color-black);
   display: inline;
   text-decoration: none;
 }
 
 .navbar-item-custom.clickable:hover {
   cursor: pointer;
-  background-color: #fafafa;
+  background-color: var(--color-bg-hover);
 }
 
 .navbar-item-custom.success {
-  color: green;
+  color: var(--color-success-text);
   font-weight: bold;
 }
 
 .navbar-item-custom.error {
-  color: red;
+  color: var(--color-error-text);
   font-weight: bold;
 }
 </style>

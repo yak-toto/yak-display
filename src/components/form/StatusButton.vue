@@ -48,23 +48,23 @@ defineProps<{
 .status-button {
   cursor: pointer;
   padding: 0.5rem 2rem;
-  background-color: #363636;
+  background-color: var(--color-primary);
   border: none;
-  color: whitesmoke;
-  border-radius: 4px;
+  color: var(--color-text-light);
+  border-radius: var(--border-radius-sm);
   font-size: 1rem;
   transition: all 0.2s ease;
 }
 
 .status-button:hover:not(:disabled) {
-  background-color: #2c2c2c;
+  background-color: var(--color-primary-dark);
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .status-button:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-sm);
 }
 
 .status-button:disabled {
@@ -73,30 +73,30 @@ defineProps<{
 }
 
 .button-success {
-  background-color: #22c55e !important;
+  background-color: var(--color-success) !important;
   animation: statusPulse 0.3s ease;
 }
 
 .button-success:hover {
-  background-color: #16a34a !important;
+  background-color: var(--color-success-hover) !important;
 }
 
 .button-error {
-  background-color: #ef4444 !important;
+  background-color: var(--color-error) !important;
   animation: statusPulse 0.3s ease;
 }
 
 .button-error:hover {
-  background-color: #dc2626 !important;
+  background-color: var(--color-error-hover) !important;
 }
 
 .button-info {
-  background-color: #3b82f6 !important;
+  background-color: var(--color-info) !important;
   animation: statusPulse 0.3s ease;
 }
 
 .button-info:hover {
-  background-color: #2563eb !important;
+  background-color: var(--color-info-hover) !important;
 }
 
 @keyframes statusPulse {

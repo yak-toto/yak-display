@@ -279,7 +279,7 @@ getGroupRankByCode(props.groupName || '');
 .result-group td {
   border: 1px solid;
   border-width: 0 0 1px;
-  border-color: #53535321;
+  border-color: var(--color-border);
   text-align: left;
   padding: 0.5em 0.75em;
 }
@@ -308,11 +308,11 @@ getGroupRankByCode(props.groupName || '');
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: #666;
-  background-color: #f5f5f5;
+  color: var(--color-text-muted);
+  background-color: var(--color-bg-disabled);
   padding: 0.5rem 1rem;
-  border-radius: 4px;
-  border-left: 3px solid #ffa500;
+  border-radius: var(--border-radius-sm);
+  border-left: 3px solid var(--color-warning);
   max-width: 500px;
   text-align: left;
 }
