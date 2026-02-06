@@ -7,7 +7,7 @@
       <h3 class="title">{{ group.description }}</h3>
       <GroupRank :groupRank="groupRank" />
 
-      <div class="box-group">
+      <BoxContainer>
         <form v-on:submit.prevent="patchGroup">
           <MatchBetRow
             v-for="(match, index) in scoreBets"
@@ -40,7 +40,7 @@
             </div>
           </div>
         </form>
-      </div>
+      </BoxContainer>
     </div>
   </div>
 </template>
@@ -56,6 +56,7 @@ import {
   retrieveGroupRankByCodeApiV1BetsGroupsRankGroupCodeGet,
 } from '@/client';
 import useYakStore from '@/store';
+import BoxContainer from './BoxContainer.vue';
 import StatusButton from './form/StatusButton.vue';
 import GroupNavbar from './GroupNavbar.vue';
 import GroupRank from './GroupRank.vue';
@@ -242,21 +243,18 @@ getGroupRankByCode(props.groupName || '');
   text-align: center;
 }
 
-.box-group {
-  border: solid;
-  border-width: 1px;
-  border-color: #53535321;
-  border-radius: 6px;
-  color: #535353;
-  display: block;
-  padding: 1.25rem;
-  width: 100%;
-}
-
 .result-group {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.result-group tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.result-group tbody tr:nth-child(odd) {
+  background-color: white;
 }
 
 .result-group th,

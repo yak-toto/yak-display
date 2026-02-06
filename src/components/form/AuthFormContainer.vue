@@ -1,13 +1,15 @@
 <template>
-  <div class="auth-container">
+  <BoxContainer class="auth-container">
     <h3 class="title">{{ title }}</h3>
     <div class="box">
       <slot />
     </div>
-  </div>
+  </BoxContainer>
 </template>
 
 <script setup lang="ts">
+import BoxContainer from '../BoxContainer.vue';
+
 defineProps<{
   title: string;
 }>();
@@ -15,20 +17,10 @@ defineProps<{
 
 <style scoped>
 .auth-container {
-  border: 1px solid #e0e0e0;
   border-radius: 12px;
-  color: #535353;
-  display: block;
   padding: 2rem;
   max-width: 450px;
-  width: 100%;
   margin: auto;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.3s ease;
-}
-
-.auth-container:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .title {
