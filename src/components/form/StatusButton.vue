@@ -110,4 +110,12 @@ defineProps<{
     transform: scale(1);
   }
 }
+
+@media screen and (max-width: 600px) {
+  .status-button {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
 </style>

@@ -71,15 +71,6 @@ const updateTeam2Score = (event: Event) => {
   grid-column: 3 / 8;
 }
 
-@media screen and (max-width: 900px) {
-  .team-bet-1 {
-    grid-column: 1 / 5;
-  }
-  .input-bet-1 {
-    grid-column: 5 / 8;
-  }
-}
-
 .input-bet-2 {
   grid-column: 8 / 13;
 }
@@ -91,12 +82,48 @@ const updateTeam2Score = (event: Event) => {
   grid-column: 13 / 15;
 }
 
+/* Tablet */
 @media screen and (max-width: 900px) {
+  .team-bet-1 {
+    grid-column: 1 / 5;
+  }
+  .input-bet-1 {
+    grid-column: 5 / 8;
+  }
   .input-bet-2 {
     grid-column: 8 / 11;
   }
   .team-bet-2 {
     grid-column: 11 / 15;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 600px) {
+  .grid-bet {
+    grid-template-columns: 1fr auto auto 1fr;
+    grid-gap: 8px;
+    padding: 0.5rem;
+  }
+
+  .team-bet-1 {
+    grid-column: 1;
+    justify-content: flex-start;
+    font-size: 0.9rem;
+  }
+
+  .input-bet-1 {
+    grid-column: 2;
+  }
+
+  .input-bet-2 {
+    grid-column: 3;
+  }
+
+  .team-bet-2 {
+    grid-column: 4;
+    justify-content: flex-end;
+    font-size: 0.9rem;
   }
 }
 
@@ -107,6 +134,15 @@ input {
   border-width: 1px;
   border-color: rgb(10 10 10 / 10%);
   border-style: solid;
+}
+
+@media screen and (max-width: 600px) {
+  input {
+    width: 50px;
+    padding: 0.4rem 0.25rem;
+    text-align: center;
+    font-size: 1rem;
+  }
 }
 
 input:read-only {

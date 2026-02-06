@@ -218,22 +218,33 @@ getGroupRankByCode(props.groupName || '');
 <style lang="css">
 .grid-group {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 10px;
+  grid-template-columns: minmax(200px, 250px) 1fr;
+  grid-gap: 1.5rem;
+  align-items: start;
 }
 
 @media screen and (max-width: 600px) {
   .grid-group {
     display: block;
   }
+
+  .navbar-group {
+    position: static;
+    margin-bottom: 1.5rem;
+  }
 }
 
 .navbar-group {
   grid-column: 1;
+  position: sticky;
+  top: 2rem;
+  align-self: start;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
 }
 
 .table-group {
-  grid-column: 2 / 7;
+  grid-column: 2;
 }
 
 .title {
@@ -243,10 +254,17 @@ getGroupRankByCode(props.groupName || '');
   text-align: center;
 }
 
+@media screen and (max-width: 600px) {
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
 .result-group {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1.5rem;
+  margin-bottom: 3rem;
 }
 
 .result-group tbody tr:nth-child(even) {
