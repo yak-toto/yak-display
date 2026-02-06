@@ -6,24 +6,24 @@
 
 <style scoped>
 .box-container {
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  color: #535353;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--border-radius);
+  color: var(--color-text);
   display: block;
   padding: 1.25rem;
   width: 100%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-md);
   transition: box-shadow 0.3s ease;
 }
 
 .box-container:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-lg);
 }
 
 @media screen and (max-width: 600px) {
   .box-container {
     padding: 0.75rem;
-    border-radius: 4px;
+    border-radius: var(--border-radius-sm);
   }
 }
 </style>

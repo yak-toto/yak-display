@@ -106,7 +106,7 @@ onMounted(getGroups);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #999;
+  color: var(--color-text-secondary);
   margin-top: 0.5rem;
   margin-bottom: 0;
   padding: 0.5rem 1.25rem;
@@ -116,17 +116,17 @@ onMounted(getGroups);
   align-items: center;
   gap: 0.5rem;
   transition: color 0.2s ease;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
 }
 
 .section-header:hover {
-  color: #666;
-  background-color: #f5f5f5;
+  color: var(--color-text-secondary-hover);
+  background-color: var(--color-bg-disabled);
 }
 
 .chevron {
   font-size: 0.6rem;
-  color: #999;
+  color: var(--color-text-secondary);
   transition: transform 0.2s ease;
   display: inline-block;
 }
@@ -160,11 +160,11 @@ onMounted(getGroups);
 }
 
 .vertical-menu a.router-link-active {
-  background-color: #f0f7ff;
-  color: #1a1a1a;
+  background-color: var(--color-bg-active);
+  color: var(--color-text-dark);
   font-weight: 600;
-  border: 2px solid #4a90e2;
-  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
+  border: 2px solid var(--color-border-active);
+  box-shadow: var(--shadow-md);
 }
 
 /* Slide transition */

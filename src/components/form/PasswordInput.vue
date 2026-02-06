@@ -102,7 +102,7 @@ const showPassword = ref(false);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #718096;
+  color: var(--color-text-muted);
   transition: color 0.2s ease;
 }
 

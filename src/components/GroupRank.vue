@@ -94,12 +94,12 @@ defineProps<{
   .result-group tbody td:first-child {
     position: sticky;
     left: 0;
-    background-color: white;
+    background-color: var(--color-bg-table-odd);
     z-index: 1;
   }
 
   .result-group tbody tr:nth-child(even) td:first-child {
-    background-color: #fafafa;
+    background-color: var(--color-bg-table-even);
   }
 }
 </style>

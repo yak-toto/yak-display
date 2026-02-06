@@ -268,11 +268,11 @@ getGroupRankByCode(props.groupName || '');
 }
 
 .result-group tbody tr:nth-child(even) {
-  background-color: #fafafa;
+  background-color: var(--color-bg-table-even);
 }
 
 .result-group tbody tr:nth-child(odd) {
-  background-color: white;
+  background-color: var(--color-bg-table-odd);
 }
 
 .result-group th,
