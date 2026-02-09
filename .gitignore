@@ -23,9 +23,6 @@ yarn-error.log*
 *.sw*
 env
 
-# eslint cache
-.eslintcache
-
 # hey-api
 openapi-ts-error-*.log
 /src/client
