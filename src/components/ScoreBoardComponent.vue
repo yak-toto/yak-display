@@ -43,19 +43,14 @@
 import { onMounted, ref } from 'vue';
 import type { UserResult } from '@/client';
 import { retrieveScoreBoardApiV1ScoreBoardGet } from '@/client';
-import useYakStore from '@/store';
 import GroupNavbar from './GroupNavbar.vue';
-
-const yakStore = useYakStore();
 
 // Reactive data
 const scoreBoardResource = ref<UserResult[]>([]);
 
 // Methods
 const getScoreBoard = async () => {
-  const { data } = await retrieveScoreBoardApiV1ScoreBoardGet({
-    headers: { Authorization: `Bearer ${yakStore.jwt}` },
-  });
+  const { data } = await retrieveScoreBoardApiV1ScoreBoardGet();
   if (data) {
     scoreBoardResource.value = data.result;
   }

@@ -32,11 +32,6 @@ const routes = [
     },
   },
   {
-    path: '/logout',
-    name: 'logout',
-    redirect: '/login',
-  },
-  {
     path: '/groups/:groupName',
     name: 'groups',
     component: GroupComponent,
@@ -62,11 +57,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const yakStore = useYakStore();
 
-  if (!to.meta.allowAnonymous && !yakStore.isAuthenticated()) {
-    yakStore.eraseJwtToken();
-    next('/login');
-  } else if (to.meta.allowAnonymous && !from.meta.allowAnonymous) {
-    yakStore.eraseJwtToken();
+  if (to.meta.allowAnonymous && !from.meta.allowAnonymous) {
+    yakStore.eraseAuthState();
     next();
   } else {
     next();

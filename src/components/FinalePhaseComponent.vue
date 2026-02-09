@@ -186,12 +186,9 @@ import {
   modifyBinaryBetByIdApiV1BinaryBetsBetIdPatch,
   retrieveBetsByPhaseCodeApiV1BetsPhasesPhaseCodeGet,
 } from '@/client';
-import useYakStore from '@/store';
 import GroupNavbar from './GroupNavbar.vue';
 
 type BinaryBetOutExtended = BinaryBetWithGroupIdOut & { is_one_won?: boolean | null };
-
-const yakStore = useYakStore();
 
 // Reactive data
 const finalePhaseBet = ref<Record<string, BinaryBetOutExtended[]>>({});
@@ -206,12 +203,10 @@ const updateProperly = ref<boolean | null>(null);
 const getFinalePhase = async () => {
   await executeRuleApiV1RulesRuleIdPost({
     path: { rule_id: '492345de-8d4a-45b6-8b94-d219f2b0c3e9' },
-    headers: { Authorization: `Bearer ${yakStore.jwt}` },
   });
 
   const { data: res } = await retrieveBetsByPhaseCodeApiV1BetsPhasesPhaseCodeGet({
     path: { phase_code: 'FINAL' },
-    headers: { Authorization: `Bearer ${yakStore.jwt}` },
   });
 
   if (res?.result) {
@@ -367,7 +362,6 @@ const putFinalePhaseBet = async () => {
       await modifyBinaryBetByIdApiV1BinaryBetsBetIdPatch({
         path: { bet_id: newBet.id },
         body: requestBody,
-        headers: { Authorization: `Bearer ${yakStore.jwt}` },
       });
     }
   }
