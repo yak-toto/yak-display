@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia';
 
-import isValidJwt from '@/utils';
-
 const useYakStore = defineStore('yakStorage', {
-  state: () => ({ userName: '', jwt: '' }),
+  state: () => ({ userName: '', isLoggedIn: false }),
   getters: {
     getUserName: (state) => state.userName,
   },
@@ -11,14 +9,14 @@ const useYakStore = defineStore('yakStorage', {
     setUserName(userName: string) {
       this.userName = userName;
     },
-    eraseJwtToken() {
+    setLoggedIn(loggedIn: boolean) {
+      this.isLoggedIn = loggedIn;
+    },
+    eraseAuthState() {
       this.$reset();
     },
-    setJwtToken(jwt: string) {
-      this.jwt = jwt;
-    },
     isAuthenticated() {
-      return this.jwt && isValidJwt(this.jwt);
+      return this.isLoggedIn;
     },
   },
   persist: true,

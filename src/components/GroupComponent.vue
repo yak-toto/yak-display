@@ -55,7 +55,6 @@ import {
   retrieveBetsByGroupCodeApiV1BetsGroupsGroupCodeGet,
   retrieveGroupRankByCodeApiV1BetsGroupsRankGroupCodeGet,
 } from '@/client';
-import useYakStore from '@/store';
 import BoxContainer from './BoxContainer.vue';
 import StatusButton from './form/StatusButton.vue';
 import GroupNavbar from './GroupNavbar.vue';
@@ -63,8 +62,6 @@ import GroupRank from './GroupRank.vue';
 import MatchBetRow from './MatchBetRow.vue';
 
 const props = defineProps({ groupName: String });
-
-const yakStore = useYakStore();
 
 // Constants
 const STATUS_DISPLAY_DURATION = 4000;
@@ -83,7 +80,6 @@ const loading = ref(false);
 const getBetsByGroupCode = async (groupName: string) => {
   const { data } = await retrieveBetsByGroupCodeApiV1BetsGroupsGroupCodeGet({
     path: { group_code: groupName },
-    headers: { Authorization: `Bearer ${yakStore.jwt}` },
   });
   if (data) {
     group.value = data.result.group;
@@ -95,7 +91,6 @@ const getBetsByGroupCode = async (groupName: string) => {
 const getGroupRankByCode = async (groupName: string) => {
   const { data } = await retrieveGroupRankByCodeApiV1BetsGroupsRankGroupCodeGet({
     path: { group_code: groupName },
-    headers: { Authorization: `Bearer ${yakStore.jwt}` },
   });
   if (data) {
     groupRank.value = data.result.group_rank;
@@ -186,7 +181,6 @@ const patchGroup = async () => {
             team1: { id: bet.team1?.id || '', score: bet.team1?.score },
             team2: { id: bet.team2?.id || '', score: bet.team2?.score },
           },
-          headers: { Authorization: `Bearer ${yakStore.jwt}` },
         }),
       ),
     );

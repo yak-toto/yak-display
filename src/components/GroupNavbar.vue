@@ -44,9 +44,6 @@
 import { onMounted, reactive, ref } from 'vue';
 import type { GroupWithPhaseIdOut, PhaseOut } from '@/client';
 import { retrieveAllGroupsApiV1GroupsGet } from '@/client';
-import useYakStore from '@/store';
-
-const yakStore = useYakStore();
 
 // Reactive data
 const groupPhase = ref<PhaseOut | undefined>(undefined);
@@ -67,9 +64,7 @@ const toggleSection = (section: keyof typeof sections) => {
 
 // Methods
 const getGroups = async () => {
-  const { data } = await retrieveAllGroupsApiV1GroupsGet({
-    headers: { Authorization: `Bearer ${yakStore.jwt}` },
-  });
+  const { data } = await retrieveAllGroupsApiV1GroupsGet();
   if (data) {
     groupPhase.value = data.result.phases.find((phase) => phase.code === 'GROUP');
     finalePhase.value = data.result.phases.find((phase) => phase.code === 'FINAL');

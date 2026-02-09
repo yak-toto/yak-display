@@ -25,16 +25,18 @@
       <router-link to="/signup" class="navbar-item-custom clickable" v-if="$route.name == 'login'">
         Créer un compte
       </router-link>
-      <router-link to="/logout" class="navbar-item-custom clickable" v-if="isAuthenticated()">
+      <a @click="logout" class="navbar-item-custom clickable" v-if="isAuthenticated()">
         Se déconnecter
-      </router-link>
+      </a>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { logoutApiV1UsersLogoutPost } from '@/client';
 import { executeRuleApiV1RulesRuleIdPost } from '@/client/sdk.gen';
+import router from '@/router';
 import useYakStore from '@/store';
 
 const yakStore = useYakStore();
@@ -49,11 +51,9 @@ const getUserName = () => yakStore.getUserName;
 
 const computePoints = async () => {
   try {
-    const jwt = yakStore.jwt;
     const ruleId = '62d46542-8cf1-4a3b-af77-a5086f10ac59';
     await executeRuleApiV1RulesRuleIdPost({
       path: { rule_id: ruleId },
-      headers: { Authorization: `Bearer ${jwt}` },
     });
     pointsComputedProperly.value = true;
     displayStatus.value = true;
@@ -70,6 +70,12 @@ const computePoints = async () => {
     }, 2000);
   }
 };
+
+async function logout(): Promise<void> {
+  await logoutApiV1UsersLogoutPost();
+  useYakStore().eraseAuthState();
+  router.push('/login');
+}
 </script>
 
 <style lang="css">

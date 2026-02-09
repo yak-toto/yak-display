@@ -66,7 +66,7 @@ const login = async () => {
   });
 
   if (data) {
-    yakStore.setJwtToken(data.result.access_token);
+    yakStore.setLoggedIn(true);
     yakStore.setUserName(data.result.name);
 
     router.push('/groups/A');
