@@ -1,5 +1,7 @@
 # Yak-toto frontend
 
+[![Docker Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://github.com/yak-toto/yak-display/pkgs/container/yak-display)
+
 ## Requisites
 
 - Ubuntu 22.04
