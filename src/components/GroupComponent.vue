@@ -49,12 +49,12 @@
 import { cloneDeep, isEqual, zip } from 'lodash';
 import { computed, ref } from 'vue';
 import { onBeforeRouteUpdate, type RouteLocationNormalizedLoaded } from 'vue-router';
-import type { GroupOut, GroupPositionOut, ScoreBetOut } from '@/client';
+import type { GroupOut, GroupPositionOut, ScoreBetWithGroupIdOut } from '@/client';
 import {
   modifyScoreBetApiV1ScoreBetsBetIdPatch,
-  retrieveBetsByGroupCodeApiV1BetsGroupsGroupCodeGet,
   retrieveGroupRankByCodeApiV1BetsGroupsRankGroupCodeGet,
 } from '@/client';
+import useYakStore from '@/store';
 import BoxContainer from './BoxContainer.vue';
 import StatusButton from './form/StatusButton.vue';
 import GroupNavbar from './GroupNavbar.vue';
@@ -63,28 +63,29 @@ import MatchBetRow from './MatchBetRow.vue';
 
 const props = defineProps({ groupName: String });
 
+const yakStore = useYakStore();
+
 // Constants
 const STATUS_DISPLAY_DURATION = 4000;
 
 // Reactive data
 const group = ref<GroupOut>({} as GroupOut);
-const scoreBets = ref<ScoreBetOut[]>([]);
+const scoreBets = ref<ScoreBetWithGroupIdOut[]>([]);
 // keep copy of group resource to send only PATCH /match of the updated matches
-const scoreBetsCopy = ref<ScoreBetOut[]>([]);
+const scoreBetsCopy = ref<ScoreBetWithGroupIdOut[]>([]);
 const groupRank = ref<GroupPositionOut[]>([]);
 const displayStatus = ref(false);
 const updateProperly = ref<boolean | null>(null);
 const loading = ref(false);
 
 // Methods
-const getBetsByGroupCode = async (groupName: string) => {
-  const { data } = await retrieveBetsByGroupCodeApiV1BetsGroupsGroupCodeGet({
-    path: { group_code: groupName },
-  });
-  if (data) {
-    group.value = data.result.group;
-    scoreBets.value = data.result.score_bets;
-    scoreBetsCopy.value = cloneDeep(scoreBets.value);
+const loadGroupFromStore = (groupName: string) => {
+  const found = yakStore.allBets?.groups.find((g) => g.code === groupName);
+  if (found) {
+    group.value = found;
+    const bets = yakStore.allBets?.score_bets.filter((bet) => bet.group.id === found.id) ?? [];
+    scoreBets.value = bets;
+    scoreBetsCopy.value = cloneDeep(bets);
   }
 };
 
@@ -146,8 +147,11 @@ const showStatusTemporarily = (status: boolean | null) => {
   }, STATUS_DISPLAY_DURATION);
 };
 
-const getModifiedBets = (current: ScoreBetOut[], original: ScoreBetOut[]): ScoreBetOut[] => {
-  const modified: ScoreBetOut[] = [];
+const getModifiedBets = (
+  current: ScoreBetWithGroupIdOut[],
+  original: ScoreBetWithGroupIdOut[],
+): ScoreBetWithGroupIdOut[] => {
+  const modified: ScoreBetWithGroupIdOut[] = [];
 
   for (const [currentBet, originalBet] of zip(current, original)) {
     if (currentBet && originalBet && !isEqual(currentBet, originalBet)) {
@@ -186,6 +190,7 @@ const patchGroup = async () => {
     );
 
     scoreBetsCopy.value = cloneDeep(scoreBets.value);
+    yakStore.updateStoreBets(scoreBets.value);
     await getGroupRankByCode(group.value.code);
     showStatusTemporarily(true);
   } catch (error) {
@@ -197,16 +202,21 @@ const patchGroup = async () => {
   }
 };
 
+const loadGroup = async (groupName: string) => {
+  if (!yakStore.allBets) {
+    await yakStore.fetchAllBets();
+  }
+  loadGroupFromStore(groupName);
+  getGroupRankByCode(groupName);
+};
+
 // Route navigation guard
 onBeforeRouteUpdate((to: RouteLocationNormalizedLoaded) => {
-  getBetsByGroupCode(to.params.groupName as string);
-  getGroupRankByCode(to.params.groupName as string);
   displayStatus.value = false;
+  loadGroup(to.params.groupName as string);
 });
 
-// Equivalent to created() lifecycle hook
-getBetsByGroupCode(props.groupName || '');
-getGroupRankByCode(props.groupName || '');
+loadGroup(props.groupName || '');
 </script>
 
 <style lang="css">
