@@ -69,7 +69,7 @@ const login = async () => {
     yakStore.setLoggedIn(true);
     yakStore.setUserName(data.result.name);
 
-    router.push('/groups/A');
+    router.push('/home');
   } else {
     loading.value = false;
     invalidLogin.value = true;
