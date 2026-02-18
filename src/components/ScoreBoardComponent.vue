@@ -1,8 +1,5 @@
 <template>
-  <div class="grid-score-board">
-    <div class="navbar-score-board">
-      <GroupNavbar />
-    </div>
+  <NavbarLayout>
     <div class="table-score-board">
       <h3 class="title">Classement</h3>
       <div class="box-score-board">
@@ -36,14 +33,14 @@
         </table>
       </div>
     </div>
-  </div>
+  </NavbarLayout>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import type { UserResult } from '@/client';
 import { retrieveScoreBoardApiV1ScoreBoardGet } from '@/client';
-import GroupNavbar from './GroupNavbar.vue';
+import NavbarLayout from './NavbarLayout.vue';
 
 // Reactive data
 const scoreBoardResource = ref<UserResult[]>([]);
@@ -60,32 +57,7 @@ const getScoreBoard = async () => {
 onMounted(getScoreBoard);
 </script>
 
-<style lang="css">
-.grid-score-board {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 2rem;
-  align-items: start;
-}
-
-@media screen and (max-width: 800px) {
-  .grid-score-board {
-    display: block;
-  }
-}
-
-.navbar-score-board {
-  grid-column: 1;
-  position: sticky;
-  top: 1rem;
-  align-self: start;
-  max-height: calc(100vh - 2rem);
-  overflow-y: auto;
-}
-
-.table-score-board {
-  grid-column: 2 / 7;
-}
+<style scoped lang="css">
 
 .box-score-board {
   border: solid;

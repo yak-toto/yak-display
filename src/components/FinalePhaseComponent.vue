@@ -1,8 +1,5 @@
 <template>
-  <div class="grid-finale-phase">
-    <div class="navbar-finale-phase">
-      <GroupNavbar />
-    </div>
+  <NavbarLayout>
     <div class="table-finale-phase">
       <h3 class="title" v-if="phase">{{ phase.description }}</h3>
 
@@ -168,7 +165,7 @@
         </form>
       </div>
     </div>
-  </div>
+  </NavbarLayout>
 </template>
 
 <script setup lang="ts">
@@ -186,7 +183,7 @@ import {
   modifyBinaryBetByIdApiV1BinaryBetsBetIdPatch,
   retrieveBetsByPhaseCodeApiV1BetsPhasesPhaseCodeGet,
 } from '@/client';
-import GroupNavbar from './GroupNavbar.vue';
+import NavbarLayout from './NavbarLayout.vue';
 
 type BinaryBetOutExtended = BinaryBetWithGroupIdOut & { is_one_won?: boolean | null };
 
@@ -371,32 +368,7 @@ const putFinalePhaseBet = async () => {
 getFinalePhase();
 </script>
 
-<style lang="css">
-.grid-finale-phase {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 2rem;
-  align-items: start;
-}
-
-@media screen and (max-width: 600px) {
-  .grid-finale-phase {
-    display: block;
-  }
-}
-
-.navbar-finale-phase {
-  grid-column: 1;
-  position: sticky;
-  top: 1rem;
-  align-self: start;
-  max-height: calc(100vh - 2rem);
-  overflow-y: auto;
-}
-
-.table-finale-phase {
-  grid-column: 2 / 7;
-}
+<style scoped lang="css">
 
 .title {
   font-size: 2rem;

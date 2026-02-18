@@ -1,8 +1,5 @@
 <template>
-  <div class="grid-home">
-    <div class="navbar-home">
-      <GroupNavbar />
-    </div>
+  <NavbarLayout>
     <div class="content-home">
       <h3 class="title">Bienvenue, {{ userResult.first_name }}</h3>
 
@@ -32,7 +29,7 @@
         </div>
       </BoxContainer>
     </div>
-  </div>
+  </NavbarLayout>
 </template>
 
 <script setup lang="ts">
@@ -40,7 +37,7 @@ import { computed, onMounted, ref } from 'vue';
 import type { UserResult } from '@/client';
 import { retrieveUserResultsApiV1ResultsGet } from '@/client';
 import BoxContainer from './BoxContainer.vue';
-import GroupNavbar from './GroupNavbar.vue';
+import NavbarLayout from './NavbarLayout.vue';
 
 const userResult = ref<UserResult>({
   rank: 0,
@@ -79,38 +76,7 @@ const getUserResults = async () => {
 onMounted(getUserResults);
 </script>
 
-<style lang="css">
-.grid-home {
-  display: grid;
-  grid-template-columns: minmax(200px, 250px) 1fr;
-  grid-gap: 1.5rem;
-  align-items: start;
-}
-
-@media screen and (max-width: 600px) {
-  .grid-home {
-    display: block;
-  }
-
-  .navbar-home {
-    position: static;
-    margin-bottom: 1.5rem;
-  }
-}
-
-.navbar-home {
-  grid-column: 1;
-  position: sticky;
-  top: 2rem;
-  align-self: start;
-  max-height: calc(100vh - 4rem);
-  overflow-y: auto;
-}
-
-.content-home {
-  grid-column: 2;
-}
-
+<style scoped lang="css">
 .stats-overview {
   display: grid;
   grid-template-columns: 1fr 1fr;

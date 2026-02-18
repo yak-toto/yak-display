@@ -1,8 +1,5 @@
 <template>
-  <div class="grid-group">
-    <div class="navbar-group">
-      <GroupNavbar />
-    </div>
+  <NavbarLayout>
     <div class="table-group">
       <h3 class="title">{{ group.description }}</h3>
       <GroupRank :groupRank="groupRank" />
@@ -44,7 +41,7 @@
         </form>
       </BoxContainer>
     </div>
-  </div>
+  </NavbarLayout>
 </template>
 
 <script setup lang="ts">
@@ -59,9 +56,9 @@ import {
 import useYakStore from '@/store';
 import BoxContainer from './BoxContainer.vue';
 import StatusButton from './form/StatusButton.vue';
-import GroupNavbar from './GroupNavbar.vue';
 import GroupRank from './GroupRank.vue';
 import MatchBetRow from './MatchBetRow.vue';
+import NavbarLayout from './NavbarLayout.vue';
 
 const props = defineProps({ groupName: String });
 
@@ -221,38 +218,7 @@ onBeforeRouteUpdate((to: RouteLocationNormalizedLoaded) => {
 loadGroup(props.groupName || '');
 </script>
 
-<style lang="css">
-.grid-group {
-  display: grid;
-  grid-template-columns: minmax(200px, 250px) 1fr;
-  grid-gap: 1.5rem;
-  align-items: start;
-}
-
-@media screen and (max-width: 600px) {
-  .grid-group {
-    display: block;
-  }
-
-  .navbar-group {
-    position: static;
-    margin-bottom: 1.5rem;
-  }
-}
-
-.navbar-group {
-  grid-column: 1;
-  position: sticky;
-  top: 2rem;
-  align-self: start;
-  max-height: calc(100vh - 4rem);
-  overflow-y: auto;
-}
-
-.table-group {
-  grid-column: 2;
-}
-
+<style scoped lang="css">
 .title {
   font-size: 2rem;
   font-weight: 600;
