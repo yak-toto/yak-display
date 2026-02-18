@@ -1,6 +1,9 @@
 <template>
   <div class="grid-bet">
-    <div class="team-bet-1">{{ team1Name }}</div>
+    <div class="team-bet-1">
+      {{ team1Name }}
+      <img v-if="team1Flag" :src="team1Flag" :alt="team1Name" class="team-flag" />
+    </div>
     <div class="input-bet-1">
       <input
         min="0"
@@ -19,7 +22,10 @@
         :readonly="locked"
       />
     </div>
-    <div class="team-bet-2">{{ team2Name }}</div>
+    <div class="team-bet-2">
+      <img v-if="team2Flag" :src="team2Flag" :alt="team2Name" class="team-flag" />
+      {{ team2Name }}
+    </div>
   </div>
 </template>
 
@@ -27,6 +33,8 @@
 const props = defineProps<{
   team1Name: string;
   team2Name: string;
+  team1Flag?: string;
+  team2Flag?: string;
   team1Score: number | null | undefined;
   team2Score: number | null | undefined;
   locked: boolean;
@@ -62,8 +70,9 @@ const updateTeam2Score = (event: Event) => {
 
 .team-bet-1 {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
+  gap: 0.4em;
   grid-column: 1 / 3;
 }
 
@@ -77,8 +86,9 @@ const updateTeam2Score = (event: Event) => {
 
 .team-bet-2 {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  gap: 0.4em;
   grid-column: 13 / 15;
 }
 
@@ -108,7 +118,7 @@ const updateTeam2Score = (event: Event) => {
 
   .team-bet-1 {
     grid-column: 1;
-    justify-content: flex-start;
+    justify-content: flex-end;
     font-size: 0.9rem;
   }
 
@@ -122,7 +132,7 @@ const updateTeam2Score = (event: Event) => {
 
   .team-bet-2 {
     grid-column: 4;
-    justify-content: flex-end;
+    justify-content: flex-start;
     font-size: 0.9rem;
   }
 }
@@ -143,6 +153,14 @@ input {
     text-align: center;
     font-size: 1rem;
   }
+}
+
+.team-flag {
+  height: 1.1em;
+  width: auto;
+  border-radius: 2px;
+  border: 1px solid rgb(0 0 0 / 12%);
+  flex-shrink: 0;
 }
 
 input:read-only {

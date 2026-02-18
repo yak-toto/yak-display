@@ -14,6 +14,8 @@
             :key="match.id"
             :team1Name="match.team1?.description || ''"
             :team2Name="match.team2?.description || ''"
+            :team1Flag="match.team1?.flag.url"
+            :team2Flag="match.team2?.flag.url"
             :team1Score="match.team1?.score"
             :team2Score="match.team2?.score"
             :locked="match.locked"
