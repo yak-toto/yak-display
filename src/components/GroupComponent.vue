@@ -52,7 +52,7 @@ import { onBeforeRouteUpdate, type RouteLocationNormalizedLoaded } from 'vue-rou
 import type { GroupOut, GroupPositionOut, ScoreBetWithGroupIdOut } from '@/client';
 import {
   modifyScoreBetApiV1ScoreBetsBetIdPatch,
-  retrieveGroupRankByCodeApiV1BetsGroupsRankGroupCodeGet,
+  retrieveGroupRankByCodeApiV1BetsGroupsRankGroupIdGet,
 } from '@/client';
 import useYakStore from '@/store';
 import BoxContainer from './BoxContainer.vue';
@@ -89,9 +89,9 @@ const loadGroupFromStore = (groupName: string) => {
   }
 };
 
-const getGroupRankByCode = async (groupName: string) => {
-  const { data } = await retrieveGroupRankByCodeApiV1BetsGroupsRankGroupCodeGet({
-    path: { group_code: groupName },
+const getGroupRankByCode = async (groupId: string) => {
+  const { data } = await retrieveGroupRankByCodeApiV1BetsGroupsRankGroupIdGet({
+    path: { group_id: groupId },
   });
   if (data) {
     groupRank.value = data.result.group_rank;
@@ -191,7 +191,7 @@ const patchGroup = async () => {
 
     scoreBetsCopy.value = cloneDeep(scoreBets.value);
     yakStore.updateStoreBets(scoreBets.value);
-    await getGroupRankByCode(group.value.code);
+    await getGroupRankByCode(group.value.id);
     showStatusTemporarily(true);
   } catch (error) {
     console.error('Failed to update bets:', error);
@@ -207,7 +207,7 @@ const loadGroup = async (groupName: string) => {
     await yakStore.fetchAllBets();
   }
   loadGroupFromStore(groupName);
-  getGroupRankByCode(groupName);
+  getGroupRankByCode(group.value.id);
 };
 
 // Route navigation guard
