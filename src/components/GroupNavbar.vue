@@ -41,14 +41,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
-import type { GroupWithPhaseIdOut, PhaseOut } from '@/client';
-import { retrieveAllGroupsApiV1GroupsGet } from '@/client';
+import { computed, onMounted, reactive } from 'vue';
+import useYakStore from '@/store';
 
-// Reactive data
-const groupPhase = ref<PhaseOut | undefined>(undefined);
-const finalePhase = ref<PhaseOut | undefined>(undefined);
-const groups = ref<GroupWithPhaseIdOut[]>([]);
+const yakStore = useYakStore();
 
 // Section collapse state - all collapsed by default
 const sections = reactive({
@@ -62,20 +58,25 @@ const toggleSection = (section: keyof typeof sections) => {
   sections[section] = !sections[section];
 };
 
-// Methods
-const getGroups = async () => {
-  const { data } = await retrieveAllGroupsApiV1GroupsGet();
-  if (data) {
-    groupPhase.value = data.result.phases.find((phase) => phase.code === 'GROUP');
-    finalePhase.value = data.result.phases.find((phase) => phase.code === 'FINAL');
-    if (groupPhase.value) {
-      groups.value = data.result.groups.filter((group) => group.phase.id === groupPhase.value?.id);
-    }
-  }
-};
+const groupPhase = computed(() => yakStore.allBets?.phases.find((phase) => phase.code === 'GROUP'));
 
-// Equivalent to created() lifecycle hook
-onMounted(getGroups);
+const finalePhase = computed(() =>
+  yakStore.allBets?.phases.find((phase) => phase.code === 'FINAL'),
+);
+
+const groups = computed(() => {
+  const gp = groupPhase.value;
+  if (!gp) {
+    return [];
+  }
+  return yakStore.allBets?.groups.filter((group) => group.phase.id === gp.id) ?? [];
+});
+
+onMounted(async () => {
+  if (!yakStore.allBets) {
+    await yakStore.fetchAllBets();
+  }
+});
 </script>
 
 <style lang="css">

@@ -68,6 +68,7 @@ const login = async () => {
   if (data) {
     yakStore.setLoggedIn(true);
     yakStore.setUserName(data.result.name);
+    await yakStore.fetchAllBets();
 
     router.push('/home');
   } else {
