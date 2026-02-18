@@ -33,7 +33,15 @@
     <tbody>
       <tr v-for="[index, result] in groupRank.entries()" :key="result.team.id">
         <td>{{ index + 1 }}</td>
-        <td>{{ result.team.description }}</td>
+        <td class="team-cell">
+          <img
+            v-if="result.team.flag?.url"
+            :src="result.team.flag.url"
+            :alt="result.team.description"
+            class="team-flag"
+          />
+          {{ result.team.description }}
+        </td>
         <td>{{ result.points }}</td>
         <td>{{ result.played }}</td>
         <td>{{ result.won }}</td>
@@ -73,6 +81,20 @@ defineProps<{
 
 .result-group abbr {
   cursor: help;
+}
+
+.team-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.team-flag {
+  height: 1.1em;
+  width: auto;
+  border-radius: 2px;
+  border: 1px solid rgb(0 0 0 / 12%);
+  flex-shrink: 0;
 }
 
 /* Mobile: make table scrollable and reduce font size */
