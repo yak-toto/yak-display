@@ -2,6 +2,7 @@
   <div class="navbar-yaktoto">
     <div class="navbar-left">
       <template v-if="!$route.meta.allowAnonymous">
+        <HomeButton />
         <div class="navbar-item-custom">
           Utilisateur:&nbsp;<strong>{{ getUserName() }}</strong>
         </div>
@@ -38,6 +39,7 @@ import { logoutApiV1UsersLogoutPost } from '@/client';
 import { executeRuleApiV1RulesRuleIdPost } from '@/client/sdk.gen';
 import router from '@/router';
 import useYakStore from '@/store';
+import HomeButton from './HomeButton.vue';
 
 const yakStore = useYakStore();
 

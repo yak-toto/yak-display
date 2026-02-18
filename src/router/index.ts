@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import FinalePhaseComponent from '@/components/FinalePhaseComponent.vue';
 import GroupComponent from '@/components/GroupComponent.vue';
+import HomeComponent from '@/components/HomeComponent.vue';
 import LoginComponent from '@/components/LoginComponent.vue';
 import ScoreBoardComponent from '@/components/ScoreBoardComponent.vue';
 import SignupComponent from '@/components/SignupComponent.vue';
@@ -9,11 +10,15 @@ import useYakStore from '@/store';
 const routes = [
   {
     path: '/',
-    name: 'home',
     redirect: '/login',
     meta: {
       allowAnonymous: true,
     },
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: HomeComponent,
   },
   {
     path: '/login',

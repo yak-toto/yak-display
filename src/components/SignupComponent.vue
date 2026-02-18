@@ -88,7 +88,7 @@ const signup = async () => {
     yakStore.setLoggedIn(true);
     yakStore.setUserName(data.result.name);
 
-    router.push('/groups/A');
+    router.push('/home');
   } else {
     loading.value = false;
     invalidSignup.value = true;
