@@ -1,6 +1,6 @@
 <template>
   <button
-    type="submit"
+    type="button"
     class="status-button"
     :class="{
       'button-success': showStatus && status === 'success',
@@ -8,6 +8,7 @@
       'button-info': showStatus && status === 'info',
     }"
     :disabled="disabled || loading"
+    @click="handleClick"
   >
     <template v-if="loading">
       <SpinnerIcon />
@@ -29,19 +30,39 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import SpinnerIcon from '@/components/icons/SpinnerIcon.vue';
 
-defineProps<{
-  disabled: boolean;
-  loading?: boolean;
-  showStatus: boolean;
-  status?: 'success' | 'error' | 'info' | null;
+const props = defineProps<{
+  disabled?: boolean;
+  onSubmit: () => Promise<'success' | 'error' | 'info'>;
+  statusDuration?: number;
   defaultText: string;
   loadingText?: string;
   successText: string;
   errorText: string;
   infoText: string;
 }>();
+
+const loading = ref(false);
+const showStatus = ref(false);
+const status = ref<'success' | 'error' | 'info' | null>(null);
+
+const handleClick = async () => {
+  showStatus.value = false;
+  loading.value = true;
+
+  try {
+    status.value = await props.onSubmit();
+    showStatus.value = true;
+    setTimeout(() => {
+      showStatus.value = false;
+      status.value = null;
+    }, props.statusDuration ?? 4000);
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <style scoped lang="css">

@@ -4,7 +4,7 @@
       <h3 class="title" v-if="phase">{{ phase.description }}</h3>
 
       <div class="box-group">
-        <form v-on:submit.prevent="putFinalePhaseBet">
+        <form @submit.prevent>
           <table class="table-final-phase">
             <thead>
               <tr>
@@ -151,16 +151,15 @@
             </tbody>
           </table>
           <div class="div-button-finale-phase">
-            <button type="submit" class="button-finale-phase" :disabled="isLocked">Valider</button>
-            <div class="updated-properly" v-if="displayStatus && updateProperly === true">
-              Résultats soumis &#10003;
-            </div>
-            <div class="not-updated-properly" v-else-if="displayStatus && updateProperly === false">
-              Erreur : Résultats non synchronisés &#10005;
-            </div>
-            <div class="updated-properly" v-else-if="displayStatus && updateProperly === null">
-              Aucuns changements observés &#10003;
-            </div>
+            <StatusButton
+              :disabled="isLocked"
+              :on-submit="putFinalePhaseBet"
+              default-text="Valider"
+              loading-text="Envoi en cours..."
+              success-text="Résultats soumis"
+              error-text="Erreur de synchronisation"
+              info-text="Aucun changement"
+            />
           </div>
         </form>
       </div>
@@ -183,6 +182,7 @@ import {
   modifyBinaryBetByIdApiV1BinaryBetsBetIdPatch,
   retrieveBetsByPhaseCodeApiV1BetsPhasesPhaseCodeGet,
 } from '@/client';
+import StatusButton from './form/StatusButton.vue';
 import NavbarLayout from './NavbarLayout.vue';
 
 type BinaryBetOutExtended = BinaryBetWithGroupIdOut & { is_one_won?: boolean | null };
@@ -193,8 +193,6 @@ const finalePhaseBetCopy = ref<Record<string, BinaryBetOutExtended[]>>({});
 const groups = ref<GroupWithPhaseIdOut[]>([]);
 const phase = ref<PhaseOut>({} as PhaseOut);
 const isLocked = ref(false);
-const displayStatus = ref(false);
-const updateProperly = ref<boolean | null>(null);
 
 // Methods
 const getFinalePhase = async () => {
@@ -322,7 +320,7 @@ const pushBet = (
   }
 };
 
-const putFinalePhaseBet = async () => {
+const putFinalePhaseBet = async (): Promise<'success' | 'error' | 'info'> => {
   const newBets = Object.values(finalePhaseBet.value)
     .flat()
     .sort((a, b) => (a.id || '').localeCompare(b.id || ''));
@@ -330,37 +328,50 @@ const putFinalePhaseBet = async () => {
     .flat()
     .sort((a, b) => (a.id || '').localeCompare(b.id || ''));
 
-  for (let i = 0; i < newBets.length; i++) {
-    const newBet = newBets[i];
-    const originalBet = originalBets[i];
-    if (!newBet || !originalBet) {
-      continue;
+  let anyUpdateRequired = false;
+
+  try {
+    for (let i = 0; i < newBets.length; i++) {
+      const newBet = newBets[i];
+      const originalBet = originalBets[i];
+      if (!newBet || !originalBet) continue;
+
+      const requestBody: ModifyBinaryBetIn = {};
+      let isUpdateRequired = false;
+
+      if (newBet.team1?.id !== originalBet.team1?.id) {
+        isUpdateRequired = true;
+        requestBody.team1 = { id: newBet.team1?.id };
+      }
+
+      if (newBet.team2?.id !== originalBet.team2?.id) {
+        isUpdateRequired = true;
+        requestBody.team2 = { id: newBet.team2?.id };
+      }
+
+      if (newBet.is_one_won !== originalBet.is_one_won) {
+        isUpdateRequired = true;
+        requestBody.is_one_won = newBet.is_one_won;
+      }
+
+      if (isUpdateRequired) {
+        anyUpdateRequired = true;
+        await modifyBinaryBetByIdApiV1BinaryBetsBetIdPatch({
+          path: { bet_id: newBet.id },
+          body: requestBody,
+        });
+      }
     }
 
-    const requestBody: ModifyBinaryBetIn = {};
-    let isUpdateRequired = false;
-
-    if (newBet.team1?.id !== originalBet.team1?.id) {
-      isUpdateRequired = true;
-      requestBody.team1 = { id: newBet.team1?.id };
+    if (!anyUpdateRequired) {
+      return 'info';
     }
 
-    if (newBet.team2?.id !== originalBet.team2?.id) {
-      isUpdateRequired = true;
-      requestBody.team2 = { id: newBet.team2?.id };
-    }
-
-    if (newBet.is_one_won !== originalBet.is_one_won) {
-      isUpdateRequired = true;
-      requestBody.is_one_won = newBet.is_one_won;
-    }
-
-    if (isUpdateRequired === true) {
-      await modifyBinaryBetByIdApiV1BinaryBetsBetIdPatch({
-        path: { bet_id: newBet.id },
-        body: requestBody,
-      });
-    }
+    finalePhaseBetCopy.value = _.cloneDeep(finalePhaseBet.value);
+    return 'success';
+  } catch (error) {
+    console.error('Failed to update bets:', error);
+    return 'error';
   }
 };
 
@@ -448,48 +459,8 @@ getFinalePhase();
 
 .div-button-finale-phase {
   padding-top: 1rem;
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-}
-
-.button-finale-phase {
-  grid-column: 5;
-  cursor: pointer;
-  padding: 0.35rem;
-  background-color: #363636;
-  border-color: transparent;
-  color: whitesmoke;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.button-finale-phase:active {
-  border-color: #363636;
-  background-color: white;
-  color: #363636;
-}
-
-.button-finale-phase:disabled {
-  display: none;
-}
-
-.updated-properly {
-  text-align: right;
-  padding: 0.35rem;
-  grid-column: 6 / 10;
-  color: green;
-  font-weight: bold;
-  border-color: green;
-  font-size: 1rem;
-}
-
-.not-updated-properly {
-  text-align: right;
-  padding: 0.35rem;
-  grid-column: 6 / 10;
-  color: red;
-  font-weight: bold;
-  border-color: red;
-  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 </style>
