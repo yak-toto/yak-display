@@ -3,9 +3,6 @@
     <div class="navbar-left">
       <template v-if="!$route.meta.allowAnonymous">
         <HomeButton />
-        <div class="navbar-item-custom">
-          Utilisateur:&nbsp;<strong>{{ getUserName() }}</strong>
-        </div>
         <template v-if="getUserName() === 'admin' && !$route.meta.allowAnonymous">
           <a @click="computePoints" class="navbar-item-custom clickable"> Calculer les points </a>
           <template v-if="displayStatus">
