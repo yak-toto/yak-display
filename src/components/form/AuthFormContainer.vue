@@ -15,7 +15,7 @@ defineProps<{
 }>();
 </script>
 
-<style scoped>
+<style scoped lang="css">
 .auth-container {
   border-radius: 12px;
   padding: 2rem;

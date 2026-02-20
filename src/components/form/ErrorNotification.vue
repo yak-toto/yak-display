@@ -11,7 +11,7 @@ defineProps<{
 }>();
 </script>
 
-<style scoped>
+<style scoped lang="css">
 .notification {
   padding: 1rem 1.25rem;
   border-radius: 6px;

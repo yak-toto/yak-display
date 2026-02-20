@@ -44,7 +44,7 @@ defineProps<{
 }>();
 </script>
 
-<style scoped>
+<style scoped lang="css">
 .status-button {
   cursor: pointer;
   padding: 0.5rem 2rem;

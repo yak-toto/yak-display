@@ -18,7 +18,7 @@ defineProps<{
 }>();
 </script>
 
-<style scoped>
+<style scoped lang="css">
 .button {
   margin-top: 1rem;
   padding: 0.5rem;

@@ -77,7 +77,7 @@ async function logout(): Promise<void> {
 }
 </script>
 
-<style lang="css">
+<style scoped lang="css">
 .navbar-yaktoto {
   display: grid;
   grid-template-columns: repeat(8, 1fr);

@@ -63,7 +63,7 @@ defineProps<{
 }>();
 </script>
 
-<style>
+<style scoped lang="css">
 .result-group {
   width: 100%;
   border-collapse: collapse;
