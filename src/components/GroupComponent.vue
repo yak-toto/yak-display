@@ -5,7 +5,7 @@
       <GroupRank :groupRank="groupRank" />
 
       <BoxContainer>
-        <form v-on:submit.prevent="patchGroup">
+        <form @submit.prevent>
           <MatchBetRow
             v-for="(match, index) in scoreBets"
             :key="match.id"
@@ -26,10 +26,9 @@
                 <span>{{ disabledMessage }}</span>
               </div>
               <StatusButton
+                :key="group.id"
                 :disabled="isButtonDisabled"
-                :loading="loading"
-                :show-status="displayStatus"
-                :status="buttonStatus"
+                :on-submit="patchGroup"
                 default-text="Valider"
                 loading-text="Envoi en cours..."
                 success-text="Résultats soumis"
@@ -64,18 +63,12 @@ const props = defineProps({ groupName: String });
 
 const yakStore = useYakStore();
 
-// Constants
-const STATUS_DISPLAY_DURATION = 4000;
-
 // Reactive data
 const group = ref<GroupOut>({} as GroupOut);
 const scoreBets = ref<ScoreBetWithGroupIdOut[]>([]);
 // keep copy of group resource to send only PATCH /match of the updated matches
 const scoreBetsCopy = ref<ScoreBetWithGroupIdOut[]>([]);
 const groupRank = ref<GroupPositionOut[]>([]);
-const displayStatus = ref(false);
-const updateProperly = ref<boolean | null>(null);
-const loading = ref(false);
 
 // Methods
 const loadGroupFromStore = (groupName: string) => {
@@ -124,28 +117,6 @@ const disabledMessage = computed(() => {
   return `${lockedCount} match${lockedCount > 1 ? 's' : ''} verrouillé${lockedCount > 1 ? 's' : ''} - seuls les matchs non verrouillés peuvent être modifiés`;
 });
 
-const buttonStatus = computed<'success' | 'error' | 'info'>(() => {
-  if (updateProperly.value === true) {
-    return 'success';
-  }
-
-  if (updateProperly.value === false) {
-    return 'error';
-  }
-
-  return 'info';
-});
-
-const showStatusTemporarily = (status: boolean | null) => {
-  updateProperly.value = status;
-  displayStatus.value = true;
-
-  setTimeout(() => {
-    updateProperly.value = null;
-    displayStatus.value = false;
-  }, STATUS_DISPLAY_DURATION);
-};
-
 const getModifiedBets = (
   current: ScoreBetWithGroupIdOut[],
   original: ScoreBetWithGroupIdOut[],
@@ -161,20 +132,13 @@ const getModifiedBets = (
   return modified;
 };
 
-const patchGroup = async () => {
-  displayStatus.value = false;
-  loading.value = true;
-
+const patchGroup = async (): Promise<'success' | 'error' | 'info'> => {
   const modifyBets = getModifiedBets(scoreBets.value, scoreBetsCopy.value);
 
-  // Early return: no changes to submit
   if (modifyBets.length === 0) {
-    loading.value = false;
-    showStatusTemporarily(null);
-    return;
+    return 'info';
   }
 
-  // Submit modified bets
   try {
     await Promise.all(
       modifyBets.map((bet) =>
@@ -191,13 +155,11 @@ const patchGroup = async () => {
     scoreBetsCopy.value = cloneDeep(scoreBets.value);
     yakStore.updateStoreBets(scoreBets.value);
     await getGroupRankByCode(group.value.id);
-    showStatusTemporarily(true);
+    return 'success';
   } catch (error) {
     console.error('Failed to update bets:', error);
     scoreBets.value = cloneDeep(scoreBetsCopy.value);
-    showStatusTemporarily(false);
-  } finally {
-    loading.value = false;
+    return 'error';
   }
 };
 
@@ -211,7 +173,6 @@ const loadGroup = async (groupName: string) => {
 
 // Route navigation guard
 onBeforeRouteUpdate((to: RouteLocationNormalizedLoaded) => {
-  displayStatus.value = false;
   loadGroup(to.params.groupName as string);
 });
 
