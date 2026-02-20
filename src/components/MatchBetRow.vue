@@ -60,7 +60,7 @@ const updateTeam2Score = (event: Event) => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="css">
 .grid-bet {
   display: grid;
   grid-template-columns: repeat(14, 1fr);

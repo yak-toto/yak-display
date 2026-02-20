@@ -44,7 +44,7 @@ defineEmits<{
 const showPassword = ref(false);
 </script>
 
-<style scoped>
+<style scoped lang="css">
 .label {
   text-align: left;
   display: block;

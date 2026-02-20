@@ -30,7 +30,7 @@ defineEmits<{
 }>();
 </script>
 
-<style scoped>
+<style scoped lang="css">
 .label {
   text-align: left;
   display: block;

@@ -2,7 +2,7 @@
   <span class="spinner"></span>
 </template>
 
-<style scoped>
+<style scoped lang="css">
 .spinner {
   display: inline-block;
   width: 14px;

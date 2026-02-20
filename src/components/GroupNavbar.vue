@@ -79,7 +79,7 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="css">
+<style scoped lang="css">
 .vertical-menu {
   width: 100%;
   display: flex;
