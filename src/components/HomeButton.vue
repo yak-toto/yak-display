@@ -1,12 +1,8 @@
 <template>
   <router-link to="/home" class="home-button" title="Accueil">
-    <HomeIcon class="home-icon" />
+    <img :src="'/api/v1/competition/logo'" alt="Accueil" class="home-icon" />
   </router-link>
 </template>
-
-<script setup lang="ts">
-import HomeIcon from './icons/HomeIcon.vue';
-</script>
 
 <style scoped lang="css">
 .home-button {
@@ -26,12 +22,15 @@ import HomeIcon from './icons/HomeIcon.vue';
   color: #1a1a1a;
 }
 
-.home-button.router-link-active {
-  color: #4a90e2;
-}
-
 .home-icon {
   width: 1.25rem;
   height: 1.25rem;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.home-button.router-link-active .home-icon,
+.home-button:hover .home-icon {
+  opacity: 1;
 }
 </style>
