@@ -5,7 +5,7 @@
   "type": "module",
   "backendApiVersion": "0.67.0",
   "engines": {
-    "node": "^22"
+    "node": "^24.0.0"
   },
   "scripts": {
     "dev": "vite",
@@ -30,7 +30,7 @@
     "@hey-api/openapi-ts": "0.92.4",
     "@tsconfig/node22": "22.0.5",
     "@types/lodash": "4.17.24",
-    "@types/node": "22.19.11",
+    "@types/node": "24.10.13",
     "@vitejs/plugin-vue": "6.0.4",
     "@vue/tsconfig": "0.8.1",
     "npm-run-all2": "8.0.4",
