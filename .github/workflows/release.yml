@@ -26,9 +26,6 @@ jobs:
       contents: write # <-- Enables push
       packages: write # <-- Required for pushing to GHCR
 
-    env:
-      NODE_VERSION: '24'
-
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -38,7 +35,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Install dependencies
