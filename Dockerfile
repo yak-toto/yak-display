@@ -1,12 +1,12 @@
 # ===========================
 # 1️⃣ Build Stage (node)
 # ===========================
-FROM node:25-alpine3.23 AS build
+FROM node:22.22.0-alpine3.23 AS build
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 COPY --from=ghcr.io/astral-sh/uv:0.9.18 /uv /uvx /bin/
