@@ -10,6 +10,15 @@
     "automerge": true,
     "automergeType": "pr"
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["^package\\.json$"],
+      "matchStrings": ["\"backendApiVersion\":\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "yak-server",
+      "datasourceTemplate": "pypi"
+    }
+  ],
   "packageRules": [
     {
       "matchManagers": ["github-actions"],
@@ -18,6 +27,11 @@
     },
     {
       "matchUpdateTypes": ["lockFileMaintenance"],
+      "minimumReleaseAge": null
+    },
+    {
+      "matchManagers": ["regex"],
+      "matchPackageNames": ["yak-server"],
       "minimumReleaseAge": null
     }
   ]
