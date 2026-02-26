@@ -21,7 +21,27 @@
   ],
   "packageRules": [
     {
+      "matchManagers": ["dockerfile"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
       "matchManagers": ["github-actions"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchManagers": ["npm"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchManagers": ["nvm"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchManagers": ["pre-commit"],
       "automerge": true,
       "automergeType": "pr"
     },
