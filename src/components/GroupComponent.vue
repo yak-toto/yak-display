@@ -21,7 +21,7 @@
           />
           <div class="div-button-group">
             <div class="button-container">
-              <div v-if="isButtonDisabled" class="disabled-message">
+              <div v-if="disabledMessage" class="disabled-message">
                 <span class="icon">ℹ️</span>
                 <span>{{ disabledMessage }}</span>
               </div>
@@ -103,7 +103,7 @@ const isButtonDisabled = computed(() => {
 });
 
 const disabledMessage = computed(() => {
-  if (!isButtonDisabled.value) {
+  if (!isButtonDisabled.value || scoreBets.value.length === 0) {
     return '';
   }
 

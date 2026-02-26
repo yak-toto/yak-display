@@ -168,7 +168,7 @@
 </template>
 
 <script setup lang="ts">
-import _, { range } from 'lodash';
+import { clone, cloneDeep, range } from 'lodash';
 import { ref } from 'vue';
 import type {
   BinaryBetWithGroupIdOut,
@@ -266,7 +266,7 @@ const getFinalePhase = async () => {
       isLocked.value = true;
     }
 
-    finalePhaseBetCopy.value = _.cloneDeep(finalePhaseBet.value);
+    finalePhaseBetCopy.value = cloneDeep(finalePhaseBet.value);
   }
 };
 
@@ -299,7 +299,7 @@ const pushBet = (
 
   const originalTeamDescription = nextBets[newBetIndex][`team${teamIndex}`]?.description;
 
-  nextBets[newBetIndex][`team${teamIndex}`] = _.clone(team);
+  nextBets[newBetIndex][`team${teamIndex}`] = clone(team);
 
   for (const group of groups.value.slice(groupIndex + 2)) {
     if (!group.id) continue;
@@ -367,7 +367,7 @@ const putFinalePhaseBet = async (): Promise<'success' | 'error' | 'info'> => {
       return 'info';
     }
 
-    finalePhaseBetCopy.value = _.cloneDeep(finalePhaseBet.value);
+    finalePhaseBetCopy.value = cloneDeep(finalePhaseBet.value);
     return 'success';
   } catch (error) {
     console.error('Failed to update bets:', error);

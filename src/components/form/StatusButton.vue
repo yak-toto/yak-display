@@ -1,6 +1,6 @@
 <template>
   <button
-    type="button"
+    type="submit"
     class="status-button"
     :class="{
       'button-success': showStatus && status === 'success',
