@@ -1,6 +1,5 @@
 <template>
-  <NavbarLayout>
-    <div class="table-group">
+  <div class="table-group">
       <h3 class="title">{{ group.description }}</h3>
       <GroupRank :groupRank="groupRank" />
 
@@ -40,7 +39,6 @@
         </form>
       </BoxContainer>
     </div>
-  </NavbarLayout>
 </template>
 
 <script setup lang="ts">
@@ -57,7 +55,6 @@ import BoxContainer from './BoxContainer.vue';
 import StatusButton from './form/StatusButton.vue';
 import GroupRank from './GroupRank.vue';
 import MatchBetRow from './MatchBetRow.vue';
-import NavbarLayout from './NavbarLayout.vue';
 
 const props = defineProps({ groupName: String });
 

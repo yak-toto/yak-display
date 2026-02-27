@@ -1,6 +1,5 @@
 <template>
-  <NavbarLayout>
-    <div class="table-finale-phase">
+  <div class="table-finale-phase">
       <h3 class="title" v-if="phase">{{ phase.description }}</h3>
 
       <div class="box-group">
@@ -164,7 +163,6 @@
         </form>
       </div>
     </div>
-  </NavbarLayout>
 </template>
 
 <script setup lang="ts">
@@ -183,7 +181,6 @@ import {
   retrieveBetsByPhaseCodeApiV1BetsPhasesPhaseCodeGet,
 } from '@/client';
 import StatusButton from './form/StatusButton.vue';
-import NavbarLayout from './NavbarLayout.vue';
 
 type BinaryBetOutExtended = BinaryBetWithGroupIdOut & { is_one_won?: boolean | null };
 

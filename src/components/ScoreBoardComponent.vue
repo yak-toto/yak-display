@@ -1,6 +1,5 @@
 <template>
-  <NavbarLayout>
-    <div class="table-score-board">
+  <div class="table-score-board">
       <h3 class="title">Classement</h3>
       <div class="box-score-board">
         <table class="table-custom">
@@ -33,14 +32,12 @@
         </table>
       </div>
     </div>
-  </NavbarLayout>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import type { UserResult } from '@/client';
 import { retrieveScoreBoardApiV1ScoreBoardGet } from '@/client';
-import NavbarLayout from './NavbarLayout.vue';
 
 // Reactive data
 const scoreBoardResource = ref<UserResult[]>([]);

@@ -1,6 +1,5 @@
 <template>
-  <NavbarLayout>
-    <div class="content-home">
+  <div class="content-home">
       <h3 class="title">Bienvenue, {{ userResult.first_name }}</h3>
 
       <div class="stats-overview">
@@ -29,7 +28,6 @@
         </div>
       </BoxContainer>
     </div>
-  </NavbarLayout>
 </template>
 
 <script setup lang="ts">
@@ -37,7 +35,6 @@ import { computed, onMounted, ref } from 'vue';
 import type { UserResult } from '@/client';
 import { retrieveUserResultsApiV1ResultsGet } from '@/client';
 import BoxContainer from './BoxContainer.vue';
-import NavbarLayout from './NavbarLayout.vue';
 
 const userResult = ref<UserResult>({
   rank: 0,

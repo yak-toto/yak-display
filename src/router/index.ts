@@ -3,6 +3,7 @@ import FinalePhaseComponent from '@/components/FinalePhaseComponent.vue';
 import GroupComponent from '@/components/GroupComponent.vue';
 import HomeComponent from '@/components/HomeComponent.vue';
 import LoginComponent from '@/components/LoginComponent.vue';
+import NavbarLayout from '@/components/NavbarLayout.vue';
 import ScoreBoardComponent from '@/components/ScoreBoardComponent.vue';
 import SignupComponent from '@/components/SignupComponent.vue';
 import useYakStore from '@/store';
@@ -14,11 +15,6 @@ const routes = [
     meta: {
       allowAnonymous: true,
     },
-  },
-  {
-    path: '/home',
-    name: 'home',
-    component: HomeComponent,
   },
   {
     path: '/login',
@@ -37,20 +33,31 @@ const routes = [
     },
   },
   {
-    path: '/groups/:groupName',
-    name: 'groups',
-    component: GroupComponent,
-    props: true,
-  },
-  {
-    path: '/score_board',
-    name: 'score_board',
-    component: ScoreBoardComponent,
-  },
-  {
-    path: '/finale_phase',
-    name: 'finale_phase',
-    component: FinalePhaseComponent,
+    path: '/',
+    component: NavbarLayout,
+    children: [
+      {
+        path: 'home',
+        name: 'home',
+        component: HomeComponent,
+      },
+      {
+        path: 'groups/:groupName',
+        name: 'groups',
+        component: GroupComponent,
+        props: true,
+      },
+      {
+        path: 'score_board',
+        name: 'score_board',
+        component: ScoreBoardComponent,
+      },
+      {
+        path: 'finale_phase',
+        name: 'finale_phase',
+        component: FinalePhaseComponent,
+      },
+    ],
   },
 ];
 
