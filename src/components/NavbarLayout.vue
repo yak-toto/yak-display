@@ -4,7 +4,7 @@
       <GroupNavbar />
     </div>
     <div class="navbar-layout__content">
-      <slot />
+      <router-view />
     </div>
   </div>
 </template>
