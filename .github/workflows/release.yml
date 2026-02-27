@@ -91,11 +91,14 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:${{ steps.create-commits.outputs.new-version }}
 
+      - name: Zip dist
+        run: cd dist && zip -r ../yak-display-v${{ steps.create-commits.outputs.new-version }}.zip .
+
       - name: Create GitHub Release
         id: create-release
         uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
         with:
-          artifacts: 'dist/**'
+          artifacts: 'yak-display-v${{ steps.create-commits.outputs.new-version }}.zip'
           generateReleaseNotes: true
           tag: v${{ steps.create-commits.outputs.new-version }}
 
