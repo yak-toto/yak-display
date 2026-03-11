@@ -10,22 +10,18 @@
               <th>Nombre de scores trouvés</th>
               <th>Nombre de qualifiés trouvés</th>
               <th>Nombre de premier trouvés</th>
-              <th>Nombre de quart de finalistes</th>
-              <th>Nombre de demi-finalistes</th>
-              <th>Nombre de finalistes</th>
+              <th v-for="group in scoreBoardResource.groups" :key="group.id">{{ group.description }}</th>
               <th>Vainqueur trouvé</th>
               <th>Points</th>
             </tr>
           </thead>
-          <tr v-for="res in scoreBoardResource" :key="res.full_name">
+          <tr v-for="res in scoreBoardResource.results" :key="res.full_name">
             <td>{{ res.full_name }}</td>
             <td>{{ res.number_match_guess }}</td>
             <td>{{ res.number_score_guess }}</td>
             <td>{{ res.number_qualified_teams_guess }}</td>
             <td>{{ res.number_first_qualified_guess }}</td>
-            <td>{{ res.number_quarter_final_guess }}</td>
-            <td>{{ res.number_semi_final_guess }}</td>
-            <td>{{ res.number_final_guess }}</td>
+            <td v-for="group in scoreBoardResource.groups" :key="group.id">{{ res.knockout_rounds.find(r => r.group_id === group.id)?.count ?? 0 }}</td>
             <td>{{ res.number_winner_guess }}</td>
             <td>{{ res.points }}</td>
           </tr>
@@ -36,11 +32,11 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import type { UserResult } from '@/client';
+import type { ScoreBoardResponse } from '@/client';
 import { retrieveScoreBoardApiV1ScoreBoardGet } from '@/client';
 
 // Reactive data
-const scoreBoardResource = ref<UserResult[]>([]);
+const scoreBoardResource = ref<ScoreBoardResponse>({ groups: [], results: [] });
 
 // Methods
 const getScoreBoard = async () => {
