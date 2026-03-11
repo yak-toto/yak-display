@@ -45,9 +45,7 @@ const userResult = ref<UserResult>({
   number_score_guess: 0,
   number_qualified_teams_guess: 0,
   number_first_qualified_guess: 0,
-  number_quarter_final_guess: 0,
-  number_semi_final_guess: 0,
-  number_final_guess: 0,
+  knockout_rounds: [],
   number_winner_guess: 0,
   points: 0,
 });
@@ -57,9 +55,10 @@ const stats = computed(() => [
   { label: 'Scores trouvés', value: userResult.value.number_score_guess },
   { label: 'Qualifiés trouvés', value: userResult.value.number_qualified_teams_guess },
   { label: 'Premiers trouvés', value: userResult.value.number_first_qualified_guess },
-  { label: 'Quart de finalistes', value: userResult.value.number_quarter_final_guess },
-  { label: 'Demi-finalistes', value: userResult.value.number_semi_final_guess },
-  { label: 'Finalistes', value: userResult.value.number_final_guess },
+  ...userResult.value.knockout_rounds.map((round) => ({
+    label: round.group.description,
+    value: round.count,
+  })),
   { label: 'Vainqueur trouvé', value: userResult.value.number_winner_guess },
 ]);
 
