@@ -30,7 +30,7 @@
     "@hey-api/openapi-ts": "0.95.0",
     "@tsconfig/node24": "24.0.4",
     "@types/lodash": "4.17.24",
-    "@types/node": "24.12.0",
+    "@types/node": "24.12.2",
     "@vitejs/plugin-vue": "6.0.5",
     "@vue/tsconfig": "0.9.1",
     "npm-run-all2": "8.0.4",
