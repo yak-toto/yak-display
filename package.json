@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.11",
-    "@hey-api/openapi-ts": "0.95.0",
+    "@hey-api/openapi-ts": "0.96.0",
     "@tsconfig/node24": "24.0.4",
     "@types/lodash": "4.17.24",
     "@types/node": "24.12.2",
