@@ -276,7 +276,7 @@ const pushBet = (
   const groupId = groups.value[groupIndex]?.id;
   const nextGroupId = groups.value[groupIndex + 1]?.id;
 
-  if (!groupId || !nextGroupId) {
+  if (!groupId) {
     return;
   }
 
@@ -286,6 +286,10 @@ const pushBet = (
   }
 
   bet.is_one_won = isOneWon;
+
+  if (!nextGroupId) {
+    return;
+  }
 
   const teamIndex = betIndex % 2 === 0 ? 1 : 2;
   const newBetIndex = betIndex % 2 === 0 ? betIndex / 2 : (betIndex - 1) / 2;
