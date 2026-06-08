@@ -47,7 +47,7 @@ import { computed, ref } from 'vue';
 import { onBeforeRouteUpdate, type RouteLocationNormalizedLoaded } from 'vue-router';
 import type { GroupOut, GroupPositionOut, ScoreBetWithGroupIdOut } from '@/client';
 import {
-  modifyScoreBetApiV1ScoreBetsBetIdPatch,
+  bulkModifyScoreBetsApiV1ScoreBetsPatch,
   retrieveGroupRankByCodeApiV1BetsGroupsRankGroupIdGet,
 } from '@/client';
 import useYakStore from '@/store';
@@ -137,17 +137,13 @@ const patchGroup = async (): Promise<'success' | 'error' | 'info'> => {
   }
 
   try {
-    await Promise.all(
-      modifyBets.map((bet) =>
-        modifyScoreBetApiV1ScoreBetsBetIdPatch({
-          path: { bet_id: bet.id },
-          body: {
-            team1: { id: bet.team1?.id || '', score: bet.team1?.score },
-            team2: { id: bet.team2?.id || '', score: bet.team2?.score },
-          },
-        }),
-      ),
-    );
+    await bulkModifyScoreBetsApiV1ScoreBetsPatch({
+      body: modifyBets.map((bet) => ({
+        id: bet.id,
+        team1: { id: bet.team1?.id || '', score: bet.team1?.score },
+        team2: { id: bet.team2?.id || '', score: bet.team2?.score },
+      })),
+    });
 
     scoreBetsCopy.value = cloneDeep(scoreBets.value);
     yakStore.updateStoreBets(scoreBets.value);
