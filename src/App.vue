@@ -85,4 +85,10 @@ textarea {
 .body-yaktoto-page {
   grid-column: 2 / 8;
 }
+
+@media screen and (max-width: 600px) {
+  .body-yaktoto-page {
+    grid-column: 1 / -1;
+  }
+}
 </style>
