@@ -6,24 +6,24 @@
           <thead>
             <tr>
               <th>Joueur</th>
+              <th>Points</th>
               <th>Nombre de matchs trouvés</th>
               <th>Nombre de scores trouvés</th>
               <th>Nombre de qualifiés trouvés</th>
               <th>Nombre de premier trouvés</th>
               <th v-for="group in scoreBoardResource.groups" :key="group.id">{{ group.description }}</th>
               <th>Vainqueur trouvé</th>
-              <th>Points</th>
             </tr>
           </thead>
           <tr v-for="res in scoreBoardResource.results" :key="res.full_name">
             <td>{{ res.full_name }}</td>
+            <td>{{ res.points }}</td>
             <td>{{ res.number_match_guess }}</td>
             <td>{{ res.number_score_guess }}</td>
             <td>{{ res.number_qualified_teams_guess }}</td>
             <td>{{ res.number_first_qualified_guess }}</td>
             <td v-for="group in scoreBoardResource.groups" :key="group.id">{{ res.knockout_rounds.find(r => r.group_id === group.id)?.count ?? 0 }}</td>
             <td>{{ res.number_winner_guess }}</td>
-            <td>{{ res.points }}</td>
           </tr>
         </table>
       </div>
@@ -91,5 +91,19 @@ onMounted(getScoreBoard);
   border-width: 0 0 1px;
   padding: 0.5em 0.75em;
   vertical-align: top;
+}
+
+@media screen and (max-width: 600px) {
+  .box-score-board {
+    overflow-x: auto;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.75rem;
+  }
+
+  .table-custom th,
+  .table-custom td {
+    padding: 0.4em 0.5em;
+  }
 }
 </style>
