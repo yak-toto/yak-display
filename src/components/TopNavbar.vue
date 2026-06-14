@@ -123,4 +123,14 @@ async function logout(): Promise<void> {
   color: red;
   font-weight: bold;
 }
+
+@media screen and (max-width: 600px) {
+  .navbar-left {
+    grid-column: 1 / 6;
+  }
+
+  .navbar-right {
+    grid-column: 6 / -1;
+  }
+}
 </style>
