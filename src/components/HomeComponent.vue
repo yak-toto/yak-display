@@ -6,7 +6,7 @@
         <BoxContainer>
           <div class="stat-highlight">
             <span class="stat-label">Classement</span>
-            <span class="stat-value">{{ userResult.rank }}</span>
+            <span class="stat-value">{{ userResult.rank }} / {{ userResult.number_of_players  }}</span>
           </div>
         </BoxContainer>
 
@@ -38,6 +38,7 @@ import BoxContainer from './BoxContainer.vue';
 
 const userResult = ref<UserResult>({
   rank: 0,
+  number_of_players: 0,
   first_name: '',
   last_name: '',
   full_name: '',

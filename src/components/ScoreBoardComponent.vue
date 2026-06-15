@@ -1,9 +1,11 @@
 <template>
   <div class="table-score-board">
     <h3 class="title">Classement</h3>
+    <div class="table-wrapper">
     <table class="table-custom">
       <thead>
         <tr>
+          <th />
           <th>Joueur</th>
           <th>Points</th>
           <th>Nombre de matchs trouvés</th>
@@ -15,7 +17,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="res in scoreBoardResource.results" :key="res.full_name">
+          <tr v-for="[index, res] in scoreBoardResource.results.entries()" :key="res.full_name">
+          <td>{{ index + 1 }}</td>
           <td>{{ res.full_name }}</td>
           <td>{{ res.points }}</td>
           <td>{{ res.number_match_guess }}</td>
@@ -27,6 +30,7 @@
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 </template>
 
@@ -60,6 +64,10 @@ onMounted(getScoreBoard);
   text-align: center;
 }
 
+.table-wrapper {
+  width: 100%;
+}
+
 .table-custom {
   width: 100%;
   border-collapse: collapse;
@@ -79,16 +87,22 @@ onMounted(getScoreBoard);
   border-bottom-width: 2px;
 }
 
-@media screen and (max-width: 600px) {
+.table-custom tbody tr:nth-child(even) td {
+  background-color: #fafafa;
+}
+
+@media screen and (max-width: 768px) {
   .table-score-board {
     padding: 0;
   }
 
-  .table-custom {
-    display: block;
+  .table-wrapper {
     overflow-x: auto;
-    white-space: nowrap;
+  }
+
+  .table-custom {
     font-size: 0.85rem;
+    white-space: nowrap;
   }
 
   .table-custom th,
@@ -96,15 +110,27 @@ onMounted(getScoreBoard);
     padding: 0.4em 0.5em;
   }
 
-  .table-custom thead th:first-child,
-  .table-custom tbody td:first-child {
+  .table-custom thead th:nth-child(1),
+  .table-custom tbody td:nth-child(1) {
     position: sticky;
     left: 0;
+    min-width: 2.5rem;
+    box-sizing: border-box;
     background-color: white;
     z-index: 1;
   }
 
-  .table-custom tbody tr:nth-child(even) td:first-child {
+  .table-custom thead th:nth-child(2),
+  .table-custom tbody td:nth-child(2) {
+    position: sticky;
+    left: 2.5rem;
+    background-color: white;
+    z-index: 1;
+    box-shadow: 2px 0 4px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  .table-custom tbody tr:nth-child(even) td:nth-child(1),
+  .table-custom tbody tr:nth-child(even) td:nth-child(2) {
     background-color: #fafafa;
   }
 }
