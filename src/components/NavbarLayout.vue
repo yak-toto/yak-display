@@ -15,33 +15,43 @@ import GroupNavbar from './GroupNavbar.vue';
 
 <style scoped lang="css">
 .navbar-layout {
-  display: grid;
-  grid-template-columns: minmax(200px, 250px) 1fr;
-  grid-gap: 1.5rem;
-  align-items: start;
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 45px);
 }
 
 .navbar-layout__sidebar {
-  grid-column: 1;
+  width: 240px;
+  flex-shrink: 0;
+  background-color: #f7f6f3;
+  border-right: 1px solid #e9e9e7;
   position: sticky;
-  top: 2rem;
-  align-self: start;
-  max-height: calc(100vh - 4rem);
+  top: 45px;
+  height: calc(100vh - 45px);
   overflow-y: auto;
 }
 
 .navbar-layout__content {
-  grid-column: 2;
+  flex: 1;
+  min-width: 0;
+  padding: 2rem 2.5rem;
 }
 
 @media screen and (max-width: 600px) {
   .navbar-layout {
-    display: block;
+    flex-direction: column;
   }
 
   .navbar-layout__sidebar {
+    width: 100%;
+    height: auto;
     position: static;
-    margin-bottom: 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid #e9e9e7;
+  }
+
+  .navbar-layout__content {
+    padding: 1.25rem 1rem;
   }
 }
 </style>

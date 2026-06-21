@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import FinalePhaseComponent from '@/components/FinalePhaseComponent.vue';
 import GroupComponent from '@/components/GroupComponent.vue';
+import GroupsOverviewComponent from '@/components/GroupsOverviewComponent.vue';
 import HomeComponent from '@/components/HomeComponent.vue';
 import LoginComponent from '@/components/LoginComponent.vue';
 import NavbarLayout from '@/components/NavbarLayout.vue';
@@ -40,6 +41,11 @@ const routes = [
         path: 'home',
         name: 'home',
         component: HomeComponent,
+      },
+      {
+        path: 'groups',
+        name: 'groups_overview',
+        component: GroupsOverviewComponent,
       },
       {
         path: 'groups/:groupName',

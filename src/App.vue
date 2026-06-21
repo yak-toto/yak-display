@@ -1,11 +1,10 @@
 <template>
-  <section class="hero is-fullheight">
+  <div class="app-root">
     <TopNavbar />
-
-    <div class="body-yaktoto">
-      <router-view class="body-yaktoto-page" />
+    <div class="app-body">
+      <router-view class="app-page" />
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -13,26 +12,21 @@ import TopNavbar from '@/components/TopNavbar.vue';
 </script>
 
 <style lang="css">
-body {
-  color: #4a4a4a;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-  box-sizing: border-box;
-  background-color: white;
   font-size: 16px;
-  -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  min-width: 300px;
-  overflow-x: auto;
-  overflow-y: scroll;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  -webkit-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
-  text-size-adjust: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 body,
@@ -40,55 +34,32 @@ button,
 input,
 select,
 textarea {
-  font-family:
-    BlinkMacSystemFont,
-    -apple-system,
-    'Segoe UI',
-    'Roboto',
-    'Oxygen',
-    'Ubuntu',
-    'Cantarell',
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    'Helvetica',
-    'Arial',
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #37352f;
+  background-color: #ffffff;
 }
 
-.hero {
-  align-items: stretch;
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app-root {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
-.hero.is-fullheight {
-  min-height: 100vh;
+.app-body {
+  flex: 1;
+  display: flex;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
-
-.body-yaktoto {
-  flex-grow: 1;
-  flex-shrink: 0;
-  align-items: start;
-  text-align: center !important;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-}
-
-.body-yaktoto-page {
-  grid-column: 2 / 8;
-}
-
-@media screen and (max-width: 600px) {
-  .body-yaktoto-page {
-    grid-column: 1 / -1;
-  }
+.app-page {
+  flex: 1;
+  min-width: 0;
 }
 </style>
