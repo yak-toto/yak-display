@@ -19,18 +19,15 @@
 
 .home-button:hover {
   background-color: #f0f0f0;
-  color: #1a1a1a;
 }
 
 .home-icon {
   width: 1.25rem;
   height: 1.25rem;
-  opacity: 0.5;
-  transition: opacity 0.2s ease;
 }
 
-.home-button.router-link-active .home-icon,
-.home-button:hover .home-icon {
-  opacity: 1;
+.home-button.router-link-active {
+  pointer-events: none;
+  cursor: default;
 }
 </style>
