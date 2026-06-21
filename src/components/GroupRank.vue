@@ -67,20 +67,37 @@ defineProps<{
 .result-group {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 2rem;
+  font-size: 0.9rem;
 }
 
-.result-group th,
-.result-group td {
-  border: 1px solid;
-  border-width: 0 0 1px;
-  border-color: #53535321;
-  text-align: left;
+.result-group thead tr {
+  border-bottom: 1px solid #e9e9e7;
+}
+
+.result-group th {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #9b9a97;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   padding: 0.5em 0.75em;
+  text-align: left;
+}
+
+.result-group td {
+  border-bottom: 1px solid #e9e9e7;
+  text-align: left;
+  padding: 0.6em 0.75em;
+  color: #37352f;
+}
+
+.result-group tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .result-group abbr {
   cursor: help;
+  text-decoration: none;
 }
 
 .team-cell {
@@ -93,18 +110,16 @@ defineProps<{
   height: 1.1em;
   width: auto;
   border-radius: 2px;
-  border: 1px solid rgb(0 0 0 / 12%);
+  border: 1px solid rgb(0 0 0 / 10%);
   flex-shrink: 0;
 }
 
-/* Mobile: make table scrollable and reduce font size */
 @media screen and (max-width: 600px) {
   .result-group {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
-    font-size: 0.85rem;
-    margin-bottom: 1.5rem;
+    font-size: 0.82rem;
   }
 
   .result-group th,
@@ -116,12 +131,8 @@ defineProps<{
   .result-group tbody td:first-child {
     position: sticky;
     left: 0;
-    background-color: white;
+    background-color: #ffffff;
     z-index: 1;
-  }
-
-  .result-group tbody tr:nth-child(even) td:first-child {
-    background-color: #fafafa;
   }
 }
 </style>

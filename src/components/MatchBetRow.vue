@@ -62,113 +62,84 @@ const updateTeam2Score = (event: Event) => {
 
 <style scoped lang="css">
 .grid-bet {
-  display: grid;
-  grid-template-columns: repeat(14, 1fr);
-  grid-gap: 10px;
-  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.25rem;
 }
 
 .team-bet-1 {
+  flex: 1;
+  min-width: 0;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 0.4em;
-  grid-column: 1 / 3;
+  font-size: 0.9rem;
+  text-align: right;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
-.input-bet-1 {
-  grid-column: 3 / 8;
-}
-
+.input-bet-1,
 .input-bet-2 {
-  grid-column: 8 / 13;
+  flex: 0 0 52px;
 }
 
 .team-bet-2 {
+  flex: 1;
+  min-width: 0;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 0.4em;
-  grid-column: 13 / 15;
+  font-size: 0.9rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
-/* Tablet */
-@media screen and (max-width: 900px) {
-  .team-bet-1 {
-    grid-column: 1 / 5;
-  }
-  .input-bet-1 {
-    grid-column: 5 / 8;
-  }
-  .input-bet-2 {
-    grid-column: 8 / 11;
-  }
-  .team-bet-2 {
-    grid-column: 11 / 15;
-  }
-}
-
-/* Mobile */
 @media screen and (max-width: 600px) {
-  .grid-bet {
-    grid-template-columns: 1fr auto auto 1fr;
-    grid-gap: 8px;
-    padding: 0.5rem;
-  }
-
-  .team-bet-1 {
-    grid-column: 1;
-    justify-content: flex-end;
-    font-size: 0.9rem;
-  }
-
-  .input-bet-1 {
-    grid-column: 2;
-  }
-
-  .input-bet-2 {
-    grid-column: 3;
-  }
-
+  .team-bet-1,
   .team-bet-2 {
-    grid-column: 4;
-    justify-content: flex-start;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
+  }
+
+  .input-bet-1,
+  .input-bet-2 {
+    flex: 0 0 44px;
   }
 }
 
 input {
   width: 100%;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border-width: 1px;
-  border-color: rgb(10 10 10 / 10%);
-  border-style: solid;
+  padding: 0.4rem 0.25rem;
+  border-radius: 4px;
+  border: 1px solid #e9e9e7;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #37352f;
+  background-color: #ffffff;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.15s ease;
 }
 
-@media screen and (max-width: 600px) {
-  input {
-    width: 50px;
-    padding: 0.4rem 0.25rem;
-    text-align: center;
-    font-size: 1rem;
-  }
+input:focus {
+  border-color: #37352f;
 }
 
 .team-flag {
   height: 1.1em;
   width: auto;
   border-radius: 2px;
-  border: 1px solid rgb(0 0 0 / 12%);
+  border: 1px solid rgb(0 0 0 / 10%);
   flex-shrink: 0;
 }
 
 input:read-only {
   cursor: not-allowed;
-  background-color: #f5f5f5;
-  border-width: 1px;
-  border-color: #e0e0e0;
-  border-style: solid;
-  color: #999;
+  background-color: #f7f6f3;
+  border-color: #e9e9e7;
+  color: #9b9a97;
 }
 </style>

@@ -1,74 +1,60 @@
 <template>
-  <div class="vertical-menu">
-    <div v-if="groupPhase" class="section">
-      <h1 @click="toggleSection('groups')" class="section-header">
-        <span class="chevron" :class="{ expanded: sections.groups }">▶</span>
-        {{ groupPhase.description }}
-      </h1>
-      <transition name="slide">
-        <div v-show="sections.groups" class="section-content">
-          <router-link v-for="group in groups" :key="group.id" :to="`/groups/${group.code}`">
-            {{ group.description }}
-          </router-link>
-        </div>
-      </transition>
+  <nav class="vertical-menu">
+    <router-link to="/home" class="nav-link">🏠 Accueil</router-link>
+
+    <div class="nav-link--toggle">
+      <router-link to="/groups" class="nav-link--toggle-label">⚽ Phase de groupes</router-link>
+      <button type="button" class="chevron-btn" @click="toggleGroups">
+        <span class="chevron" :class="{ open: groupsOpen }">›</span>
+      </button>
     </div>
 
-    <div v-if="finalePhase" class="section">
-      <h1 @click="toggleSection('finale')" class="section-header">
-        <span class="chevron" :class="{ expanded: sections.finale }">▶</span>
-        {{ finalePhase.description }}
-      </h1>
-      <transition name="slide">
-        <div v-show="sections.finale" class="section-content">
-          <router-link to="/finale_phase">{{ finalePhase.description }}</router-link>
-        </div>
-      </transition>
+    <div v-if="groupsOpen" class="nav-submenu">
+      <router-link
+        v-for="group in groups"
+        :key="group.id"
+        :to="`/groups/${group.code}`"
+        class="nav-link nav-link--sub"
+      >
+        {{ group.description }}
+      </router-link>
     </div>
 
-    <div class="section">
-      <h1 @click="toggleSection('classement')" class="section-header">
-        <span class="chevron" :class="{ expanded: sections.classement }">▶</span>
-        Classement
-      </h1>
-      <transition name="slide">
-        <div v-show="sections.classement" class="section-content">
-          <router-link to="/score_board">Classement</router-link>
-        </div>
-      </transition>
-    </div>
-  </div>
+    <router-link to="/finale_phase" class="nav-link">🏆 Phase finale</router-link>
+    <router-link to="/score_board" class="nav-link">📊 Classement</router-link>
+  </nav>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import useYakStore from '@/store';
 
 const yakStore = useYakStore();
+const route = useRoute();
 
-// Section collapse state - all collapsed by default
-const sections = reactive({
-  groups: false,
-  finale: false,
-  classement: false,
-});
+const isOnGroupDetailRoute = () => route.path.startsWith('/groups/');
 
-// Toggle section visibility
-const toggleSection = (section: keyof typeof sections) => {
-  sections[section] = !sections[section];
+const groupsOpen = ref(isOnGroupDetailRoute());
+
+const toggleGroups = () => {
+  groupsOpen.value = !groupsOpen.value;
 };
+
+watch(
+  () => route.path,
+  (path) => {
+    if (path.startsWith('/groups/')) {
+      groupsOpen.value = true;
+    }
+  },
+);
 
 const groupPhase = computed(() => yakStore.allBets?.phases.find((phase) => phase.code === 'GROUP'));
 
-const finalePhase = computed(() =>
-  yakStore.allBets?.phases.find((phase) => phase.code === 'FINAL'),
-);
-
 const groups = computed(() => {
   const gp = groupPhase.value;
-  if (!gp) {
-    return [];
-  }
+  if (!gp) return [];
   return yakStore.allBets?.groups.filter((group) => group.phase.id === gp.id) ?? [];
 });
 
@@ -81,101 +67,100 @@ onMounted(async () => {
 
 <style scoped lang="css">
 .vertical-menu {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 2rem;
+  padding: 0.75rem 0.5rem;
 }
 
-.section {
-  display: flex;
-  flex-direction: column;
-}
-
-.section:first-child .section-header {
-  margin-top: 0;
-}
-
-.section-header {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #999;
-  margin-top: 0.5rem;
-  margin-bottom: 0;
-  padding: 0.5rem 1.25rem;
-  cursor: pointer;
-  user-select: none;
+.nav-link {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: color 0.2s ease;
-  border-radius: 6px;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  color: #37352f;
+  text-decoration: none;
+  border-radius: 4px;
+  border-left: 3px solid transparent;
+  margin-bottom: 0.125rem;
+  transition: background-color 0.15s ease;
 }
 
-.section-header:hover {
-  color: #666;
-  background-color: #f5f5f5;
+.nav-link:hover {
+  background-color: #efefed;
+}
+
+.nav-link.router-link-active {
+  border-left-color: #37352f;
+  font-weight: 500;
+  background-color: #efefed;
+}
+
+.nav-link--toggle {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  cursor: default;
+  margin-bottom: 0.125rem;
+}
+
+.nav-link--toggle-label {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  color: #37352f;
+  text-decoration: none;
+  border-radius: 4px 0 0 4px;
+}
+
+.nav-link--toggle-label:hover {
+  background-color: #efefed;
+}
+
+.nav-link--toggle-label.router-link-active {
+  font-weight: 500;
+}
+
+.chevron-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0.5rem;
+  display: flex;
+  align-items: center;
+  border-radius: 0 4px 4px 0;
+  color: #9b9a97;
+}
+
+.chevron-btn:hover {
+  background-color: #efefed;
 }
 
 .chevron {
-  font-size: 0.6rem;
-  color: #999;
+  font-size: 1rem;
+  color: #9b9a97;
   transition: transform 0.2s ease;
   display: inline-block;
+  line-height: 1;
 }
 
-.chevron.expanded {
+.chevron.open {
   transform: rotate(90deg);
 }
 
-.section-content {
+.nav-submenu {
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
-  padding-top: 0.5rem;
+  margin-bottom: 0.125rem;
 }
 
-.vertical-menu a {
-  cursor: pointer;
-  color: #5a5a5a;
-  display: block;
-  padding: 0.65rem 1rem;
-  text-decoration: none;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
-  border: 2px solid transparent;
-  position: relative;
+.nav-link--sub {
+  font-size: 0.82rem;
+  padding-left: 1.75rem;
+  color: #6b6b6b;
 }
 
-.vertical-menu a:hover {
-  background-color: #f5f5f5;
-  color: #2c2c2c;
-  border-color: #e0e0e0;
-}
-
-.vertical-menu a.router-link-active {
-  background-color: #f0f7ff;
-  color: #1a1a1a;
-  font-weight: 600;
-  border: 2px solid #4a90e2;
-  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
-}
-
-/* Slide transition */
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.3s ease;
-  max-height: 1000px;
-  overflow: hidden;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-  max-height: 0;
-  opacity: 0;
+.nav-link--sub.router-link-active {
+  color: #37352f;
 }
 </style>

@@ -79,58 +79,53 @@ async function logout(): Promise<void> {
 
 <style scoped lang="css">
 .navbar-yaktoto {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 45px;
+  padding: 0 1rem;
+  border-bottom: 1px solid #e9e9e7;
+  background-color: #ffffff;
+  flex-shrink: 0;
 }
 
 .navbar-left {
-  border-bottom: solid;
-  border-width: 1px;
-  border-color: #53535321;
-  padding: 0.5rem;
-  grid-column: 2 / 6;
-  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .navbar-right {
-  border-bottom: solid;
-  border-width: 1px;
-  border-color: #53535321;
-  padding: 0.5rem;
-  grid-column: 6 / 8;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .navbar-item-custom {
+  font-size: 0.875rem;
+  color: #37352f;
+  padding: 0.35rem 0.65rem;
+  border-radius: 4px;
+  display: inline-flex;
   align-items: center;
-  padding: 0.5rem 0.75rem;
-  color: black;
-  display: inline;
   text-decoration: none;
 }
 
-.navbar-item-custom.clickable:hover {
+.navbar-item-custom.clickable {
   cursor: pointer;
-  background-color: #fafafa;
+}
+
+.navbar-item-custom.clickable:hover {
+  background-color: #efefed;
 }
 
 .navbar-item-custom.success {
-  color: green;
-  font-weight: bold;
+  color: #0f7b0f;
+  font-weight: 500;
 }
 
 .navbar-item-custom.error {
-  color: red;
-  font-weight: bold;
-}
-
-@media screen and (max-width: 600px) {
-  .navbar-left {
-    grid-column: 1 / 6;
-  }
-
-  .navbar-right {
-    grid-column: 6 / -1;
-  }
+  color: #d44c47;
+  font-weight: 500;
 }
 </style>

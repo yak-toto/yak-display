@@ -1,10 +1,12 @@
 <template>
-  <BoxContainer class="auth-container">
-    <h3 class="title">{{ title }}</h3>
-    <div class="box">
-      <slot />
-    </div>
-  </BoxContainer>
+  <div class="auth-page">
+    <BoxContainer class="auth-container">
+      <h3 class="title">{{ title }}</h3>
+      <div class="box">
+        <slot />
+      </div>
+    </BoxContainer>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -16,19 +18,27 @@ defineProps<{
 </script>
 
 <style scoped lang="css">
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 1.5rem 1rem;
+  width: 100%;
+}
+
 .auth-container {
   border-radius: 12px;
   padding: 2rem;
-  max-width: 450px;
-  margin: auto;
+  width: 100%;
+  max-width: 420px;
 }
 
 .title {
   font-size: 2rem;
-  font-weight: 600;
-  line-height: 1.125;
+  font-weight: 700;
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #2c2c2c;
+  color: #37352f;
 }
 </style>

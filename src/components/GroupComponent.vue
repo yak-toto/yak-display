@@ -173,52 +173,24 @@ loadGroup(props.groupName || '');
 </script>
 
 <style scoped lang="css">
+.table-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 800px;
+}
+
 .title {
   font-size: 2rem;
-  font-weight: 600;
-  line-height: 1.125;
-  text-align: center;
-}
-
-@media screen and (max-width: 600px) {
-  .title {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-  }
-}
-
-.result-group {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 3rem;
-}
-
-.result-group tbody tr:nth-child(even) {
-  background-color: #fafafa;
-}
-
-.result-group tbody tr:nth-child(odd) {
-  background-color: white;
-}
-
-.result-group th,
-.result-group td {
-  border: 1px solid;
-  border-width: 0 0 1px;
-  border-color: #53535321;
+  font-weight: 700;
+  color: #37352f;
   text-align: left;
-  padding: 0.5em 0.75em;
-}
-
-.result-group abbr {
-  cursor: help;
 }
 
 .div-button-group {
-  padding-top: 1rem;
+  padding-top: 0.75rem;
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
 }
 
 .button-container {
@@ -234,11 +206,11 @@ loadGroup(props.groupName || '');
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: #666;
-  background-color: #f5f5f5;
-  padding: 0.5rem 1rem;
+  color: #9b9a97;
+  padding: 0.5rem 0.75rem;
   border-radius: 4px;
-  border-left: 3px solid #ffa500;
+  border: 1px solid #e9e9e7;
+  border-left: 3px solid #9b9a97;
   max-width: 500px;
   text-align: left;
 }
@@ -251,7 +223,6 @@ loadGroup(props.groupName || '');
 @media screen and (max-width: 600px) {
   .disabled-message {
     font-size: 0.8125rem;
-    padding: 0.5rem 0.75rem;
     max-width: 100%;
   }
 }
