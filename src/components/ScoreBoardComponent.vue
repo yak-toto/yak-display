@@ -1,6 +1,6 @@
 <template>
   <div class="table-score-board">
-    <h3 class="title">Classement</h3>
+    <PageTitle title="Classement" />
     <div class="table-wrapper">
     <table class="table-custom">
       <thead>
@@ -38,6 +38,7 @@
 import { onMounted, ref } from 'vue';
 import type { ScoreBoardResponse } from '@/client';
 import { retrieveScoreBoardApiV1ScoreBoardGet } from '@/client';
+import PageTitle from './PageTitle.vue';
 
 const scoreBoardResource = ref<ScoreBoardResponse>({ groups: [], results: [] });
 
@@ -55,13 +56,6 @@ onMounted(getScoreBoard);
 .table-score-board {
   grid-column: 1 / -1;
   padding: 0 1.5rem;
-}
-
-.title {
-  font-size: 2rem;
-  font-weight: 600;
-  line-height: 1.125;
-  text-align: center;
 }
 
 .table-wrapper {

@@ -1,6 +1,6 @@
 <template>
   <div class="finale-phase">
-    <h1 class="page-title" v-if="phase?.description">{{ phase.description }}</h1>
+    <PageTitle v-if="phase?.description" :title="phase.description" />
 
     <!-- Round selector tabs -->
     <div class="round-tabs" v-if="groups.length">
@@ -130,6 +130,7 @@ import {
   retrieveBetsByPhaseCodeApiV1BetsPhasesPhaseCodeGet,
 } from '@/client';
 import StatusButton from './form/StatusButton.vue';
+import PageTitle from './PageTitle.vue';
 
 type BinaryBetOutExtended = BinaryBetWithGroupIdOut & { is_one_won?: boolean | null };
 
@@ -327,12 +328,6 @@ getFinalePhase();
   flex-direction: column;
   gap: 1.5rem;
   max-width: 900px;
-}
-
-.page-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #37352f;
 }
 
 /* ── Round tabs ── */

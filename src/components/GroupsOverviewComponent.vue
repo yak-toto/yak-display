@@ -1,6 +1,6 @@
 <template>
   <div class="groups-overview">
-    <h1 class="page-title">Phase de groupes</h1>
+    <PageTitle title="Phase de groupes" />
     <div class="groups-grid" v-if="groups.length">
       <router-link
         v-for="group in groups"
@@ -19,6 +19,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
 import useYakStore from '@/store';
+import PageTitle from './PageTitle.vue';
 
 const yakStore = useYakStore();
 
@@ -43,12 +44,6 @@ onMounted(async () => {
   flex-direction: column;
   gap: 1.5rem;
   max-width: 800px;
-}
-
-.page-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #37352f;
 }
 
 .groups-grid {
