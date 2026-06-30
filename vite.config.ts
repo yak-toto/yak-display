@@ -4,9 +4,13 @@ import { defineConfig, type Plugin } from 'vite';
 import vueDevTools from 'vite-plugin-vue-devtools';
 
 import pkg from './package.json';
+import { apiSchemaHash } from './src/client/schema-hash.gen';
 
 function frontendMetaPlugin(): Plugin {
-  const content = JSON.stringify({ generatedFromBackend: pkg.backendApiVersion });
+  const content = JSON.stringify({
+    generatedFromBackend: pkg.backendApiVersion,
+    generatedFromApiSchemaHash: apiSchemaHash,
+  });
   return {
     name: 'frontend-meta',
     configureServer(server) {
