@@ -1,7 +1,7 @@
 # ===========================
 # 1️⃣ Build Stage (node)
 # ===========================
-FROM node:24.18.0-alpine3.24 AS build
+FROM node:24.18.0-alpine3.23 AS build
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ RUN npm run build
 # ===========================
 # 2️⃣ Runtime Stage (nginx)
 # ===========================
-FROM nginx:1.31.2-alpine3.24
+FROM nginx:1.31.2-alpine3.23
 
 LABEL org.opencontainers.image.source=https://github.com/yak-toto/yak-display
 
