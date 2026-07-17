@@ -5,6 +5,7 @@ import GroupsOverviewComponent from '@/components/GroupsOverviewComponent.vue';
 import HomeComponent from '@/components/HomeComponent.vue';
 import LoginComponent from '@/components/LoginComponent.vue';
 import NavbarLayout from '@/components/NavbarLayout.vue';
+import RulesComponent from '@/components/RulesComponent.vue';
 import ScoreBoardComponent from '@/components/ScoreBoardComponent.vue';
 import SignupComponent from '@/components/SignupComponent.vue';
 import useYakStore from '@/store';
@@ -62,6 +63,11 @@ const routes = [
         path: 'finale_phase',
         name: 'finale_phase',
         component: FinalePhaseComponent,
+      },
+      {
+        path: 'rules',
+        name: 'rules',
+        component: RulesComponent,
       },
     ],
   },

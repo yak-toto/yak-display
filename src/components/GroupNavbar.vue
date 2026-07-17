@@ -22,6 +22,7 @@
 
     <router-link to="/finale_phase" class="nav-link">🏆 Phase finale</router-link>
     <router-link to="/score_board" class="nav-link">📊 Classement</router-link>
+    <router-link to="/rules" class="nav-link">📋 Règles</router-link>
   </nav>
 </template>
 
