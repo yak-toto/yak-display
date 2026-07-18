@@ -31,6 +31,7 @@
       </tbody>
     </table>
     </div>
+    <footer class="score-board-footer">Le dernier paye son coup 🍻</footer>
   </div>
 </template>
 
@@ -60,6 +61,13 @@ onMounted(getScoreBoard);
 
 .table-wrapper {
   width: 100%;
+}
+
+.score-board-footer {
+  margin-top: 1rem;
+  text-align: center;
+  font-style: italic;
+  color: var(--color-text-muted, #757575);
 }
 
 .table-custom {
