@@ -11,13 +11,6 @@ import useYakStore from '@/store';
 
 const routes = [
   {
-    path: '/',
-    redirect: '/login',
-    meta: {
-      allowAnonymous: true,
-    },
-  },
-  {
     path: '/login',
     name: 'login',
     component: LoginComponent,
@@ -38,7 +31,7 @@ const routes = [
     component: NavbarLayout,
     children: [
       {
-        path: 'home',
+        path: '/',
         name: 'home',
         component: HomeComponent,
       },
