@@ -7,6 +7,7 @@ const useYakStore = defineStore('yakStorage', {
     userName: '',
     isLoggedIn: false,
     allBets: null as AllBetsResponse | null,
+    allBetsPromise: null as Promise<void> | null,
   }),
   getters: {
     getUserName: (state) => state.userName,
@@ -25,9 +26,19 @@ const useYakStore = defineStore('yakStorage', {
       return this.isLoggedIn;
     },
     async fetchAllBets() {
-      const { data } = await retrieveAllBetsApiV1BetsGet();
-      if (data) {
-        this.allBets = data.result;
+      if (this.allBetsPromise) {
+        return this.allBetsPromise;
+      }
+      this.allBetsPromise = (async () => {
+        const { data } = await retrieveAllBetsApiV1BetsGet();
+        if (data) {
+          this.allBets = data.result;
+        }
+      })();
+      try {
+        await this.allBetsPromise;
+      } finally {
+        this.allBetsPromise = null;
       }
     },
     updateStoreBets(updatedBets: ScoreBetWithGroupIdOut[]) {
