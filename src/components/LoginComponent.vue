@@ -70,7 +70,7 @@ const login = async () => {
     yakStore.setUserName(data.result.name);
     await yakStore.fetchAllBets();
 
-    router.push('/home');
+    router.push('/');
   } else {
     loading.value = false;
     invalidLogin.value = true;

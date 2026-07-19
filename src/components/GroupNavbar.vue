@@ -1,6 +1,6 @@
 <template>
   <nav class="vertical-menu">
-    <router-link to="/home" class="nav-link">🏠 Accueil</router-link>
+    <router-link to="/" class="nav-link">🏠 Accueil</router-link>
 
     <div class="nav-link--toggle">
       <router-link to="/groups" class="nav-link--toggle-label">⚽ Phase de groupes</router-link>

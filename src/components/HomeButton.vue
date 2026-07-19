@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/home" class="home-button" title="Accueil">
+  <router-link to="/" class="home-button" title="Accueil">
     <img :src="'/api/v1/competition/logo'" alt="Accueil" class="home-icon" />
   </router-link>
 </template>
