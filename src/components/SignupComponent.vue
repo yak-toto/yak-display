@@ -33,6 +33,14 @@
         placeholder="mot de passe"
       />
 
+      <TextInput
+        v-model="signupToken"
+        label="Code d'invitation"
+        input-id="signupToken"
+        name="signupToken"
+        placeholder="code d'invitation"
+      />
+
       <ErrorNotification :show="invalidSignup" :message="errorMessage" />
 
       <LoadingButton
@@ -64,6 +72,7 @@ const name = ref('');
 const firstName = ref('');
 const lastName = ref('');
 const password = ref('');
+const signupToken = ref('');
 const invalidSignup = ref(false);
 const errorMessage = ref('');
 const loading = ref(false);
@@ -80,6 +89,7 @@ const signup = async () => {
     first_name: firstName.value,
     last_name: lastName.value,
     password: password.value,
+    signup_token: signupToken.value,
   };
 
   const { data, error } = await signupApiV1UsersSignupPost({ body: signupData });
