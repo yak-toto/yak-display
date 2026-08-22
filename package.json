@@ -3,7 +3,7 @@
   "version": "0.20.1",
   "private": true,
   "type": "module",
-  "backendApiVersion": "0.94.0",
+  "backendApiVersion": "0.94.2",
   "engines": {
     "node": "^24.0.0"
   },
