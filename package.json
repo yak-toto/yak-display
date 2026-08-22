@@ -28,7 +28,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.8",
     "@hey-api/openapi-ts": "^0.99.0",
-    "@tsconfig/node24": "24.0.4",
+    "@tsconfig/node24": "24.0.5",
     "@types/lodash": "4.17.25",
     "@types/node": "24.13.3",
     "@vitejs/plugin-vue": "6.0.8",
