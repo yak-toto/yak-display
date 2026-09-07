@@ -1,6 +1,6 @@
 {
   "name": "yak-display",
-  "version": "0.20.2",
+  "version": "0.20.3",
   "private": true,
   "type": "module",
   "backendApiVersion": "0.94.3",
