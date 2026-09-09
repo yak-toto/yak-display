@@ -9,6 +9,7 @@
         :key="group.id"
         class="round-tab"
         :class="{ active: idx === activeIndex }"
+        type="button"
         @click="activeIndex = idx"
       >
         {{ group.description }}
@@ -37,7 +38,7 @@
                 v-for="(bet, betIdx) in finalePhaseBet[group.id] || []"
                 :key="bet.id"
                 class="match-wrapper"
-                :style="{ minHeight: matchHeight(gIdx) + 'px' }"
+                :style="{ minHeight: `${matchHeight(gIdx)}px` }"
               >
                 <div class="match-card">
                   <!-- Team 1 -->
@@ -50,11 +51,14 @@
                     }"
                   >
                     <template v-if="bet.team1?.description">
-                      <a
+                      <button
                         v-if="!isLocked"
                         class="team-name"
+                        type="button"
                         @click="pushBet(gIdx, betIdx, bet.team1, true)"
-                      >&#8205;{{ bet.team1.description }}</a>
+                      >
+                        &#8205;{{ bet.team1.description }}
+                      </button>
                       <span v-else class="team-name">&#8205;{{ bet.team1.description }}</span>
                     </template>
                     <span v-else class="team-name team-name--empty">—</span>
@@ -74,11 +78,14 @@
                     }"
                   >
                     <template v-if="bet.team2?.description">
-                      <a
+                      <button
                         v-if="!isLocked"
                         class="team-name"
+                        type="button"
                         @click="pushBet(gIdx, betIdx, bet.team2, false)"
-                      >&#8205;{{ bet.team2.description }}</a>
+                      >
+                        &#8205;{{ bet.team2.description }}
+                      </button>
                       <span v-else class="team-name">&#8205;{{ bet.team2.description }}</span>
                     </template>
                     <span v-else class="team-name team-name--empty">—</span>
@@ -96,7 +103,9 @@
           class="nav-btn"
           @click="next"
           :disabled="activeIndex === groups.length - 1"
-        >›</button>
+        >
+          ›
+        </button>
       </div>
 
       <div class="submit-row">
@@ -491,13 +500,18 @@ getFinalePhase();
   color: inherit;
   cursor: pointer;
   display: block;
+  border: 0;
+  padding: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
 }
 
 .team-name--empty {
   cursor: default;
 }
 
-a.team-name:hover {
+button.team-name:hover {
   text-decoration: underline;
 }
 

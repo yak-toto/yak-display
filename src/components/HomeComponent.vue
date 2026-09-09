@@ -6,7 +6,10 @@
       <BoxContainer>
         <div class="stat-highlight">
           <span class="stat-highlight__icon">🏅</span>
-          <span class="stat-highlight__value">{{ userResult.rank }} / {{ userResult.number_of_players }}</span>
+          <span class="stat-highlight__value"
+            >{{ userResult.rank }}
+            / {{ userResult.number_of_players }}</span
+          >
           <span class="stat-highlight__label">Classement</span>
         </div>
       </BoxContainer>

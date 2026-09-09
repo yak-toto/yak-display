@@ -1,6 +1,6 @@
 import { execSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
-import path from 'path';
+import path from 'node:path';
 import pkg from '../package.json' with { type: 'json' };
 
 const uvRun = (script) =>

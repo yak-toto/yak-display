@@ -2,34 +2,38 @@
   <div class="table-score-board">
     <PageTitle title="Classement" />
     <div class="table-wrapper">
-    <table class="table-custom">
-      <thead>
-        <tr>
-          <th />
-          <th>Joueur</th>
-          <th>Points</th>
-          <th>Nombre de matchs trouvés</th>
-          <th>Nombre de scores trouvés</th>
-          <th>Nombre de qualifiés trouvés</th>
-          <th>Nombre de premier trouvés</th>
-          <th v-for="group in scoreBoardResource.groups" :key="group.id">{{ group.description }}</th>
-          <th>Vainqueur trouvé</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr v-for="[index, res] in scoreBoardResource.results.entries()" :key="res.full_name">
-          <td>{{ index + 1 }}</td>
-          <td>{{ res.full_name }}</td>
-          <td>{{ res.points }}</td>
-          <td>{{ res.number_match_guess }}</td>
-          <td>{{ res.number_score_guess }}</td>
-          <td>{{ res.number_qualified_teams_guess }}</td>
-          <td>{{ res.number_first_qualified_guess }}</td>
-          <td v-for="group in scoreBoardResource.groups" :key="group.id">{{ res.knockout_rounds.find(r => r.group_id === group.id)?.count ?? 0 }}</td>
-          <td>{{ res.number_winner_guess }}</td>
-        </tr>
-      </tbody>
-    </table>
+      <table class="table-custom">
+        <thead>
+          <tr>
+            <th />
+            <th>Joueur</th>
+            <th>Points</th>
+            <th>Nombre de matchs trouvés</th>
+            <th>Nombre de scores trouvés</th>
+            <th>Nombre de qualifiés trouvés</th>
+            <th>Nombre de premier trouvés</th>
+            <th v-for="group in scoreBoardResource.groups" :key="group.id">
+              {{ group.description }}
+            </th>
+            <th>Vainqueur trouvé</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="[ index, res ] in scoreBoardResource.results.entries()" :key="res.full_name">
+            <td>{{ index + 1 }}</td>
+            <td>{{ res.full_name }}</td>
+            <td>{{ res.points }}</td>
+            <td>{{ res.number_match_guess }}</td>
+            <td>{{ res.number_score_guess }}</td>
+            <td>{{ res.number_qualified_teams_guess }}</td>
+            <td>{{ res.number_first_qualified_guess }}</td>
+            <td v-for="group in scoreBoardResource.groups" :key="group.id">
+              {{ res.knockout_rounds.find(r => r.group_id === group.id)?.count ?? 0 }}
+            </td>
+            <td>{{ res.number_winner_guess }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <footer class="score-board-footer">Le dernier paye son coup 🍻</footer>
   </div>

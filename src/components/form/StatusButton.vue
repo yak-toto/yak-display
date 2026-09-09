@@ -14,15 +14,9 @@
       <SpinnerIcon />
       {{ loadingText }}
     </template>
-    <template v-else-if="showStatus && status === 'success'">
-      ✓ {{ successText }}
-    </template>
-    <template v-else-if="showStatus && status === 'error'">
-      ✗ {{ errorText }}
-    </template>
-    <template v-else-if="showStatus && status === 'info'">
-      ✓ {{ infoText }}
-    </template>
+    <template v-else-if="showStatus && status === 'success'"> ✓ {{ successText }} </template>
+    <template v-else-if="showStatus && status === 'error'"> ✗ {{ errorText }} </template>
+    <template v-else-if="showStatus && status === 'info'"> ✓ {{ infoText }} </template>
     <template v-else>
       {{ defaultText }}
     </template>
@@ -93,31 +87,31 @@ const handleClick = async () => {
   cursor: not-allowed;
 }
 
-.button-success {
-  background-color: #22c55e !important;
+.status-button.button-success {
+  background-color: #22c55e;
   animation: statusPulse 0.3s ease;
 }
 
-.button-success:hover {
-  background-color: #16a34a !important;
+.status-button.button-success:hover {
+  background-color: #16a34a;
 }
 
-.button-error {
-  background-color: #ef4444 !important;
+.status-button.button-error {
+  background-color: #ef4444;
   animation: statusPulse 0.3s ease;
 }
 
-.button-error:hover {
-  background-color: #dc2626 !important;
+.status-button.button-error:hover {
+  background-color: #dc2626;
 }
 
-.button-info {
-  background-color: #3b82f6 !important;
+.status-button.button-info {
+  background-color: #3b82f6;
   animation: statusPulse 0.3s ease;
 }
 
-.button-info:hover {
-  background-color: #2563eb !important;
+.status-button.button-info:hover {
+  background-color: #2563eb;
 }
 
 @keyframes statusPulse {

@@ -1,6 +1,6 @@
 <template>
   <AuthFormContainer title="Créer un compte">
-    <form v-on:submit.prevent="signup">
+    <form @submit.prevent="signup">
       <TextInput
         v-model="name"
         label="Pseudo"

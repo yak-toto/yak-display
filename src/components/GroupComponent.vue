@@ -1,44 +1,44 @@
 <template>
   <div class="table-group">
-      <h3 class="title">{{ group.description }}</h3>
-      <GroupRank :groupRank="groupRank" />
+    <h3 class="title">{{ group.description }}</h3>
+    <GroupRank :group-rank="groupRank" />
 
-      <BoxContainer>
-        <form @submit.prevent>
-          <MatchBetRow
-            v-for="(match, index) in scoreBets"
-            :key="match.id"
-            :team1Name="match.team1?.description || ''"
-            :team2Name="match.team2?.description || ''"
-            :team1Flag="match.team1?.flag.url"
-            :team2Flag="match.team2?.flag.url"
-            :team1Score="match.team1?.score"
-            :team2Score="match.team2?.score"
-            :locked="match.locked"
-            @update:team1Score="(score) => updateTeamScore(index, 'team1', score)"
-            @update:team2Score="(score) => updateTeamScore(index, 'team2', score)"
-          />
-          <div class="div-button-group">
-            <div class="button-container">
-              <div v-if="disabledMessage" class="disabled-message">
-                <span class="icon">ℹ️</span>
-                <span>{{ disabledMessage }}</span>
-              </div>
-              <StatusButton
-                :key="group.id"
-                :disabled="isButtonDisabled"
-                :on-submit="patchGroup"
-                default-text="Valider"
-                loading-text="Envoi en cours..."
-                success-text="Résultats soumis"
-                error-text="Erreur de synchronisation"
-                info-text="Aucun changement"
-              />
+    <BoxContainer>
+      <form @submit.prevent>
+        <MatchBetRow
+          v-for="(match, index) in scoreBets"
+          :key="match.id"
+          :team1-name="match.team1?.description || ''"
+          :team2-name="match.team2?.description || ''"
+          :team1-flag="match.team1?.flag.url"
+          :team2-flag="match.team2?.flag.url"
+          :team1-score="match.team1?.score"
+          :team2-score="match.team2?.score"
+          :locked="match.locked"
+          @update:team1Score="(score) => updateTeamScore(index, 'team1', score)"
+          @update:team2Score="(score) => updateTeamScore(index, 'team2', score)"
+        />
+        <div class="div-button-group">
+          <div class="button-container">
+            <div v-if="disabledMessage" class="disabled-message">
+              <span class="icon">ℹ️</span>
+              <span>{{ disabledMessage }}</span>
             </div>
+            <StatusButton
+              :key="group.id"
+              :disabled="isButtonDisabled"
+              :on-submit="patchGroup"
+              default-text="Valider"
+              loading-text="Envoi en cours..."
+              success-text="Résultats soumis"
+              error-text="Erreur de synchronisation"
+              info-text="Aucun changement"
+            />
           </div>
-        </form>
-      </BoxContainer>
-    </div>
+        </div>
+      </form>
+    </BoxContainer>
+  </div>
 </template>
 
 <script setup lang="ts">

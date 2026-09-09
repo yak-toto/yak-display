@@ -16,21 +16,16 @@
       "enabled": true
     }
   },
+  "html": {
+    "formatter": {
+      "enabled": true
+    },
+    "linter": {
+      "enabled": true
+    },
+    "experimentalFullSupportEnabled": true
+  },
   "files": {
     "ignoreUnknown": false
-  },
-  "overrides": [
-    {
-      "includes": ["**/*.vue"],
-      "linter": {
-        "rules": {
-          "correctness": {
-            // Due to the lack of support of vuejs in Biome linter, we need to disable these rules
-            "noUnusedVariables": "off",
-            "noUnusedImports": "off"
-          }
-        }
-      }
-    }
-  ]
+  }
 }
