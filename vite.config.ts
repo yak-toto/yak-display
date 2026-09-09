@@ -3,8 +3,8 @@ import vue from '@vitejs/plugin-vue';
 import { defineConfig, type Plugin } from 'vite';
 import vueDevTools from 'vite-plugin-vue-devtools';
 
-import pkg from './package.json';
-import { apiSchemaHash } from './src/client/schema-hash.gen';
+import pkg from './package.json' with { type: 'json' };
+import { apiSchemaHash } from './src/client/schema-hash.gen.js';
 
 function frontendMetaPlugin(): Plugin {
   const content = JSON.stringify({
