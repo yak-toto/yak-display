@@ -10,7 +10,7 @@
         :value="modelValue"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         class="input is-large"
-      />
+      >
     </label>
   </div>
 </template>

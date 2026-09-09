@@ -1,6 +1,6 @@
 <template>
   <AuthFormContainer title="Se connecter">
-    <form v-on:submit.prevent="login">
+    <form @submit.prevent="login">
       <TextInput
         v-model="name"
         label="Pseudo"
@@ -19,11 +19,7 @@
 
       <ErrorNotification :show="invalidLogin" :message="errorMessage" />
 
-      <LoadingButton
-        :loading="loading"
-        text="Se connecter"
-        loading-text="Connexion en cours..."
-      />
+      <LoadingButton :loading="loading" text="Se connecter" loading-text="Connexion en cours..." />
     </form>
   </AuthFormContainer>
 </template>
@@ -79,4 +75,3 @@ const login = async () => {
   }
 };
 </script>
-

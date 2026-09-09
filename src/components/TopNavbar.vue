@@ -4,7 +4,9 @@
       <template v-if="!$route.meta.allowAnonymous">
         <HomeButton />
         <template v-if="getUserName() === 'admin' && !$route.meta.allowAnonymous">
-          <a @click="computePoints" class="navbar-item-custom clickable"> Calculer les points </a>
+          <button type="button" @click="computePoints" class="navbar-item-custom clickable">
+            Calculer les points
+          </button>
           <template v-if="displayStatus">
             <div class="navbar-item-custom success" v-if="pointsComputedProperly">
               Points calculés &#10003;
@@ -20,12 +22,17 @@
       <router-link to="/login" class="navbar-item-custom clickable" v-if="$route.name === 'signup'">
         Se connecter
       </router-link>
-      <router-link to="/signup" class="navbar-item-custom clickable" v-if="$route.name == 'login'">
+      <router-link to="/signup" class="navbar-item-custom clickable" v-if="$route.name === 'login'">
         Créer un compte
       </router-link>
-      <a @click="logout" class="navbar-item-custom clickable" v-if="isAuthenticated()">
+      <button
+        type="button"
+        @click="logout"
+        class="navbar-item-custom clickable"
+        v-if="isAuthenticated()"
+      >
         Se déconnecter
-      </a>
+      </button>
     </div>
   </div>
 </template>
@@ -105,6 +112,9 @@ async function logout(): Promise<void> {
   font-size: 0.875rem;
   color: #37352f;
   padding: 0.35rem 0.65rem;
+  border: 0;
+  background: none;
+  font-family: inherit;
   border-radius: 4px;
   display: inline-flex;
   align-items: center;

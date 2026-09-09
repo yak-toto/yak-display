@@ -1,6 +1,6 @@
 <template>
   <router-link to="/" class="home-button" title="Accueil">
-    <img :src="'/api/v1/competition/logo'" alt="Accueil" class="home-icon" />
+    <img :src="'/api/v1/competition/logo'" alt="Accueil" class="home-icon">
   </router-link>
 </template>
 
@@ -13,7 +13,9 @@
   border-radius: 6px;
   color: #4a4a4a;
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
   vertical-align: middle;
 }
 

@@ -31,7 +31,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="[index, result] in groupRank.entries()" :key="result.team.id">
+      <tr v-for="[ index, result ] in groupRank.entries()" :key="result.team.id">
         <td>{{ index + 1 }}</td>
         <td class="team-cell">
           <img
@@ -39,7 +39,7 @@
             :src="result.team.flag.url"
             :alt="result.team.description"
             class="team-flag"
-          />
+          >
           {{ result.team.description }}
         </td>
         <td>{{ result.points }}</td>

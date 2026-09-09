@@ -62,7 +62,9 @@ onMounted(async () => {
   border-radius: 6px;
   text-decoration: none;
   color: #37352f;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .group-card:hover {

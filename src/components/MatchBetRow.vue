@@ -2,35 +2,23 @@
   <div class="grid-bet">
     <div class="team-bet-1">
       {{ team1Name }}
-      <img v-if="team1Flag" :src="team1Flag" :alt="team1Name" class="team-flag" />
+      <img v-if="team1Flag" :src="team1Flag" :alt="team1Name" class="team-flag">
     </div>
     <div class="input-bet-1">
-      <input
-        min="0"
-        type="number"
-        :value="team1Score"
-        @input="updateTeam1Score"
-        :readonly="locked"
-      />
+      <input min="0" type="number" :value="team1Score" @input="updateTeam1Score" :readonly="locked">
     </div>
     <div class="input-bet-2">
-      <input
-        min="0"
-        type="number"
-        :value="team2Score"
-        @input="updateTeam2Score"
-        :readonly="locked"
-      />
+      <input min="0" type="number" :value="team2Score" @input="updateTeam2Score" :readonly="locked">
     </div>
     <div class="team-bet-2">
-      <img v-if="team2Flag" :src="team2Flag" :alt="team2Name" class="team-flag" />
+      <img v-if="team2Flag" :src="team2Flag" :alt="team2Name" class="team-flag">
       {{ team2Name }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   team1Name: string;
   team2Name: string;
   team1Flag?: string;
