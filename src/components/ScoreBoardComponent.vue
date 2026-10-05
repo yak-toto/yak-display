@@ -28,7 +28,7 @@
             <td>{{ res.number_qualified_teams_guess }}</td>
             <td>{{ res.number_first_qualified_guess }}</td>
             <td v-for="group in scoreBoardResource.groups" :key="group.id">
-              {{ res.knockout_rounds.find(r => r.group_id === group.id)?.count ?? 0 }}
+              {{ res.knockout_rounds.find((r) => r.group_id === group.id)?.count ?? 0 }}
             </td>
             <td>{{ res.number_winner_guess }}</td>
           </tr>
