@@ -1,29 +1,41 @@
 import { defineStore } from 'pinia';
 import type { AllBetsResponse, ScoreBetWithGroupIdOut } from '@/client';
-import { retrieveAllBetsApiV1BetsGet } from '@/client';
+import { currentUserApiV1UsersCurrentGet, retrieveAllBetsApiV1BetsGet } from '@/client';
 
 const useYakStore = defineStore('yakStorage', {
   state: () => ({
     userName: '',
-    isLoggedIn: false,
     allBets: null as AllBetsResponse | null,
     allBetsPromise: null as Promise<void> | null,
+    sessionPromise: null as Promise<boolean> | null,
   }),
-  getters: {
-    getUserName: (state) => state.userName,
-  },
   actions: {
     setUserName(userName: string) {
       this.userName = userName;
     },
-    setLoggedIn(loggedIn: boolean) {
-      this.isLoggedIn = loggedIn;
-    },
     eraseAuthState() {
       this.$reset();
     },
-    isAuthenticated() {
-      return this.isLoggedIn;
+    // Ask the backend whether the session cookie is valid. Concurrent calls
+    // share a single request.
+    async checkSession(): Promise<boolean> {
+      if (this.sessionPromise) {
+        return this.sessionPromise;
+      }
+      this.sessionPromise = (async () => {
+        const { data } = await currentUserApiV1UsersCurrentGet();
+        if (!data) {
+          this.$reset();
+          return false;
+        }
+        this.setUserName(data.result.name);
+        return true;
+      })();
+      try {
+        return await this.sessionPromise;
+      } finally {
+        this.sessionPromise = null;
+      }
     },
     async fetchAllBets() {
       if (this.allBetsPromise) {
@@ -49,9 +61,6 @@ const useYakStore = defineStore('yakStorage', {
         return updatedIds.has(bet.id) && updated ? updated : bet;
       });
     },
-  },
-  persist: {
-    pick: ['userName', 'isLoggedIn'],
   },
 });
 

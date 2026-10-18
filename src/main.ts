@@ -3,7 +3,6 @@ import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 import { createPinia } from 'pinia';
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createApp } from 'vue';
 import App from './App.vue';
 import { client } from './client/client.gen';
@@ -14,7 +13,6 @@ import useYakStore from './store';
 const app = createApp(App);
 
 const store = createPinia();
-store.use(piniaPluginPersistedstate);
 app.use(store);
 app.use(router);
 
@@ -53,10 +51,13 @@ client.instance.interceptors.response.use(undefined, async (error) => {
     return client.instance(config);
   }
 
-  // Refresh failed — session is truly expired
+  // Refresh failed — session is truly expired. A failed session check is
+  // handled by the router guard, which is already redirecting to login.
   const yakStore = useYakStore();
   yakStore.eraseAuthState();
-  router.push('/login');
+  if (!config?.url?.includes('/users/current')) {
+    router.push('/login');
+  }
   return Promise.reject(error);
 });
 

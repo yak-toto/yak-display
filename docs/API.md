@@ -9,6 +9,8 @@ All endpoints used by this frontend, targeting the backend version defined in `b
 | `POST` | `/api/v1/users/login` | `LoginComponent` |
 | `POST` | `/api/v1/users/signup` | `SignupComponent` |
 | `POST` | `/api/v1/users/logout` | `TopNavbar` |
+| `GET` | `/api/v1/users/current` | `store/index` — session check by the router guard on first protected navigation after a page load |
+| `POST` | `/api/v1/users/refresh` | `main.ts` — automatic token refresh on 401 |
 
 ## Bets
 

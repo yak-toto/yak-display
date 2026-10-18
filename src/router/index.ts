@@ -65,7 +65,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   const yakStore = useYakStore();
 
   if (to.meta.allowAnonymous) {
@@ -75,7 +75,8 @@ router.beforeEach((to, from) => {
     return true;
   }
 
-  if (!yakStore.isAuthenticated()) {
+  // Auth state lives in memory only: after a page load, ask the backend
+  if (!yakStore.userName && !(await yakStore.checkSession())) {
     return { name: 'login' };
   }
 
