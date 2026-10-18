@@ -65,15 +65,21 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   const yakStore = useYakStore();
 
-  if (to.meta.allowAnonymous && !from.meta.allowAnonymous) {
-    yakStore.eraseAuthState();
-    next();
-  } else {
-    next();
+  if (to.meta.allowAnonymous) {
+    if (!from.meta.allowAnonymous) {
+      yakStore.eraseAuthState();
+    }
+    return true;
   }
+
+  if (!yakStore.isAuthenticated()) {
+    return { name: 'login' };
+  }
+
+  return true;
 });
 
 export default router;
