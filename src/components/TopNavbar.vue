@@ -3,7 +3,7 @@
     <div class="navbar-left">
       <template v-if="!$route.meta.allowAnonymous">
         <HomeButton />
-        <template v-if="getUserName() === 'admin' && !$route.meta.allowAnonymous">
+        <template v-if="yakStore.userName === 'admin' && !$route.meta.allowAnonymous">
           <button type="button" @click="computePoints" class="navbar-item-custom clickable">
             Calculer les points
           </button>
@@ -29,7 +29,7 @@
         type="button"
         @click="logout"
         class="navbar-item-custom clickable"
-        v-if="isAuthenticated()"
+        v-if="yakStore.userName"
       >
         Se déconnecter
       </button>
@@ -52,9 +52,6 @@ const displayStatus = ref(false);
 const pointsComputedProperly = ref(false);
 
 // Methods
-const isAuthenticated = () => yakStore.isAuthenticated();
-const getUserName = () => yakStore.getUserName;
-
 const computePoints = async () => {
   try {
     const ruleId = '62d46542-8cf1-4a3b-af77-a5086f10ac59';
