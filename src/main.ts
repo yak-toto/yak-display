@@ -62,4 +62,6 @@ client.instance.interceptors.response.use(undefined, async (error) => {
   return Promise.reject(error);
 });
 
-app.mount('#app');
+// Wait for the initial navigation (including the auth guard and any redirect
+// to login) so protected UI is never rendered before the session is checked.
+router.isReady().finally(() => app.mount('#app'));
