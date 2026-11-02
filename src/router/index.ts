@@ -16,6 +16,7 @@ const routes = [
     component: LoginComponent,
     meta: {
       allowAnonymous: true,
+      test: true,
     },
   },
   {
