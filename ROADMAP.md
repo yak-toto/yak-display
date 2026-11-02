@@ -5,12 +5,14 @@ This document outlines planned improvements and new features for the application
 ## Completed Improvements ✅
 
 ### Component Refactoring
+
 - **MatchBetRow Component** - Extracted reusable match betting row component
   - Simplified API with focused props (team names, scores, locked state)
   - Proper separation of concerns (UI vs business logic)
   - Clean event emission pattern for score updates
 
 ### Code Quality
+
 - Added explicit TypeScript typing for `modifyBets` array
 - Improved separation of concerns between components
 - Removed non-null assertions for better type safety
@@ -19,6 +21,7 @@ This document outlines planned improvements and new features for the application
 ## Planned Components
 
 ### 2. StatusNotification Component
+
 **Priority:** High
 **Description:** Reusable toast/notification component for success/error messages
 
@@ -56,6 +59,7 @@ This document outlines planned improvements and new features for the application
 ---
 
 ### 3. LoadingSpinner Component
+
 **Priority:** High
 **Description:** Reusable loading indicator component
 
@@ -92,6 +96,7 @@ This document outlines planned improvements and new features for the application
 ---
 
 ### 7. BettingHistory Component
+
 **Priority:** Medium
 **Description:** Display user's previous betting history and accuracy statistics
 
@@ -103,11 +108,7 @@ This document outlines planned improvements and new features for the application
 **Proposed Solution:**
 ```vue
 <!-- Usage -->
-<BettingHistory
-  :userId="currentUser.id"
-  :limit="10"
-  :showStats="true"
-/>
+<BettingHistory :userId="currentUser.id" :limit="10" :showStats="true" />
 ```
 
 **Features:**
@@ -141,6 +142,7 @@ This document outlines planned improvements and new features for the application
 ## UI/UX Redesign
 
 ### Overall Design System Overhaul
+
 **Priority:** High
 **Description:** Complete redesign of the user interface and visual design
 
@@ -156,6 +158,7 @@ This document outlines planned improvements and new features for the application
 **Proposed Improvements:**
 
 #### 1. Design System Foundation
+
 - **Color Palette:**
   - Define primary, secondary, accent colors
   - Success/error/warning/info states
@@ -307,7 +310,7 @@ These were suggested but not prioritized yet:
 4. **BetSummary Component** - Show user betting statistics (total bets, pending, locked, etc.)
 5. **MatchCard Component** - Alternative card-based layout for mobile
 6. **LiveMatchIndicator Component** - Real-time match score updates
-8. **LeaderboardCard Component** - Mini leaderboard widget
+7. **LeaderboardCard Component** - Mini leaderboard widget
 
 ### Code Quality Improvements
 
