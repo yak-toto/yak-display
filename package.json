@@ -4,18 +4,16 @@
   "private": true,
   "type": "module",
   "backendApiVersion": "0.94.15",
-  "engines": {
-    "node": "^26.0.0"
-  },
+  "packageManager": "bun@1.4.4",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "bun run --parallel type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --error-on-warnings .",
     "format": "biome format --write --no-errors-on-unmatched --files-ignore-unknown=true --error-on-warnings .",
-    "generate-client": "openapi-ts && node scripts/write-schema-hash.mjs"
+    "generate-client": "openapi-ts && bun scripts/write-schema-hash.mjs"
   },
   "dependencies": {
     "@fontsource/inter": "5.3.0",
@@ -33,7 +31,6 @@
     "@types/node": "26.6.6",
     "@vitejs/plugin-vue": "6.0.10",
     "@vue/tsconfig": "0.9.1",
-    "npm-run-all2": "9.0.4",
     "typescript": "6.0.3",
     "vite": "8.3.5",
     "vite-plugin-vue-devtools": "8.2.1",

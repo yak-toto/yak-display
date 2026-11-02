@@ -1,6 +1,6 @@
 # API Endpoints
 
-All endpoints used by this frontend, targeting the backend version defined in `backendApiVersion` in `package.json`. The client SDK is auto-generated from the backend OpenAPI spec — run `npm run generate-client` to regenerate after backend changes.
+All endpoints used by this frontend, targeting the backend version defined in `backendApiVersion` in `package.json`. The client SDK is auto-generated from the backend OpenAPI spec — run `bun run generate-client` to regenerate after backend changes.
 
 ## Authentication
 
