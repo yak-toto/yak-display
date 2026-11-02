@@ -10,7 +10,7 @@ build:
     npm run build
 
 check:
-    pre-commit run -a
+    prek run -a
 
 build_image:
     {{ justfile_directory() }}/scripts/build_image.sh
