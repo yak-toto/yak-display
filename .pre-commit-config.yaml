@@ -7,9 +7,9 @@ repos:
 
   - repo: local
     hooks:
-      - id: npm-lockfile-check
-        name: Verify package-lock.json is in sync
-        entry: npm ci --dry-run --prefer-offline
+      - id: bun-lockfile-check
+        name: Verify bun.lock is in sync
+        entry: bun install --frozen-lockfile --dry-run
         language: system
-        files: ^(package\.json|package-lock\.json)$
+        files: ^(package\.json|bun\.lock)$
         pass_filenames: false

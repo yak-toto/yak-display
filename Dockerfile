@@ -1,18 +1,18 @@
 # ===========================
-# 1️⃣ Build Stage (node)
+# 1️⃣ Build Stage (bun)
 # ===========================
-FROM node:26.13.0-alpine3.24 AS build
+FROM oven/bun:1.4.4-alpine AS build
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm ci
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
 COPY . .
 COPY --from=ghcr.io/astral-sh/uv:0.12.13 /uv /uvx /bin/
 
-RUN npm run generate-client
-RUN npm run build
+RUN bun run generate-client
+RUN bun run build
 
 # ===========================
 # 2️⃣ Runtime Stage (nginx)

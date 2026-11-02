@@ -4,10 +4,10 @@ alias c := check
 alias bi := build_image
 
 run:
-    npm run dev
+    bun run dev
 
 build:
-    npm run build
+    bun run build
 
 check:
     prek run -a
