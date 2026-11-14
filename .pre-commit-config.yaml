@@ -5,6 +5,12 @@ repos:
       - id: biome-check
         args: [--error-on-warnings]
 
+  - repo: https://github.com/woodruffw/zizmor-pre-commit
+    rev: v1.32.0
+    hooks:
+      - id: zizmor
+        args: [--persona=pedantic]
+
   - repo: local
     hooks:
       - id: bun-lockfile-check

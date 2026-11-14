@@ -39,6 +39,7 @@ jobs:
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version-file: package.json
+          no-cache: true
 
       - name: Install uv
         uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
@@ -92,15 +93,18 @@ jobs:
             ghcr.io/${{ github.repository }}:${{ steps.create-commits.outputs.new-version }}
 
       - name: Zip dist
-        run: cd dist && zip -r ../yak-display-v${{ steps.create-commits.outputs.new-version }}.zip .
+        env:
+          VERSION: ${{ steps.create-commits.outputs.new-version }}
+        run: cd dist && zip -r "../yak-display-v${VERSION}.zip" .
 
       - name: Create GitHub Release
         id: create-release
-        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
-        with:
-          artifacts: "yak-display-v${{ steps.create-commits.outputs.new-version }}.zip"
-          generateReleaseNotes: true
-          tag: v${{ steps.create-commits.outputs.new-version }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: v${{ steps.create-commits.outputs.new-version }}
+        run: |
+          RELEASE_URL=$(gh release create "${TAG}" "yak-display-${TAG}.zip" --generate-notes --title "${TAG}")
+          echo "html_url=${RELEASE_URL}" >> "$GITHUB_OUTPUT"
 
       - name: Send Release Notification to ntfy
         if: success()
