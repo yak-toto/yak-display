@@ -3,7 +3,7 @@
   "version": "0.23.8",
   "private": true,
   "type": "module",
-  "backendApiVersion": "0.94.26",
+  "backendApiVersion": "0.94.27",
   "packageManager": "bun@1.4.4",
   "scripts": {
     "dev": "vite",
