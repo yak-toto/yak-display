@@ -17,7 +17,7 @@ RUN bun run build
 # ===========================
 # 2️⃣ Runtime Stage (nginx)
 # ===========================
-FROM nginx:1.31.6-alpine3.24
+FROM nginx:1.31.9-alpine3.24@sha256:90b6bd2aec278b16b98221d64deb1d6d35d164567f507ab0716e6053878315aa
 
 LABEL org.opencontainers.image.source=https://github.com/yak-toto/yak-display
 
