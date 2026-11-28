@@ -6,7 +6,7 @@ repos:
         args: [--error-on-warnings]
 
   - repo: https://github.com/woodruffw/zizmor-pre-commit
-    rev: v1.33.0
+    rev: v1.33.1
     hooks:
       - id: zizmor
         args: [--persona=pedantic]
